@@ -1,8 +1,10 @@
-# Project title: SREG (Servizi per la Rendicontazione degli Enti Gestori dei servizi socio-assistenziali) 
+# Prodotto
 
-La piattaforma **GESCOVID19** è composta da un gruppo di applicazioni create per gestire in tempo reale i processi di richiesta tamponi e di consultazione del relativo esito, la presa in carico dei pazienti in ospedale, le loro dimissioni e i trasferimenti a domicilio o in altre strutture per il post-ricovero, divulgare le segnalazioni in arrivo da MMG/PLS, gestire le acquisizioni straordinarie di personale, gestire il ciclo di approvvigionamento di servizi e presidi medici, tenere sotto controllo lo stato di occupazione dei letti suddivisi, per ogni struttura, tra terapia intensiva, sub-intensiva e ordinaria, nonché la consultazione dei casi positivi da parte dei sindaci, Prefettura e forze dell'ordine.
-Un sistema gestionale completo e flessibile, realizzato dal CSI Piemonte con soluzioni tecnologiche open source in cui le informazioni sono fruibili
-facilmente anche in mobilità e con dispositivi diversi.
+La piattaforma **SREG (Servizi per la Rendicontazione degli Enti Gestori dei servizi socio-assistenziali)** è uno strumento web finalizzato alla raccolta dati e alla rendicontazione annuale dell'attività svolta e della spesa sociale sostenuta dagli enti. Offre supporto ai vari attori nelle diverse fasi del processo di rendicontazione, costituendo un sistema gestionale completo e flessibile.
+Agli enti gestori offre una guida nella compilazione dei moduli online di rilevazione della spesa delle funzioni socio-assistenziali e organizza in varie scadenze il conferimento dei dati alla Regione.
+Agli operatori regionali offre vari strumenti per la gestione delle istruttorie, sia in termini di controlli automatici sui dati, sia in termini di gestione e monitoraggio del processo, nonché nella comunicazione diretta con i referenti compilatori.
+Il sistema include anche l’organizzazione e gestione di un catalogo regionale degli interventi e servizi sociali (o prestazioni) in modo flessibile e direttamente traducibile nei parametri di riferimento delle rilevazioni a livello nazionale. Coadiuva quindi gli enti anche nell'adempiere ai debiti informativi verso il Ministero e l'ISTAT.
+Il sistema include anche un front-end per la gestione anagrafica degli enti, delle utenze, delle loro profilazioni e di tutte le abilitazioni all’uso dello strumento.
 
 # Getting started  
 I moduli attualmente disponibili sono:  
