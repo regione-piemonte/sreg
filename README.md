@@ -51,9 +51,9 @@ Per il versionamento del software si usa la tecnica Semantic Versioning (http://
 
 ## Authors
 
-* [Alessandro Trombotto](https://github.com/alessandro-trombotto)
-* Claudia Pinton
 * Oleg Medeot
+* Claudia Pinton
+* [Alessandro Trombotto](https://github.com/alessandro-trombotto)
 
 ## Copyrights
 
