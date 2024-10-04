@@ -22,8 +22,8 @@ Il sistema include anche un front-end per la gestione anagrafica degli enti, del
 
 Elenco componenti:
 
-* [GREGWCL](gregwcl) componente web 
-* [GREGSRV](gregsrv) componente ser
+* [GREGWCL](gregwcl) Componente web app per la web app del front office
+* [GREGSRV](gregsrv) API di servizi per il back office
 
 ## Configurazioni iniziali
 
