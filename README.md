@@ -52,13 +52,12 @@ Per il versionamento del software si usa la tecnica Semantic Versioning (http://
 ## Authors
 
 * [Alessandro Trombotto](https://github.com/alessandro-trombotto)
-* Annarita Losurdo
-* Maurizio Peisino
-
+* Claudia Pinton
+* Oleg Medeot
 
 ## Copyrights
 
-“© Copyright Regione Piemonte – 2023”
+“© Copyright Regione Piemonte – 2024”
 
 ## License
 
