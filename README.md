@@ -22,8 +22,8 @@ Il sistema include anche un front-end per la gestione anagrafica degli enti, del
 
 Elenco componenti:
 
-* [GREGWCL](gregwcl) componente server di comunicazione con i servizi di gestione bandi
-* [GREGSRV](gregsrv) batch java per l'invio delle domande del cittadino verso i servizi di gestione bandi
+* [GREGWCL](gregwcl) componente web 
+* [GREGSRV](gregsrv) componente ser
 
 
 # Getting started  
