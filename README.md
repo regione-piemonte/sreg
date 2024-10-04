@@ -25,6 +25,38 @@ Elenco componenti:
 * [GREGWCL](gregwcl) componente web 
 * [GREGSRV](gregsrv) componente ser
 
+## Prerequisiti di sistema
+
+Server Web:
+Apache 2.4.54
+
+Application Server:
+Wildfly 23
+
+Tipo di database:
+PostgreSQL v9.6
+
+Dipendenze elencate nella cartella docs/wsdl
+
+## Versioning (Obbligatorio)
+
+Per il versionamento del software si usa la tecnica Semantic Versioning (http://semver.org).
+
+## Authors
+
+* [Alessandro Trombotto](https://github.com/alessandro-trombotto)
+* Annarita Losurdo
+* Maurizio Peisino
+
+
+## Copyrights
+
+“© Copyright Regione Piemonte – 2023”
+
+## License
+
+SPDX-License-Identifier: inserire il codice SPDX delle licenza
+Veder il file LICENSE per i dettagli.
 
 # Getting started  
 I moduli attualmente disponibili sono:  
