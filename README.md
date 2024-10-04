@@ -20,6 +20,12 @@ Il sistema include anche l’organizzazione e gestione di un catalogo regionale 
 
 Il sistema include anche un front-end per la gestione anagrafica degli enti, delle utenze, delle loro profilazioni e di tutte le abilitazioni all’uso dello strumento.
 
+Elenco componenti:
+
+* [GREGWCL](gregwcl) componente server di comunicazione con i servizi di gestione bandi
+* [GREGSRV](gregsrv) batch java per l'invio delle domande del cittadino verso i servizi di gestione bandi
+
+
 # Getting started  
 I moduli attualmente disponibili sono:  
   
