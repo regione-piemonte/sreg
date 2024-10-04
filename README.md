@@ -1,8 +1,9 @@
+# Prodotto
+SREG (Servizi per la Rendicontazione degli Enti Gestori dei servizi socio-assistenziali)
 ## Versione
-
 1.0.0
 
-# Prodotto
+## Descrizione del prodotto
 
 La piattaforma **SREG (Servizi per la Rendicontazione degli Enti Gestori dei servizi socio-assistenziali)** è uno strumento web finalizzato alla raccolta dati e alla rendicontazione annuale dell'attività svolta e della spesa sociale sostenuta dagli enti.
 
