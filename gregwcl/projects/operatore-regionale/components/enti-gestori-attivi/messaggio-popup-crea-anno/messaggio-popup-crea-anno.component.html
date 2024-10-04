@@ -1,0 +1,39 @@
+<div class="row modal-header" style="border-bottom: 0px; padding-left: 0px;">
+  <h1 id="titolo" style="color: black; font-family: Roboto;" class="col-md-11 modal-title">{{data?.titolo}}</h1>
+  <button style="outline: none;" type="button" class="col-md-1 close" aria-label="Close" (click)="chiudiNo(data)">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<!-- <h1 mat-dialog-title class="testo">{{data?.denominazione}}</h1> -->
+
+<div mat-dialog-content style="border-bottom: 1px solid #dee2e6;
+border-top: 1px solid #dee2e6;">
+
+  <div class="row" class="ok">
+    <div style="margin-left:20px">
+      <ul>
+        <li *ngFor="let mess of data?.ok">{{mess}}</li>
+      </ul>
+      <!-- <p [innerHTML]="data?.messaggio" *ngIf="data?.warnings.length>0 && data?.errors.length==0"></p> -->
+    </div>
+  </div>
+
+  <div class="row error" *ngIf="data?.errors.length>0">
+    <div style="margin-left:20px">
+      <label class="titoloer">Attenzione:</label>
+      <ul>
+        <li *ngFor="let err of data?.errors">{{err}}</li>
+      </ul>
+    </div>
+  </div>
+
+ 
+ 
+
+</div>
+<div class="row">
+  <div class="col-md-9"></div>
+  <div class="col-md-3">
+    <!-- <button class="bottoni" mat-stroked-button (click)="chiudiNo(data)">CHIUDI</button> -->
+  </div>
+</div>

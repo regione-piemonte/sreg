@@ -1,0 +1,35 @@
+<div class="gregBar">
+	<div class="row">
+		<div class="col-md-1"></div>
+		<div class="col-md-10 gregBarContainer" id="mediaHeader">
+			<div class="row w-100">
+				<mat-toolbar class="w-100 tool-bar">
+					<mat-toolbar-row class="pl-0">
+						<div class="col-md-2">
+							<a nohref style="color: white; cursor: pointer;" id="titoloProgetto">
+								<span class="scrittatitolo">{{ projectTitle }}</span>
+							</a>
+						</div>
+						<div class="col-md-9"></div>
+						<div class="circle">
+							<button mat-button [matMenuTriggerFor]="beforeMenu" class="text" style="padding-left: 10px; padding-right: 10px; cursor: pointer;">
+								<img class="immaginetitolo" src="assets/img/user/Tracciato 297.png">
+							</button>
+							<mat-menu #beforeMenu="matMenu" xPosition="before">
+							<div *ngFor="let msg of parametriperhelp">
+								<div mat-menu-item class="row dropdown-item" (click)="goToParametro(msg.valtext)">
+									<i class="fas fa-external-link-alt" aria-hidden="true" style="padding-left:0px; padding-right: 0px; right: 6px; top: 3px;"></i>
+										<a class="fontbold" style="padding-left: 10px; padding-right: 0px; cursor: pointer;">
+											{{msg.desParametro}}
+										</a>
+									</div>
+									</div>
+							</mat-menu>
+						</div>
+					</mat-toolbar-row>
+				</mat-toolbar>
+			</div>
+		</div>
+		<div class="col-md-1"></div>
+	</div>
+</div>

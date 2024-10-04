@@ -1,0 +1,133 @@
+<div class="row" style="background: white; padding-top: 20px; padding-bottom: 5px; box-shadow: 1px 2px 8px #C4C4C4;">
+    <div class="row col-md-12">
+        <div class="col-md-9 fontbold" style="padding-bottom:10px;padding-top:10px;">
+            <div class="bold" style="padding-bottom:20px;">
+                {{datiEnte?.denominazione}} - Anno di esercizio: {{infoOperatore?.annoEsercizio}}
+            </div>
+            <div>{{titolo}}
+              <ng-template #popContent>
+			   {{tooltipTitle}}
+			</ng-template>
+			<label style="white-space: nowrap; padding-left: 10px;" [placement]="['right', 'left', 'auto']" 
+			[ngbPopover]="popContent"  triggers="hover">
+             <img src="assets/img/ui-modelli/help.png" class="greg-icon-help">
+                </label>
+            </div>
+        </div>
+		<div class="col-md-3 fontbold" style="padding-bottom:30px;padding-top:10px;" *ngIf="client.azioni.get('EsportaModelloE')[1]"> 
+            <div  style="text-align: right;padding-right: 30px;">
+                <button type="button" class="btn" data-toggle="tooltip" title="Esporta in Excel" (click)="esportaexcel()">
+                    <i class="fa fa-file-excel" style="cursor: pointer;color:green;width: 40px;height: 40px;"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="tab-row" style="margin-right: 30px;">            
+            <div class="col-md-12 bordered">
+                <p style="padding-top: 20px; padding-left: 15px;">Puoi selezionare e aggiungere uno o piu' Comuni oppure l'elenco completo dei Comuni  (opzione "Tutti")</p>
+                <div class="row">
+                    <div class="col-md-7">
+                        <label class="label-size" for="comuneEnte">Comune</label>
+                    </div>
+                    <div class="col-md-2"></div>
+                    <div class="col-md-3"></div>
+                </div>
+                <div class="row form-group" style="padding-bottom: 20px;">
+                    <div class="col-md-4" style="padding-top: 3px;">
+                        <ng-container>
+                            <select name="comuneEnte" id="comuneEnte" [disabled]="client.readOnlyII || client.azioni.get('ModelloE')[0]" class="form-control form-control-sm statoCombo input-size" style="width: 279px;" [(ngModel)]="comuneSelected" (ngModelChange)="activateButton()">
+                                <option [ngValue]="null">Seleziona Comune</option>
+                                <option [ngValue]="comuneAll">Tutti</option>
+                                <option *ngFor="let comune of listaComuniAssociati" [ngValue]="comune">{{comune.codiceIstat + " - " + comune.desComune}}</option>
+                            </select>
+                        </ng-container>
+                    </div>
+                    <div class="col-md-2" style="margin-left: -70px;">
+                        <button class="btn btn-primary bottonifunzione" [disabled]="listaComuniAssociati?.length == 0 || !aggiungiButton || (client.readOnlyII) || client.azioni.get('ModelloE')[0]" (click)="aggiungiRendicontazioneComune()">
+                            AGGIUNGI
+                        </button>
+                    </div>
+                    <div class="col-md-6"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-row">
+            <br><br>
+            <div class="row">
+                <div class="col-md-12">
+                    <table #rendicontazioniComuniTable mat-table [dataSource]="RendModE" class="mb-3 table-hover table-responsive-xl rowTabellaGreg" [hidden]="RendModE?.length == 0">                    
+                        <ng-container *ngFor="let col of columnsTable; let i = index" matColumnDef="{{col}}">
+                            <thead>
+                                <th class="columns_header" style="padding-left: 10px;" mat-header-cell *matHeaderCellDef data-toggle="tooltip" [title]="tooltipColumnsTable[i]"
+                                [ngClass]="{'alignText': i == 11}">
+                                    {{col}}
+                                </th>
+                            </thead>
+                            <tbody>
+                                <ng-container>
+                                    <tr>
+                                        <td [ngSwitch]="i" class="smarttable" [ngClass]="{'backBodyColor': i == 11}" *matCellDef="let element; let rowI = index" mat-cell>
+                                            <div class="pr-1" *ngSwitchCase="0">
+                                                {{element.codIstatComune}}
+                                            </div>
+                                            <div class="pl-1 pr-1" *ngSwitchCase="1">
+                                                {{element.descComune}}
+                                            </div>
+                                            <ng-container *ngFor="let col of element.attivita; let j = index">
+                                                <div *ngSwitchCase="j+2" class="pl-2 pr-2">
+                                                    <input type="text" class="form-control inputnumber pl-2 pr-2 w-100" appTwoDigitDecimalNumber [(ngModel)]="RendModE[rowI]?.attivita[j].valore" (blur)="changeKey(rowI, j, $event.target.value)" (ngModelChange)="calcTableValue()" [disabled]="client.readOnlyII || client.azioni.get('ModelloE')[0]"
+                                                    [class.campovuoto]="RendModE[rowI]?.attivita[j].valore === null || RendModE[rowI]?.attivita[j].valore === ''" [class.campovalorizzato]="RendModE[rowI]?.attivita[j].valore !== null && RendModE[rowI]?.attivita[j].valore !== ''">
+                                                </div>
+                                            </ng-container>
+                                            <div *ngSwitchCase="11" class="pl-2 pr-2">
+                                                <input type="text" class="form-control inputnumber" appTwoDigitDecimalNumber [(ngModel)]="totaleRiga[rowI]" readonly
+                                                [class.campovuoto]="totaleRiga[i] === undefined || totaleRiga[i] === ''" [class.campovalorizzato]="totaleRiga[i] !== undefined && totaleRiga[i] !== ''">
+                                            </div>
+                                            <div *ngSwitchCase="12" class="pl-2">
+                                                <button type="button" (click)="openDialogDeleteComune(element.codIstatComune)" [disabled]="client.readOnlyII || client.azioni.get('ModelloE')[0]" class="btn" data-toggle="tooltip" title="Elimina">
+                                                    <span class="fas fa-trash" style="color: #B8191A;"></span>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </ng-container>
+                                <ng-container>
+                                    <tr style="background: #DBEEF7 0% 0% no-repeat;" class="codifica">
+                                        <td [ngSwitch]="i" class="smarttable" style="font-weight: bold; text-align: center; padding-bottom: 20px;" mat-footer-cell *matFooterCellDef>
+                                            <div *ngSwitchCase="0">
+                                                <div class="pl-3"></div>
+                                            </div>
+                                            <div *ngSwitchCase="1" style="height: 100; padding: 18px;" [ngClass]="{'backBodyColor': i == 1}">
+                                                TOTALI
+                                            </div>
+                                            <ng-container *ngFor="let col of totaleColonna; let j = index">
+                                                <div *ngSwitchCase="j+2" class="pl-2 pr-2 backBodyColor" style="height: 60; padding: 0.75rem;">
+                                                    <input type="text" class="form-control inputnumber w-100" appTwoDigitDecimalNumber [(ngModel)]="totaleColonna[j]" readonly
+                                                    [class.campovuoto]="totaleColonna[j] === undefined || totaleColonna[j] === ''" [class.campovalorizzato]="totaleColonna[j] !== undefined && totaleColonna[j] !== ''">
+                                                </div>
+                                            </ng-container>
+                                        </td>
+                                    </tr>
+                                </ng-container>
+                            </tbody>                            
+                        </ng-container>
+                        <tr mat-header-row *matHeaderRowDef="columnsTable"></tr>
+                        <tr mat-row *matRowDef="let row; columns: columnsTable; let i = index"></tr>
+                        <tr mat-footer-row *matFooterRowDef="columnsTable; sticky: true"></tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row" style="padding-top: 15px; padding-bottom: 20px;">
+</div>
+<!-- CRONOLOGIA -->
+<app-cronologia-modelli></app-cronologia-modelli>
+
+<br>
+
+<!-- BUTTON -->
+<app-pulsanti-funzioni [mostrasalva]="mostrasalva" [idRendicontazioneEnte]="idRendicontazioneEnte" [modello]="'Mod. E'" (salvaEvent)="salvaModifiche($event)"></app-pulsanti-funzioni>

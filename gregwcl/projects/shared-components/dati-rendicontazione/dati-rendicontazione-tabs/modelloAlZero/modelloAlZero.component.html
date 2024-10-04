@@ -1,0 +1,342 @@
+<div class="row greg" style="padding-top: 5px; padding-bottom: 5px">
+  <div class="row col-md-12">
+    <div class="col-md-1"></div>
+
+    <div class="col-md-10 tab-row">
+      <ng-container *ngIf="isValidModello">
+        <div class="row" style="
+              background: white;
+              padding-top: 15px;
+              padding-bottom: 15px;
+              box-shadow: 1px 2px 8px #c4c4c4;">
+          <div class="col-md-9 fontbold" style="padding-bottom: 10px; padding-top: 10px">
+            <div class="bold" style="padding-bottom: 20px">
+              {{ datiEnte?.denominazione }} - Anno di esercizio:
+              {{ infoOperatore?.annoEsercizio }}
+            </div>
+            <div>{{ titolo }} - {{ infoAlZero01 }}</div>
+          </div>
+          <div class="col-md-3 fontbold" style="padding-bottom: 30px; padding-top: 10px"
+          *ngIf="client.azioni.get('EsportaModelloALZERO')[1]">
+            <div style="text-align: right; padding-right: 30px">
+              <button type="button" class="btn" data-toggle="tooltip" title="Esporta in Excel" (click)="esportaModuloAlZero()">
+                <i class="fa fa-file-excel" style="
+                      cursor: pointer;
+                      color: green;
+                      width: 40px;
+                      height: 40px;
+                    "></i>
+              </button>
+            </div>
+          </div>
+          <div class="col-md-12" style="padding-bottom: 10px; padding-top: 10px">
+            <div>
+              {{ infoAlZero02_parte1 }} <br> {{ infoAlZero02_parte2 }}
+            </div>
+          </div>
+          <div class="col-md-12 pb-3 pt-2">
+            <div class="row col-md-12 py-2 riga-grigia" style="width: 80vh;">
+              <div class="col-md-8 pl-1 align-self-center riga-grigia">
+                {{ infoAlZero03 }}
+              </div>
+              <div class="col-md-2"></div>
+              <div class="col-md-2 text-right align-self-center riga-grigia">
+                {{ formatoItaliano(fondiEnte.fondoRegionale) }}
+              </div>
+            </div>
+            <div class="row col-md-12 py-2 riga-grigia" style="width: 80vh;">
+              <div class="col-md-8 pl-1 fontbold align-self-center">
+                {{ infoAlZero04 }}
+              </div>
+              <div class="col-md-2"></div>
+              <div class="col-md-2 fontbold text-right align-self-center">
+                {{ formatoItaliano(fondiEnte.quotaAllontanamentoZero) }}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12" style="background: white">
+          <ng-container
+            *ngIf="datiAlZero && datiAlZero !== undefined && datiAlZero.lista && datiAlZero.lista !== undefined">
+            <table class="mb-3 table table-hover table-responsive-xl" style="width: 100% !important">
+              <thead>
+                <th colspan="3" class="columns_header smarttable">
+                  <div class="testo-alld-bold">
+                    {{ primoHeader }}
+                  </div>
+                </th>
+                <th colspan="2" class="columns_header smarttable">
+                  <!-- <div class="testo-alld-bold">
+                    {{ secondoHeader }}
+                  </div> -->
+                </th>
+              </thead>
+              <tbody style="box-shadow: 1px 2px 8px #c4c4c4">
+                <ng-container *ngFor="let prestazione of datiAlZero.lista;let i = index">
+                  <tr>
+                    <td class="smarttable">
+                      <div class="testo-alld-bold">
+                        {{ prestazione.prestazioneCod }}
+                      </div>
+                    </td>
+                    <td class="smarttable">
+                      <div class="testo-alld-bold">
+                        {{ prestazione.prestazioneDesc }}
+                        <ng-template #popContent>
+                          {{ prestazione.tooltipDesc }}
+                        </ng-template>
+                        <label style="white-space: nowrap; padding-left: 10px" [placement]="['right', 'left', 'auto']"
+                          [ngbPopover]="popContent" triggers="hover">
+                          <img style="height: 20px; width: 20px" src="assets/img/ui-modelli/help.png"
+                            class="greg-icon-help" />
+                        </label>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="width: 20px" class="smarttable"></td>
+                    <td class="smarttable riga-grigia">
+                      <div class="testo-alld">
+                        {{ primaRiga }}
+                      </div>
+                    </td>
+                    <td class="riga-grigia"></td>
+                    <td class="riga-grigia text-right" [ngClass]="{'redText': prestazione.valorePerFamiglieMinoriB1<0}">{{ prestazione.valorePerFamiglieMinoriB1!==0 ? formatoItaliano(prestazione.valorePerFamiglieMinoriB1) : '' }}</td>
+                  </tr>
+                  <tr>
+                    <td style="width: 20px" class="smarttable"></td>
+                    <td class="smarttable riga-azzurra">
+                      <div class="testo-alld">
+                        {{ secondaRiga }}
+                      </div>
+                    </td>
+                    <td class="riga-azzurra"></td>
+                    <td class="riga-azzurra text-right casella-numeri">
+                      <input type="text" class="form-control inputnumber w-100"
+                        appTwoDigitDecimalNumber
+                        [(ngModel)]="prestazione.valorePerPrestazioneAlZeroString"
+                        (blur)="formatoItalianoInputChange($event.target.value, i); ricalcolo();"
+                        [class.campovalorizzato]="![null, ''].includes(prestazione.valorePerPrestazioneAlZeroString)"
+                        [class.campovuoto]="[null, ''].includes(prestazione.valorePerPrestazioneAlZeroString)"
+                        [ngClass]="{ redText: errorSpesaAlZeroMaggSpesaB1(i), inputF: !errorSpesaAlZeroMaggSpesaB1(i) }"
+                        [disabled]="!prestazione.valorePerFamiglieMinoriB1 || validazioneAlZero || disabilitaInput"
+                        (ngModelChange)="formatoItalianoInputChangeRealTime(prestazione.valorePerPrestazioneAlZeroString, i);" style="font-size: 18px;"/>
+                    </td>
+                  </tr>
+                </ng-container>
+                <!-- TOTALE RIGA GRIGIA -->
+                <!-- <tr style="height: 20px"></tr>
+                <tr>
+                  <td style="width: 20px" class="smarttable riga-totale-grigia"></td>
+                  <td class="smarttable riga-totale-grigia">
+                    <div class="testo-alld-bold">
+                      {{ label[0]?.testoMsgInformativo }}
+                    </div>
+                  </td>
+                  <td class="riga-totale-grigia"></td>
+                  <td class="smarttable riga-totale-grigia casella-numeri">
+                    <div class="text-right">
+                      {{ formatoItaliano(totaleValoriB1) }}
+                    </div>
+                  </td>
+                </tr> -->
+                <!-- TOTALI IN PARTE BIANCA CON BORDI BLU -->
+                <tr style="
+                        border-left: 3px solid #006cb4 !important;
+                        border-right: 3px solid #006cb4 !important;
+                      ">
+                  <td style="width: 20px" class="smarttable riga-totale-blu"></td>
+                  <td class="smarttable riga-totale-blu">
+                    <div class="testo-alld-bold">
+                      <span style="color: white;">{{ label[3]?.testoMsgInformativo }}</span>
+                    </div>
+                  </td>
+                  <td class="riga-totale-blu"></td>
+                  <td class="smarttable riga-totale-blu casella-numeri">
+                    <div class="text-right">
+                      <span style="color: white;">{{ totaleValoriAlZero !== 0 ? formatoItaliano(totaleValoriAlZero) : 0}}</span>
+                    </div>
+                  </td>
+                </tr>
+                <tr style="
+                        border-left: 3px solid #006cb4 !important;
+                        border-right: 3px solid #006cb4 !important;
+                      ">
+                  <td style="width: 20px" class="smarttable"></td>
+                  <td class="smarttable">
+                    <div class="testo-alld-bold">
+                      {{ label[1]?.testoMsgInformativo }}
+                      <span>
+                        {{ residuo !== 0 ? formatoItaliano(residuo) : '0,00' }}
+                      </span>
+                    </div>
+                  </td>
+                </tr>
+                <tr style="
+                        border-left: 3px solid #006cb4 !important;
+                        border-right: 3px solid #006cb4 !important;
+                        border-bottom: 3px solid #006cb4 !important;
+                      ">
+                  <td style="width: 20px" class="smarttable"></td>
+                  <td class="smarttable">
+                    <div class="row">
+                      <div class="col-md-8 p-0 d-flex align-items-center">
+                        <div class="testo-alld-bold w-100">
+                          {{ label[2]?.testoMsgInformativo }}
+                          &nbsp;
+                        </div>
+                      </div>
+                      <div class="col-md-4 p-0 d-flex align-items-center">
+                        <ng-container *ngIf="datiAlZero && datiAlZero.giustificativo !== undefined">
+                          <textarea type="text" class="form-control importosomma w-100"
+                            (click)="openDialogMotivazione()" [(ngModel)]="datiAlZero.giustificativo"
+                            [disabled]="!checkGiustificazione() || validazioneAlZero || disabilitaInput"></textarea>
+                        </ng-container>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+                <tr style="height: 20px"></tr>
+              </tbody>
+            </table>
+          </ng-container>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="!isValidModello">
+        <ng-container *ngIf="!isCompiledFnps || !checkStatoRendicontazione()">
+          <div *ngIf="!this.checkB1" class="row" style="
+              background: white;
+              padding-top: 15px;
+              padding-bottom: 15px;
+              box-shadow: 1px 2px 8px #c4c4c4;
+            ">
+            <h3 class="p-3">{{ infoAlZero05 }}</h3>
+          </div>
+          <br>
+          <div *ngIf="!checkStatoRendicontazione()" class="row" style="
+              background: white;
+              padding-top: 15px;
+              padding-bottom: 15px;
+              box-shadow: 1px 2px 8px #c4c4c4;
+            ">
+            <h3 class="p-3">{{ infoAlZero06 }}</h3>
+          </div>
+          <br>
+          <div *ngIf="[null, 0].includes(fondiEnte.fondoRegionale)" class="row" style="
+              background: white;
+              padding-top: 15px;
+              padding-bottom: 15px;
+              box-shadow: 1px 2px 8px #c4c4c4;
+            ">
+            <h3 class="p-3">{{ infoAlZero07 }}</h3>
+          </div>
+        </ng-container>
+      </ng-container>
+
+      <!-- DOCUMENTAZIONE -->
+      <mat-card *ngIf="isValidModello">
+        <mat-card-title>
+          <span style="padding-left: 30px; padding-top: 15px;">
+            Dichiarazione
+            <ng-template #popContent>
+              {{ msgGiustificazione }}
+            </ng-template>
+            <label style="white-space: nowrap; padding-left: 10px" [placement]="['right', 'left', 'auto']"
+              [ngbPopover]="popContent" triggers="hover">
+              <img style="height: 20px; width: 20px" src="assets/img/ui-modelli/help.png"
+                class="greg-icon-help" />
+            </label>
+          </span>
+        </mat-card-title>
+        <mat-card-content>
+          <div class="row col-md-12 pl-3" style="padding-top: 30px">
+            <div class="col-12">
+              <label style="white-space: nowrap">Documenti Allontanamento Zero (formato file firmato digitalmente max 31 mb)</label>
+            </div>
+          </div>
+          <div class="row col-md-12 pl-3 d-flex align-items-center">
+            <div class="col-3 pr-0 d-flex align-items-center">
+              <input type="file" #fileInput style="display: none;" (change)="onFileSelected($event)"
+                [disabled]="isPresenteDocAlZero || validazioneAlZero || disabilitaInput" (click)="fileInput.value = null" />
+              <span (click)="fileInput.click()">
+                <i class="fas fa-file fa-lg text-primary text-center" style="font-size: 2rem;"></i>
+                <span class="pl-2 text-center" *ngIf="!isPresenteDocAlZero && docAlZeroName === ''">Nessun file
+                  caricato</span>
+                <span class="pl-2 text-center" *ngIf="!isPresenteDocAlZero && docAlZeroName !== ''">{{ docAlZeroName
+                  }}</span>
+                <span class="pl-2 text-center" *ngIf="isPresenteDocAlZero" style="color: green;">File gi&agrave;
+                  caricato</span>
+              </span>
+            </div>
+            <!--[required]="requiredDocIn"  -->
+            <div class="col-2 pl-0 d-flex align-items-center justify-content-start">
+              <button id="btnApplica" type="submit" class="btn btn-primary" (click)="allegaFileAlzero()"
+                [disabled]="isPresenteDocAlZero || validazioneAlZero">
+                <span>Allega</span>
+              </button>
+            </div>
+          </div>
+          <div class="row col-md-12 tableAssociati mt-3" style="padding: 0px 30px 0px 30px">
+            <table mat-table #documentiTable [dataSource]="listaDocumentiAllegati"
+              class="col-12 mt-3 mb-3 table table-hover table-responsive-xl tabellagreg">
+              <ng-container matColumnDef="documento">
+                <th class="columns_header" mat-header-cell *matHeaderCellDef>
+                  Documento
+                </th>
+                <td class="smarttable" mat-cell *matCellDef="let documento">
+                  {{ documento.nomeFile }}
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="tipologia">
+                <th class="columns_header" mat-header-cell *matHeaderCellDef>
+                  Tipologia
+                </th>
+                <td class="smarttable" mat-cell *matCellDef="let documento">
+                  {{ documento.tipoDocumentazione }}
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="azioni">
+                <th class="columns_header" mat-header-cell *matHeaderCellDef>
+                  Azioni
+                </th>
+                <td class="smarttable" mat-cell *matCellDef="let documento; let i = index">
+                  <button type="button" [disabled]="documento.nuovo" (click)="scaricaDocumento(documento)"
+                    class="btn pl-0" data-toggle="tooltip" title="Scarica">
+                    <span class="fas fa-download" style="color: #006cb4"></span>
+                  </button>
+                  <button type="button" (click)="eliminaDocumento(i)" class="btn"
+                    data-toggle="tooltip" title="Elimina" style="margin-left: 10px" *ngIf="!validazioneAlZero && !disabilitaInput">
+                    <span class="fas fa-trash" style="color: #b8191a"></span>
+                  </button>
+                </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="columnsListaDocAllegati; sticky: true"></tr>
+              <tr mat-row *matRowDef="let row; columns: columnsListaDocAllegati"></tr>
+            </table>
+
+            <div class="col-12">
+              <div class="col-12" *ngIf="listaDocumentiAllegati?.length == 0" style="text-align: center">
+                <label class="no-data-available">Non risultano documenti allegati dell'Ente</label>
+              </div>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <div class="row" style="padding-top: 15px; padding-bottom: 20px"></div>
+      <!-- CRONOLOGIA -->
+      <app-cronologia-modelli></app-cronologia-modelli>
+      <br>
+
+      <!-- BOTTONI -->
+      <app-pulsanti-funzioni mostrasalva="true" [idRendicontazioneEnte]="idRendicontazioneEnte" [modello]="'Mod. ALLZERO'"
+        [cronologiaMod]="cronologiaMod != null ? cronologiaMod : null" (salvaEvent)="salvaModifiche($event)"
+        (validaAlZeroEvent)="validaAlZero()" [hidden]="disabilitaInput"
+        (annullaValidazioneAlZeroEvent)="annullaValidazioneAlZero($event)"></app-pulsanti-funzioni> 
+      <br>
+    </div>
+  </div>
+</div>

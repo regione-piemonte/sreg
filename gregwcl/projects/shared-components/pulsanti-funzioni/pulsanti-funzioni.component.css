@@ -1,0 +1,18 @@
+.button {
+	padding-top: 10px;
+	padding-bottom: 10px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+.space_b {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.buttonSpace {
+	margin: 0 20px;
+	width: 210px;
+	float: right;
+}

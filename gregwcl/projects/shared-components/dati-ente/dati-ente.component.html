@@ -1,0 +1,1434 @@
+<br />
+<div class="row greg">
+  <div class="col-md-1"></div>
+
+  <div class="col-md-2">
+    <h4 class="text-nowrap titlePage">
+      Dati Ente relativi all'anno di esercizio
+      {{ rendicontazione.annoEsercizio }}
+    </h4>
+  </div>
+  <!-- <div class="col-md-5" style="text-align: right; color: red;">{{msgTab}}</div> -->
+
+  <div class="col-md-3"></div>
+  <!-- <div class="col-md-2" *ngIf="client.azioni.get('BackToHome')[1]">
+					<button type = "button" (click)="routeTo('../dati-rendicontazione')" class="btn btn-link" data-toggle="tooltip" title="Dati Rendicontazione">
+						<span class="fas fa-file-alt" style="color: #006CB4;"></span> &nbsp; &nbsp;Vai ai dati di rendicontazione
+					</button>
+				</div>-->
+</div>
+
+<!-- DENOMINAZIONE ENTE -->
+<div class="row greg section-denominazione disabledDiv" style="padding-top: 30px"
+  *ngIf="client.azioni.get('EnteContatti')[1]">
+  <div class="col-md-1"></div>
+
+  <div class="col-7">
+    <div class="row gregFilter">
+      <div class="col-12" style="left: 13px; padding-top: 30px">
+        <h4 class="titleSection">Denominazione Ente</h4>
+      </div>
+
+      <form [formGroup]="enteForm" class="w-100">
+        <div class="row col-md-12" style="padding-top: 30px">
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="inputLabel">Codice Regionale</label>
+              <input id="codiceRegionale" class="form-control" formControlName="codiceRegionale" type="text" disabled />
+            </div>
+            <span class="spanDanger" *ngIf="
+                enteForm.get('codiceRegionale').value &&
+                !enteForm.get('codiceRegionale').valid
+              ">
+              Il campo deve essere lungo al massimo 2, e contenere solo
+              caratteri numerici
+            </span>
+          </div>
+
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="inputLabel">Codice Fiscale</label>
+              <input id="codiceFiscale" maxlength="11" class="form-control" formControlName="codiceFiscale" type="text"
+                disabled />
+            </div>
+            <span class="spanDanger" *ngIf="
+                enteForm.get('codiceFiscale').value &&
+                !enteForm.get('codiceFiscale').valid
+              ">
+              Il campo deve essere di massimo 11 caratteri
+            </span>
+          </div>
+        </div>
+
+        <div class="row col-md-12" style="padding-top: 30px">
+          <div class="col-md-8">
+            <div class="form-group">
+              <label class="inputLabel">Denominazione</label>
+              <input id="denominazioneEnte" maxlength="300" class="form-control" formControlName="denominazione"
+                type="text" data-toggle="tooltip" [title]="enteForm.value.denominazione" disabled />
+            </div>
+            <span class="spanDanger" *ngIf="
+                enteForm.get('denominazione').value &&
+                !enteForm.get('denominazione').valid
+              ">
+              Il campo deve essere di massimo 300 caratteri
+            </span>
+          </div>
+        </div>
+
+        <div class="row col-md-12" style="padding-top: 30px">
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="inputLabel">Tipo Ente</label>
+              <select name="tipoEnte" formControlName="tipoEnte" id="tipoEnte" class="form-control statoCombo" disabled>
+                <option *ngFor="let tipoente of listaTipoEnti" value="{{ tipoente.codTipoEnte }}">
+                  {{ tipoente.desTipoEnte }}
+                </option>
+              </select>
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <label class="inputLabel">Provincia Sede Legale</label>
+            <ng-container>
+              <select name="provinciaSedeLegale" formControlName="provincia" id="provinciaSedeLegale"
+                class="form-control statoCombo" disabled>
+                <option *ngFor="let provincia of listaProvince" value="{{ provincia.idProvincia }}">
+                  {{ provincia.desProvincia }}
+                </option>
+              </select>
+            </ng-container>
+          </div>
+        </div>
+
+        <div class="row col-md-12" style="padding-top: 30px">
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="inputLabel">Codice ISTAT Ente</label>
+              <input id="codiceIstatEnte" maxlength="9" class="form-control" formControlName="codiceIstat" type="text"
+                disabled />
+            </div>
+            <span class="spanDanger" *ngIf="
+                enteForm.get('codiceIstat').value &&
+                !enteForm.get('codiceIstat').valid
+              ">
+              Il campo deve essere di massimo 9 caratteri alfanumerici
+            </span>
+          </div>
+
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="inputLabel">Comune Sede Legale</label>
+              <select name="comuneSedeLegale" formControlName="comune" id="comuneSedeLegale"
+                class="form-control statoCombo" disabled>
+                <option *ngFor="let comune of listaComuniDenominazione" value="{{ comune.idComune }}">
+                  {{ comune.desComune }}
+                </option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="row col-md-12" style="padding-top: 30px">
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="inputLabel">ASL della Sede Legale</label>
+              <select name="aslSedeLegaleEnte" formControlName="asl" id="aslSedeLegaleEnte"
+                class="form-control statoCombo" disabled>
+                <option *ngFor="let asl of listaAsl" value="{{ asl.idAsl }}">
+                  {{ asl.desAsl }}
+                </option>
+              </select>
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="inputLabel">Email</label>
+              <input id="emailEnte" class="form-control" formControlName="email" type="text" disabled />
+            </div>
+            <span class="spanDanger" *ngIf="
+                enteForm.get('email').value && !enteForm.get('email').valid
+              ">
+              Il formato dei dati inseriti non e' corretto
+            </span>
+          </div>
+        </div>
+
+        <div class="row col-md-12" style="padding-top: 30px">
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="inputLabel">Numero di Telefono</label>
+              <input id="telefonoEnte" maxlength="12" class="form-control" formControlName="telefono" type="text"
+                disabled />
+            </div>
+            <span class="spanDanger" *ngIf="
+                enteForm.get('telefono').value &&
+                !enteForm.get('telefono').valid
+              ">
+              Il campo deve essere di massimo 12 numeri
+            </span>
+          </div>
+
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="inputLabel">Pec</label>
+              <input id="pecEnte" class="form-control" formControlName="pec" type="text" disabled />
+            </div>
+            <span class="spanDanger" *ngIf="enteForm.get('pec').value && !enteForm.get('pec').valid">
+              Il formato dei dati inseriti non e' corretto
+            </span>
+          </div>
+        </div>
+        <div class="row col-md-12" style="padding-top: 30px; padding-bottom: 40px">
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="inputLabel">Partita IVA</label>
+              <input id="partitaIva" maxlength="12" class="form-control" formControlName="partitaIva" type="text"
+                disabled />
+            </div>
+            <span class="spanDanger" *ngIf="
+                enteForm.get('partitaIva').value &&
+                !enteForm.get('partitaIva').valid
+              ">
+              Il campo deve essere di massimo 12 caratteri
+            </span>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="col-md-4"></div>
+</div>
+
+<!-- RESPONSABILE ENTE -->
+<div class="row greg section-denominazione disabledDiv" *ngIf="client.azioni.get('EnteResponsabile')[1]">
+  <div class="col-md-1"></div>
+
+  <div class="col-7">
+    <div class="row gregFilter">
+      <div class="col-12" style="left: 13px; padding-top: 30px">
+        <h4 class="titleSection">Responsabile Ente Gestore</h4>
+      </div>
+
+      <form [formGroup]="responsabileEnteForm" class="w-100">
+        <div class="row col-md-12" style="padding-top: 30px">
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="inputLabel">Cognome</label>
+              <input id="cognomeResponsabileEnte" class="form-control" maxlength="40" formControlName="cognome"
+                type="text" disabled />
+            </div>
+            <span class="spanDanger" *ngIf="
+                responsabileEnteForm.get('cognome').value &&
+                !responsabileEnteForm.get('cognome').valid
+              ">
+              Il campo deve essere di massimo 40 caratteri testuali
+            </span>
+          </div>
+
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="inputLabel">Nome</label>
+              <input id="nomeResponsabileEnte" class="form-control" maxlength="40" formControlName="nome" type="text"
+                disabled />
+            </div>
+            <span class="spanDanger" *ngIf="
+                responsabileEnteForm.get('nome').value &&
+                !responsabileEnteForm.get('nome').valid
+              ">
+              Il campo deve essere di massimo 40 caratteri testuali
+            </span>
+          </div>
+        </div>
+
+        <div class="row col-md-12" style="padding-top: 30px">
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="inputLabel">Cellulare</label>
+              <input id="cellulareResponsabileEnte" class="form-control" maxlength="12" formControlName="cellulare"
+                type="text" disabled />
+            </div>
+            <span class="spanDanger" *ngIf="
+                responsabileEnteForm.get('cellulare').value &&
+                !responsabileEnteForm.get('cellulare').valid
+              ">
+              Il campo deve essere di massimo 12 numeri
+            </span>
+          </div>
+
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="inputLabel">Telefono</label>
+              <input id="telefonoResponsabileEnte" class="form-control" maxlength="12" formControlName="telefono"
+                type="text" disabled />
+            </div>
+            <span class="spanDanger" *ngIf="
+                responsabileEnteForm.get('telefono').value &&
+                !responsabileEnteForm.get('telefono').valid
+              ">
+              Il campo deve essere di massimo 12 numeri
+            </span>
+          </div>
+        </div>
+
+        <div class="row col-md-12" style="padding-top: 30px; padding-bottom: 40px">
+          <div class="col-md-4">
+            <div class="form-group">
+              <label style="white-space: nowrap" class="inputLabel">Codice Fiscale</label>
+              <input id="codiceFiscaleResponsabileEnte" class="form-control" maxlength="16"
+                formControlName="codiceFiscale" type="text" disabled />
+            </div>
+            <span class="spanDanger" *ngIf="
+                responsabileEnteForm.get('codiceFiscale').value &&
+                !responsabileEnteForm.get('codiceFiscale').valid
+              ">
+              Il campo deve essere di massimo 16 numeri
+            </span>
+          </div>
+
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="inputLabel">Email</label>
+              <input id="eMailResponsabileEnte" class="form-control" formControlName="eMail" type="text" disabled />
+            </div>
+            <span class="spanDanger" *ngIf="
+                responsabileEnteForm.get('eMail').value &&
+                !responsabileEnteForm.get('eMail').valid
+              ">
+              Il formato dei dati inseriti non e' corretto
+            </span>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="col-md-4"></div>
+</div>
+
+<!-- COMUNI ASSOCIATI-->
+<div class="row greg section-denominazione" *ngIf="client.azioni.get('EnteComuni')[1]">
+  <div class="col-md-1"></div>
+
+  <div class="col-7">
+    <div class="row gregFilter">
+      <div class="col-12" style="left: 13px; padding-top: 30px">
+        <h4 class="titleSection">Comuni Associati</h4>
+      </div>
+
+      <!-- <div class="row col-md-12" style="padding-top:30px;" *ngIf="visible">
+          <div class="col-4">
+            <label class="inputLabel">Provincia</label>
+            <ng-container> 
+              <select name="provinciaComuneAssociato" id="provinciaComuneAssociato" class="form-control statoCombo" [(ngModel)]="provinciaSelected" (ngModelChange)="filterComuni()">
+              <option [value]="null">Seleziona Provincia</option>
+              <option *ngFor="let provincia of listaProvince" value="{{provincia.idProvincia}}">{{provincia.desProvincia}}</option>
+              </select>
+            </ng-container>
+          </div>
+        </div>
+
+        <div class="row col-md-12" style="padding-top:30px;" *ngIf="visible">
+          <div class="col-4">
+            <label class="inputLabel">Comune</label>
+          </div>
+        </div>
+
+        <div class="row col-md-12" *ngIf="visible" style="padding-bottom: 30px">
+          <div class="col-4">
+            <ng-container> 
+              <select name="comuneComuneAssociato" id="comuneComuneAssociato" class="form-control statoCombo" [(ngModel)]="comuneSelected" (ngModelChange)="selectProvincia()">
+              <option [value]="null">Seleziona Comune</option>
+              <option *ngFor="let comune of listaComuniToAss" value="{{comune.idComune}}">{{comune.desComune}}</option>
+              </select> 
+            </ng-container>
+          </div>
+              
+          <div class="col-6 verticalCentered" *ngIf="visible">
+            <div class="col-auto">
+              <button id="btnApplica" type="submit" class="btn btn-primary block bottonifunzione" (click)="addComuneAssociato()">
+                Aggiungi
+              </button>
+            </div>    
+          </div>
+
+        </div> -->
+
+      <!-- TABELLA -->
+
+      <div class="row col-md-12 tableAssociati mt-3" style="padding-left: 30px; padding-right: 30px">
+        <table mat-table #comuniTable [dataSource]="listaComuniAssociati"
+          class="col-12 mb-3 table table-hover table-responsive-xl tabellagreg">
+          <ng-container matColumnDef="codiceIstat">
+            <th class="columns_header" mat-header-cell *matHeaderCellDef>
+              Codice ISTAT
+            </th>
+            <td class="smarttable" mat-cell *matCellDef="let comune">
+              {{ comune.codiceIstat }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="comune">
+            <th class="columns_header" mat-header-cell *matHeaderCellDef>
+              Comune
+            </th>
+            <td class="smarttable" class="smarttable" mat-cell *matCellDef="let comune">
+              {{ comune.desComune }}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="dal">
+            <th class="columns_header" mat-header-cell *matHeaderCellDef>
+              Dal
+            </th>
+            <td class="smarttable" class="smarttable" mat-cell *matCellDef="let comune">
+              {{ comune.dal }}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="al">
+            <th class="columns_header" mat-header-cell *matHeaderCellDef>Al</th>
+            <td class="smarttable" class="smarttable" mat-cell *matCellDef="let comune">
+              {{ comune.al }}
+            </td>
+          </ng-container>
+          <!--     <ng-container matColumnDef="azioni" *ngIf="visible">
+              <th class="columns_header" mat-header-cell *matHeaderCellDef> Azioni </th>
+              <td class="smarttable" mat-cell *matCellDef="let comune">
+                <button type = "button" (click)="deleteComuneAssociato(comune.codiceIstat)" class="btn pl-0" data-toggle="tooltip" title="Elimina">
+                      <span class="fas fa-trash" style="color: #B8191A;"></span>
+                  </button>
+              </td>
+            </ng-container>
+            
+            <tr mat-header-row *matHeaderRowDef="visible? columnsComuniAssociati : columnsComuniAssociatiEnte; sticky: true"></tr>
+            <tr mat-row *matRowDef="let row; columns: visible? columnsComuniAssociati : columnsComuniAssociatiEnte;"></tr>-->
+          <tr mat-header-row *matHeaderRowDef="columnsComuniAssociatiEnte; sticky: true"></tr>
+          <tr mat-row *matRowDef="let row; columns: columnsComuniAssociatiEnte"></tr>
+        </table>
+
+        <div class="col-12">
+          <div class="col-12" *ngIf="listaComuniAssociati?.length == 0" style="text-align: center">
+            <label class="no-data-available">Non risulta alcun comune associato all'Ente</label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-4"></div>
+</div>
+
+<!-- MODELLI ASSOCIATI-->
+<div class="row greg section-denominazione" *ngIf="client.azioni.get('AssociaModelli')[1]">
+  <div class="col-md-1"></div>
+
+  <div class="col-7">
+    <div class="row gregFilter">
+      <div class="col-12" style="left: 13px; padding-top: 30px">
+        <h4 class="titleSection">Modelli Associati</h4>
+      </div>
+
+      <div class="row col-md-12" style="padding-top: 30px" *ngIf="
+          !client.azioni.get('AssociaModelli')[0] && !this.client.readOnlyIII
+        ">
+        <div class="col-4">
+          <label class="inputLabel">Modello</label>
+        </div>
+      </div>
+
+      <div class="row col-md-12" [ngClass]="{
+          disabledDiv:
+            client.azioni.get('AssociaModelli')[0] || this.client.readOnlyIII
+        }" style="padding-bottom: 30px">
+        <div class="col-4" *ngIf="
+            !client.azioni.get('AssociaModelli')[0] && !this.client.readOnlyIII
+          ">
+          <ng-container>
+            <select name="modelloAssociato" id="modelloAssociato" class="form-control statoCombo"
+              [(ngModel)]="modelloSelected" (ngModelChange)="selectModello()">
+              <option [value]="0">Seleziona Modello</option>
+              <option *ngFor="let modello of listaModelliToAss" value="{{ modello.idTab }}">
+                {{ modello.desEstesaTab }}
+              </option>
+            </select>
+          </ng-container>
+        </div>
+        <div class="col-2 verticalCentered" *ngIf="
+            !client.azioni.get('AssociaModelli')[0] && !this.client.readOnlyIII
+          ">
+          <div class="custom-control custom-checkbox">
+            <input [disabled]="modelloSelected == undefined || modelloSelected == 0" type="checkbox"
+              class="custom-control-input" id="customObbligatorio" [(ngModel)]="obbligatorioSelect" />
+            <label class="custom-control-label inputLabel" for="customObbligatorio">Obbligatorio</label>
+          </div>
+        </div>
+
+        <div class="col-4 verticalCentered" *ngIf="
+            !client.azioni.get('AssociaModelli')[0] && !this.client.readOnlyIII
+          ">
+          <div class="col-auto">
+            <button id="btnApplica" type="submit" class="btn btn-primary block bottonifunzione"
+              (click)="addModelloAssociato()">
+              Aggiungi
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- TABELLA -->
+
+      <div class="row col-md-12 tableAssociati mt-3" style="padding-left: 30px; padding-right: 30px">
+        <table mat-table #modelliTable [dataSource]="modelliassociati"
+          class="col-12 mb-3 table table-hover table-responsive-xl tabellagreg">
+          <ng-container matColumnDef="modello">
+            <th class="columns_header" mat-header-cell *matHeaderCellDef>
+              Modello
+            </th>
+            <td class="smarttable" mat-cell *matCellDef="let modello">
+              {{ modello.desEstesaTab }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="obbligatorio">
+            <th class="columns_header" mat-header-cell *matHeaderCellDef>
+              Obbligatorio
+            </th>
+            <td class="smarttable" class="smarttable" mat-cell *matCellDef="let modello">
+              {{ modello.desObbligo }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="azioni" *ngIf="
+              !client.azioni.get('AssociaModelli')[0] &&
+              !this.client.readOnlyIII
+            ">
+            <th class="columns_header" mat-header-cell *matHeaderCellDef>
+              Azioni
+            </th>
+            <td class="smarttable" mat-cell *matCellDef="let modello">
+              <button [ngClass]="{
+                  disabledDiv:
+                    client.azioni.get('AssociaModelli')[0] ||
+                    this.client.readOnlyIII
+                }" type="button" (click)="
+                  deleteModelloAssociato(
+                    modello.idTab,
+                    modello.codTab,
+                    modello.desTab
+                  )
+                " class="btn pl-0" data-toggle="tooltip" title="Elimina">
+                <span class="fas fa-trash" style="color: #b8191a"></span>
+              </button>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="
+              !client.azioni.get('AssociaModelli')[0] &&
+              !this.client.readOnlyIII
+                ? columnsModelliAssociati
+                : columnsModelliAssociatiNoAzione;
+              sticky: true
+            "></tr>
+          <tr mat-row *matRowDef="
+              let row;
+              columns: !client.azioni.get('AssociaModelli')[0] &&
+              !this.client.readOnlyIII
+                ? columnsModelliAssociati
+                : columnsModelliAssociatiNoAzione
+            "></tr>
+        </table>
+
+        <div class="col-12">
+          <div class="col-12" *ngIf="modelliassociati?.length == 0" style="text-align: center">
+            <label class="no-data-available">Non risulta alcun modello associato all'Ente</label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-4"></div>
+</div>
+
+<!-- PARAMETRI -->
+<div class="row greg section-denominazione" *ngIf="client.azioni.get('DatiEnteParametri')[1]">
+  <div class="col-md-1"></div>
+
+  <div class="col-7">
+    <div class="row gregFilter">
+      <div class="row col-md-12" style="left: 13px; padding-top: 30px">
+        <!-- <h4 class="titleSection">Fondi&nbsp;</h4> -->
+        <h4 class="titleSection">FNPS&nbsp;</h4>
+        <ng-template #popContent>
+          <div [innerHTML]="popoverParamBody"></div>
+        </ng-template>
+        <label style="white-space: nowrap; padding-left: 10px" [placement]="['right', 'left', 'auto']"
+          [ngbPopover]="popContent" [popoverTitle]="popoverParamTitle" triggers="hover">
+          <img style="height: 20px; width: 20px; cursor: pointer" src="assets/img/ui-modelli/help.png"
+            class="greg-icon-help" />
+        </label>
+      </div>
+
+      <div class="row col-md-12">
+        <div class="col-md-4"></div>
+        <div class="col-md-3">
+          <label class="inputLabel" style="white-space: normal">Euro</label>
+        </div>
+      </div>
+
+      <div class="row col-md-12">
+        <div class="col-md-4 smarttable align-self-center">
+          <label class="inputLabel">{{ labelFondo }} </label>
+        </div>
+
+        <div class="col-md-3">
+          <input appTwoDigitDecimalNumber type="text" [(ngModel)]="fnps.valore" class="form-control"
+            (blur)="changeKeyFNPS($event.target.value)" (ngModelChange)="calcTableValue()" [ngClass]="{
+              disabilita:
+                client.azioni.get('DatiEnteParametri')[0] ||
+                this.client.readOnlyIII
+            }" [disabled]="
+              client.azioni.get('DatiEnteParametri')[0] ||
+              this.client.readOnlyIII
+            " />
+        </div>
+      </div>
+
+      <div class="row col-md-12 pt-md-4" *ngIf="
+          ((client.azioni.get('DatiEnteParametri')[0] ||
+            this.client.readOnlyIII) &&
+            quote.length > 0) ||
+          (!client.azioni.get('DatiEnteParametri')[0] &&
+            !this.client.readOnlyIII)
+        ">
+        <div class="col-md-4">
+          <label class="inputLabel" style="white-space: normal">Altre quote per interventi</label>
+        </div>
+        <div class="col-md-3">
+          <label class="inputLabel" style="white-space: normal">Euro</label>
+        </div>
+        <div class="col-md-2">
+          <label class="inputLabel" style="white-space: normal" *ngIf="
+              !client.azioni.get('DatiEnteParametri')[0] &&
+              !this.client.readOnlyIII
+            ">Calcolo
+            <ng-template #popContent> {{ messaggioPopupCalcolo }} </ng-template>
+            <label style="white-space: nowrap; padding-left: 10px" [placement]="['right', 'left', 'auto']"
+              [ngbPopover]="popContent" triggers="hover">
+              <img style="height: 20px; width: 20px; cursor: pointer" src="assets/img/ui-modelli/help.png"
+                class="greg-icon-help" /> </label></label>
+        </div>
+        <div class="col-md-2">
+          <label class="inputLabel" style="white-space: normal" *ngIf="
+              !client.azioni.get('DatiEnteParametri')[0] &&
+              !this.client.readOnlyIII
+            ">Dettagliato in Rendicontazione
+          </label>
+        </div>
+      </div>
+      <div class="row col-md-12 border-bottom pb-2" *ngIf="
+          !client.azioni.get('DatiEnteParametri')[0] && !this.client.readOnlyIII
+        ">
+        <div class="col-md-4">
+          <ng-container>
+            <select (change)="onSelectionFondoChanged($event.target.value)" id="annoEsercizio"
+              class="form-control form-control-sm campiricerca" [(ngModel)]="idSelectedAltreQuote">
+              <option [value]="0">-- Vuoto --</option>
+              <option *ngFor="let fondo of altreQuoteDaAssegnare" [value]="fondo.idFondo">
+                {{ fondo.descFondo }}
+              </option>
+            </select>
+          </ng-container>
+        </div>
+        <div class="col-md-3">
+          <input appTwoDigitDecimalNumber type="text" [(ngModel)]="fondoSelezionato.valore" class="form-control"
+            (blur)="changeKeyDaAssegnare($event.target.value)" [ngClass]="{
+              disabilita:
+                client.azioni.get('DatiEnteParametri')[0] ||
+                this.client.readOnlyIII
+            }" [disabled]="
+              client.azioni.get('DatiEnteParametri')[0] ||
+              this.client.readOnlyIII
+            " />
+        </div>
+        <div class="col-md-2">
+          <ng-container>
+            <select (change)="onSelectionRegolaChanged($event.target.value)" id="annoEsercizio"
+              class="form-control form-control-sm campiricerca" [(ngModel)]="idSelectedRegola">
+              <option [value]="0"></option>
+              <option *ngFor="let regola of regolaDaAssegnare" [value]="regola.idRegola">
+                {{ regola.funzioneRegola }}
+              </option>
+            </select>
+          </ng-container>
+        </div>
+        <div class="col-md-1"></div>
+        <div class="col-md-2">
+          <button id="btnSave" type="submit" class="btn btn-primary button1" [disabled]="disableAltreQuote()"
+            (click)="aggiungiAltreQuote()" title="Aggiungi Quote">
+            +
+          </button>
+        </div>
+      </div>
+      <div class="row col-md-12 py-2"></div>
+      <ng-container *ngFor="let quota of quote; let i = index">
+        <div class="row col-md-12 py-2">
+          <div class="col-md-4 smarttable align-self-center">
+            <label class="inputLabel"> {{ quota.descFondo }}</label>
+          </div>
+          <div class="col-md-3">
+            <input appTwoDigitDecimalNumber type="text" [(ngModel)]="quota.valore" class="form-control"
+              (blur)="changeKeyQuota($event.target.value, i)" (ngModelChange)="calcTableValue()" [ngClass]="{
+                disabilita:
+                  client.azioni.get('DatiEnteParametri')[0] ||
+                  this.client.readOnlyIII
+              }" [disabled]="
+                client.azioni.get('DatiEnteParametri')[0] ||
+                this.client.readOnlyIII
+              " />
+          </div>
+          <div class="col-md-2 smarttable align-self-center text-center" *ngIf="
+              !client.azioni.get('DatiEnteParametri')[0] &&
+              !this.client.readOnlyIII
+            ">
+            {{ quota.funzioneRegola }}
+          </div>
+          <div class="col-md-2 text-center" *ngIf="
+              !client.azioni.get('DatiEnteParametri')[0] &&
+              !this.client.readOnlyIII
+            ">
+            <input type="checkbox" id="check" class="checkboxClass" [(ngModel)]="quota.leps" disabled />
+          </div>
+          <div class="col-md-1">
+            <button type="button" class="btn pt-0" data-toggle="tooltip" (click)="eliminaQuota(quota, i)" *ngIf="
+                !client.azioni.get('DatiEnteParametri')[0] &&
+                !this.client.readOnlyIII
+              " [disabled]="quota.notModificabile">
+              <img src="assets/img/ui-modelli/cestino.svg" class="greg-icon-help fnpsImage" style="cursor: pointer" />
+            </button>
+          </div>
+        </div>
+      </ng-container>
+      <div class="row col-md-12 py-2">
+        <div class="col-md-4 smarttable align-self-center">
+          <label class="inputLabel">TOTALE</label>
+        </div>
+        <div class="col-md-3 smarttable align-self-center text-center">
+          {{ totaleFondiDaStampare }}
+        </div>
+        <div class="col-md-2 smarttable align-self-center text-center"></div>
+        <div class="col-md-1"></div>
+        <div class="col-md-2"></div>
+      </div>
+    </div>
+
+    <div class="row gregFilter" *ngIf="
+        ((client.azioni.get('DatiEnteParametri')[0] ||
+          this.client.readOnlyIII) &&
+          azioniSistema.length > 0) ||
+        (!client.azioni.get('DatiEnteParametri')[0] && !this.client.readOnlyIII)
+      ">
+      <div class="row col-md-12 pt-md-4 pb-2">
+        <div class="col-md-4">
+          <label class="inputLabel" style="white-space: normal">Azioni di sistema e altro
+            <div style="font-size: 10px">
+              (di cui del Fondo assegnato per anno competenza)
+            </div>
+          </label>
+        </div>
+        <div class="col-md-3">
+          <label class="inputLabel" style="white-space: normal">Euro</label>
+        </div>
+        <div class="col-md-2">
+          <label class="inputLabel" style="white-space: normal" *ngIf="
+              !client.azioni.get('DatiEnteParametri')[0] &&
+              !this.client.readOnlyIII
+            ">Calcolo
+            <ng-template #popContent> {{ messaggioPopupCalcolo }} </ng-template>
+            <label style="white-space: nowrap; padding-left: 10px" [placement]="['right', 'left', 'auto']"
+              [ngbPopover]="popContent" triggers="hover">
+              <img style="height: 20px; width: 20px; cursor: pointer" src="assets/img/ui-modelli/help.png"
+                class="greg-icon-help" /> </label></label>
+        </div>
+        <div class="col-md-2">
+          <label class="inputLabel" style="white-space: normal" *ngIf="
+              !client.azioni.get('DatiEnteParametri')[0] &&
+              !this.client.readOnlyIII
+            ">Dettagliato in Rendicontazione
+          </label>
+        </div>
+      </div>
+      <div class="row col-md-12 border-bottom pb-2" *ngIf="
+          !client.azioni.get('DatiEnteParametri')[0] && !this.client.readOnlyIII
+        ">
+        <div class="col-md-4">
+          <ng-container>
+            <select (change)="onSelectionAzioniChanged($event.target.value)" id="annoEsercizio"
+              class="form-control form-control-sm campiricerca" [(ngModel)]="idSelectedAzioni">
+              <option [value]="0">-- Vuoto --</option>
+              <option *ngFor="let fondo of azioniDaAssegnare" [value]="fondo.idFondo">
+                {{ fondo.descFondo }}
+              </option>
+            </select>
+          </ng-container>
+        </div>
+        <div class="col-md-3">
+          <input appTwoDigitDecimalNumber type="text" [(ngModel)]="azioneSelezionato.valore" class="form-control"
+            (blur)="changeKeyDaAssegnareAzione($event.target.value)" [ngClass]="{
+              disabilita:
+                client.azioni.get('DatiEnteParametri')[0] ||
+                this.client.readOnlyIII
+            }" [disabled]="
+              client.azioni.get('DatiEnteParametri')[0] ||
+              this.client.readOnlyIII
+            " />
+        </div>
+        <div class="col-md-2">
+          <ng-container>
+            <select (change)="onSelectionRegolaAzioniChanged($event.target.value)" id="annoEsercizio"
+              class="form-control form-control-sm campiricerca" [(ngModel)]="idSelectedRegolaAzioni">
+              <option [value]="0"></option>
+              <option *ngFor="let regola of regolaDaAssegnareAzioni" [value]="regola.idRegola">
+                {{ regola.funzioneRegola }}
+              </option>
+            </select>
+          </ng-container>
+        </div>
+        <div class="col-md-1"></div>
+        <div class="col-md-2">
+          <button id="btnSave" type="submit" class="btn btn-primary button1" [disabled]="disableAzioni()"
+            (click)="aggiungiAzioni()" title="Aggiungi Azione">
+            +
+          </button>
+        </div>
+      </div>
+      <div class="row col-md-12 py-2"></div>
+      <ng-container *ngFor="let azione of azioniSistema; let i = index">
+        <div class="row col-md-12 py-2">
+          <div class="col-md-4 smarttable align-self-center">
+            <label class="inputLabel"> {{ azione.descFondo }}</label>
+          </div>
+          <div class="col-md-3">
+            <input appTwoDigitDecimalNumber type="text" [(ngModel)]="azione.valore" class="form-control"
+              (blur)="changeKeyAzione($event.target.value, i)" (ngModelChange)="calcTableValue()" [ngClass]="{
+                disabilita:
+                  client.azioni.get('DatiEnteParametri')[0] ||
+                  this.client.readOnlyIII
+              }" [disabled]="
+                client.azioni.get('DatiEnteParametri')[0] ||
+                this.client.readOnlyIII
+              " />
+          </div>
+          <div class="col-md-2 smarttable align-self-center text-center" *ngIf="
+              !client.azioni.get('DatiEnteParametri')[0] &&
+              !this.client.readOnlyIII
+            ">
+            {{ azione.funzioneRegola }}
+          </div>
+          <div class="col-md-2 text-center" *ngIf="
+              !client.azioni.get('DatiEnteParametri')[0] &&
+              !this.client.readOnlyIII
+            ">
+            <input type="checkbox" id="check" class="checkboxClass" [(ngModel)]="azione.leps" disabled />
+          </div>
+          <div class="col-md-1">
+            <button type="button" class="btn pt-0" data-toggle="tooltip" (click)="eliminaAzione(azione, i)"
+              [disabled]="azione.notModificabile" *ngIf="
+                !client.azioni.get('DatiEnteParametri')[0] &&
+                !this.client.readOnlyIII
+              ">
+              <img src="assets/img/ui-modelli/cestino.svg" class="greg-icon-help fnpsImage" style="cursor: pointer" />
+            </button>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+
+    <!-- Fondo Regionale -->
+    <div class="row gregFilter pb-4" *ngIf="fondiEnte && fondiEnte.fondoRegionale !== null">
+      <div class="row col-md-12" style="left: 13px; padding-top: 30px">
+        <h4 class="titleSection">
+          Fondo Regionale&nbsp;  
+          <ng-template #popContent> {{ tooltipFondiAlZero }} </ng-template>
+          <label style="white-space: nowrap; padding-left: 10px" [placement]="['right', 'left', 'auto']"
+            [ngbPopover]="popContent" triggers="hover">
+            <img style="height: 20px; width: 20px; cursor: pointer" src="assets/img/ui-modelli/help.png"
+              class="greg-icon-help" /> </label>
+        </h4>
+      </div>
+      <div class="row col-md-12">
+        <div class="col-md-4"></div>
+        <div class="col-md-3">
+          <label class="inputLabel" style="white-space: normal">Euro</label>
+        </div>
+        <div class="col-md-4"></div>
+      </div>
+      <div class="row col-md-12">
+        <div class="col-md-4 smarttable align-self-center">
+          <label class="inputLabel">{{fondiEnte.labelFondiRegionale}}</label>
+        </div>
+        <div class="col-md-3">
+          <input appTwoDigitDecimalNumber type="text" [(ngModel)]="fondoEnte" class="form-control"
+            readonly/>
+            <!-- [ngClass]="{
+              disabilita:
+                client.azioni.get('DatiEnteParametri')[0] ||
+                this.client.readOnlyIII
+            }" [disabled]="
+              client.azioni.get('DatiEnteParametri')[0] ||
+              this.client.readOnlyIII
+            " -->
+        </div>
+      </div>
+      <div class="row col-md-12 pt-1">
+        <div class="col-md-4"></div>
+        <div class="col-md-3">
+          <label class="inputLabel" style="white-space: normal">Euro</label>
+        </div>
+        <div class="col-md-4"></div>
+      </div>
+      <div class="row col-md-12">
+        <div class="col-md-4 smarttable align-self-center">
+          <label class="inputLabel">{{fondiEnte.labelQuotaAllontanamentoZero}}</label>
+        </div>
+        <div class="col-md-3">
+          <input appTwoDigitDecimalNumber type="text" [(ngModel)]="fondoAlZero" class="form-control"
+            readonly/>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4"></div>
+</div>
+
+<div class="row greg section-denominazione" *ngIf="client.azioni.get('DatiEnteParametri')[1]">
+  <div class="col-md-1"></div>
+
+  <div class="col-7">
+    <div class="row gregFilter">
+      <div class="col-md-12">
+        <div class="row col-md-12 align-self-center fontbold pl-0">
+          Vincoli percentuali ministeriali e regionali per Modulo FNPS
+        </div>
+        <div class="row pt-4 pb-1">
+          <div class="col-md-5 text-nowrap columns_header">Utenza</div>
+          <div class="col-md-2 text-nowrap columns_header text-center">%</div>
+          <div class="col-md-5 text-nowrap columns_header text-center">
+            Utilizzato per calcolo
+          </div>
+        </div>
+        <ng-container *ngFor="let utenza of utenzeFnps; let i = index">
+          <div class="row py-3">
+            <div class="col-md-5 text-nowrap smarttable align-self-center">
+              {{ utenza.descUtenza }}
+            </div>
+            <div class="col-md-2 text-nowrap smarttable text-center align-self-center">
+              {{ utenza.valorePercentuale }}
+            </div>
+            <div class="col-md-5 text-nowrap smarttable align-self-center text-center">
+              <input type="checkbox" id="check" class="checkboxClass" [(ngModel)]="utenza.utilizzatoPerCalcolo"
+                disabled />
+            </div>
+          </div>
+        </ng-container>
+        <div class="row py-3" *ngIf="
+            !client.azioni.get('DatiEnteParametri')[0] &&
+            !this.client.readOnlyIII
+          ">
+          <div class="col-md-5 text-nowrap smarttable align-self-center">
+            TOTALE
+          </div>
+          <div class="col-md-2 text-nowrap smarttable text-center align-self-center">
+            {{ totaleString }}
+          </div>
+          <div class="col-md-5 text-nowrap smarttable align-self-center text-center"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4"></div>
+</div>
+
+<!-- PRESTAZIONI -->
+<div class="row greg section-denominazione" *ngIf="client.azioni.get('DatiEntePrestazioni')[1]">
+  <div class="col-md-1"></div>
+
+  <div class="col-7">
+    <div class="row gregFilter">
+      <div class="col-12" style="left: 13px; padding-top: 30px">
+        <h4 class="titleSection">Prestazioni</h4>
+      </div>
+      <form [formGroup]="checkForm" class="w-100">
+        <div class="row col-md-12" style="padding-top: 10px" *ngIf="
+            !client.azioni.get('DatiEntePrestazioni')[0] &&
+            !this.client.readOnlyIII
+          ">
+          <div class="col">
+            <div class="form-group">
+              <label class="inputLabel">Presenza di Strutture a Gestione diretta</label>
+            </div>
+          </div>
+        </div>
+        <div class="row col-md-12" [ngClass]="{
+            disabledDiv:
+              client.azioni.get('DatiEntePrestazioni')[0] ||
+              this.client.readOnlyIII
+          }" *ngIf="
+            !client.azioni.get('DatiEntePrestazioni')[0] &&
+            !this.client.readOnlyIII
+          ">
+          <div class="col verticalCentered">
+            <div class="custom-control custom-checkbox">
+              <input type="checkbox" class="custom-control-input" id="customCheck1" (change)="refreshPrestRes()"
+                formControlName="strutturaResidenziale" />
+              <label class="custom-control-label inputLabel" for="customCheck1">Strutture Residenziali</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="row col-md-4" [ngClass]="{
+            disabledDiv:
+              client.azioni.get('DatiEntePrestazioni')[0] ||
+              this.client.readOnlyIII
+          }" *ngIf="
+            !client.azioni.get('DatiEntePrestazioni')[0] &&
+            !this.client.readOnlyIII
+          ">
+          <div class="col-4 verticalCentered">
+            <div class="custom-control custom-checkbox">
+              <input type="checkbox" class="custom-control-input" id="customCheck2" (change)="refreshPrestSemiRes()"
+                formControlName="centroDiurnoStruttSemires" />
+              <label class="custom-control-label inputLabel" for="customCheck2">Centri Diurni/Strutture
+                Semiresidenziali</label>
+            </div>
+          </div>
+        </div>
+      </form>
+      <div class="row col-md-12" style="padding-top: 10px" *ngIf="
+          listaPrestazioniAssociate?.length == 0 &&
+          !client.azioni.get('DatiEntePrestazioni')[0] &&
+          !this.client.readOnlyIII
+        ">
+        <div class="col">
+          <div class="form-group">
+            <label class="inputLabel">Vuoi inserire tutte le prestazioni ?</label>
+          </div>
+        </div>
+      </div>
+      <div class="row col-md-12" *ngIf="
+          listaPrestazioniAssociate?.length == 0 &&
+          !client.azioni.get('DatiEntePrestazioni')[0] &&
+          !this.client.readOnlyIII
+        ">
+        <div class="col verticalCentered">
+          <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" id="customCheck3"
+              (change)="aggiuntitutteprestazioni($event)" [disabled]="listaPrestazioni?.length == 0" />
+            <label class="custom-control-label inputLabel" for="customCheck3">Si</label>
+          </div>
+        </div>
+      </div>
+      <div class="row col-md-12" style="padding-top: 10px" *ngIf="
+          !client.azioni.get('DatiEntePrestazioni')[0] &&
+          !this.client.readOnlyIII
+        ">
+        <div class="col-4">
+          <label class="inputLabel">Prestazioni</label>
+        </div>
+      </div>
+
+      <div class="row col-md-12" style="padding-bottom: 30px" *ngIf="
+          !client.azioni.get('DatiEntePrestazioni')[0] &&
+          !this.client.readOnlyIII
+        ">
+        <div class="col-4">
+          <ng-container>
+            <select name="prestazioni" id="prestazioni" class="form-control statoCombo"
+              [(ngModel)]="prestazioneSelected">
+              <option class="options" [value]="null">
+                Seleziona Prestazione
+              </option>
+              <option class="options" *ngFor="let prestazione of listaPrestazioni"
+                value="{{ prestazione.idPrestazione }}">
+                {{ prestazione.codicePrestazione }}
+                {{ prestazione.desPrestazione }}
+              </option>
+            </select>
+          </ng-container>
+        </div>
+
+        <div class="col-6 verticalCentered" *ngIf="listaPrestazioni?.length > 0">
+          <div class="col-auto">
+            <button id="btnApplica" type="submit" class="btn btn-primary block bottonifunzione"
+              (click)="addPrestazioneAssociata()">
+              Aggiungi
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- TABELLA -->
+
+      <div class="row col-md-12 tableAssociati mt-3" style="padding-left: 30px; padding-right: 30px">
+        <table mat-table #prestazioniTable [dataSource]="listaPrestazioniAssociate"
+          class="col-12 mb-3 table table-hover table-responsive-xl tabellagreg">
+          <ng-container matColumnDef="codice">
+            <th class="columns_header" mat-header-cell *matHeaderCellDef>
+              Codice
+            </th>
+            <td class="smarttable" mat-cell *matCellDef="let prestazione">
+              {{ prestazione.codicePrestazione }}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="prestazione">
+            <th class="columns_header" mat-header-cell *matHeaderCellDef>
+              Prestazioni
+            </th>
+            <td class="smarttable" class="smarttable" mat-cell *matCellDef="let prestazione">
+              {{ prestazione.desPrestazione }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="azioni">
+            <th class="columns_header pl-2" mat-header-cell *matHeaderCellDef>
+              Azioni
+            </th>
+            <td class="smarttable pl-2" mat-cell *matCellDef="let prestazione">
+              <ng-template [ngIf]="controlloFineValidita(prestazione)">
+                <button type="button" (click)="
+                    dettaglioPrestazione(
+                      prestazione.codicePrestazione,
+                      '../../responsabile-ente/dettaglio-prestazione'
+                    )
+                  " class="btn pl-0" data-toggle="tooltip" title="Dettaglio">
+                  <span class="fas fa-file-alt" style="color: #006cb4"></span>
+                </button>
+              </ng-template>
+              <ng-template [ngIf]="!controlloFineValidita(prestazione)">
+                <ng-template #popContent2>
+                  <div [innerHTML]="popUpPrest(prestazione)"></div>
+                </ng-template>
+                <label style="
+                    white-space: nowrap;
+                    padding-left: 0px;
+                    padding-right: 6px;
+                  " [placement]="['left']" [ngbPopover]="popContent2" [popoverTitle]="popoverPrestTitle"
+                  triggers="hover">
+                  <img style="height: 20px; width: 20px; cursor: pointer" src="assets/img/ui-modelli/Alert.svg"
+                    class="greg-icon-help" />
+                </label>
+              </ng-template>
+              <ng-template [ngIf]="
+                  !client.azioni.get('DatiEntePrestazioni')[0] &&
+                  !this.client.readOnlyIII
+                ">
+                <button [ngClass]="{
+                    disabledDiv:
+                      client.azioni.get('DatiEntePrestazioni')[0] ||
+                      this.client.readOnlyIII
+                  }" type="button" (click)="
+                    deletePrestazioneAssociata(prestazione.codicePrestazione)
+                  " class="btn" data-toggle="tooltip" title="Elimina" style="margin-left: 10px" *ngIf="
+                    prestazione.prestFiglia ? !prestazione.prestFiglia : true
+                  ">
+                  <span class="fas fa-trash" style="color: #b8191a"></span>
+                </button>
+              </ng-template>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="columnsPrestazioniAssociat; sticky: true"></tr>
+          <tr mat-row *matRowDef="let row; columns: columnsPrestazioniAssociat"></tr>
+        </table>
+
+        <div class="col-12">
+          <div class="col-12" *ngIf="listaPrestazioniAssociate?.length == 0" style="text-align: center">
+            <label class="no-data-available">Non risultano prestazioni associate all'Ente</label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-4"></div>
+</div>
+
+<!-- DOCUMENTAZIONE -->
+<div class="row greg section-denominazione" *ngIf="client.azioni.get('DatiEnteAllegati')[1]">
+  <div class="col-md-1"></div>
+
+  <div class="col-7">
+    <div class="row gregFilter">
+      <div class="row col-md-12" style="left: 13px; padding-top: 30px">
+        <h4 class="titleSection">Documentazione</h4>
+        <label style="white-space: nowrap; padding-left: 10px" [placement]="['right', 'left', 'auto']"
+          [ngbPopover]="popoverDocBody" [popoverTitle]="popoverDocTitle" triggers="hover">
+          <img style="height: 20px; width: 20px" src="assets/img/ui-modelli/help.png" class="greg-icon-help" />
+        </label>
+      </div>
+
+      <div class="row col-md-12" style="padding-top: 30px" *ngIf="visibleDocI">
+        <div class="col-6">
+          <label style="white-space: nowrap">Documenti Iniziali (formato .zip/.pdf max 31 mb)</label>
+          <label style="white-space: nowrap; padding-left: 10px" [placement]="['right', 'left', 'auto']"
+            [ngbPopover]="popoverDocInizialiBody" [popoverTitle]="popoverDocInizialiTitle" triggers="hover">
+            <img style="height: 20px; width: 20px" src="assets/img/ui-modelli/help.png" class="greg-icon-help" />
+          </label>
+        </div>
+      </div>
+
+      <div class="row col-md-12" *ngIf="visibleDocI">
+        <div>
+          <div class="col-12 form-group fileinputs">
+            <input id="docIniziali" class="form-control file" style="cursor: pointer" type="file"
+              accept=".zip, application/pdf" #fileInput [ngClass]="{ required: !okDocIn }" data-toggle="tooltip"
+              title="" (click)="fileInput.value = null" (change)="uploadFileIniziale($event)" [required]="requiredDocIn"
+              [disabled]="
+                avoidAllegatiChangeI || verificaPresenzaAllegatoIniziale()
+              " />
+            <div class="col-12 fakefile">
+              <input class="form-control" disabled value="{{ docInizialeName }}" style="cursor: pointer" />
+            </div>
+          </div>
+        </div>
+
+        <div class="col-6 verticalCentered">
+          <div class="col-auto">
+            <button id="btnApplica" type="submit" class="btn btn-primary block allega bottonifunzione"
+              (click)="allegaFileIniziale()" [disabled]="buttonAllegatoIniziale || avoidAllegatiChangeI">
+              <span>Allega</span>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="row col-md-12 msgUpload" *ngIf="visibleDocI">
+        <span class="col">{{ errDocIniziale }}</span>
+      </div>
+      <div class="row col-md-12 errUpload" *ngIf="visibleDocI">
+        <span class="col">{{ errDocInizialeAllegato }}</span>
+      </div>
+
+      <div class="row col-md-12" style="padding-top: 30px" *ngIf="visibleDocII">
+        <div class="col-6">
+          <label style="white-space: nowrap">Documenti Finali (formato .zip/.pdf max 31 mb)</label>
+          <label style="white-space: nowrap; padding-left: 10px" [placement]="['right', 'left', 'auto']"
+            [ngbPopover]="popoverDocFinaliBody" [popoverTitle]="popoverDocFinaliTitle" triggers="hover">
+            <img style="height: 20px; width: 20px" src="assets/img/ui-modelli/help.png" class="greg-icon-help" />
+          </label>
+        </div>
+      </div>
+
+      <div class="row col-md-12" *ngIf="visibleDocII">
+        <div>
+          <div class="col-12 form-group fileinputs">
+            <input id="docFinali" class="form-control file" style="cursor: pointer" type="file"
+              accept=".zip, application/pdf" #fileInput [ngClass]="{ required: !okDocFi }" data-toggle="tooltip"
+              title="" (click)="fileInput.value = null" (change)="uploadFileFinale($event)" [required]="requiredDocFi"
+              [disabled]="
+                avoidAllegatiChangeII || verificaPresenzaAllegatoFinale()
+              " />
+            <div class="col-12 fakefile">
+              <input class="form-control" disabled value="{{ docFinaleName }}" style="cursor: pointer" />
+            </div>
+          </div>
+        </div>
+
+        <div class="col-6 verticalCentered">
+          <div class="col-auto">
+            <button id="btnApplica" type="submit" class="btn btn-primary block allega bottonifunzione"
+              (click)="allegaFileFinale()" [disabled]="buttonAllegatoFinale || avoidAllegatiChangeII">
+              <span>Allega</span>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="row col-md-12 msgUpload" *ngIf="visibleDocII">
+        <span class="col">{{ errDocFinale }}</span>
+      </div>
+      <div class="row col-md-12 errUpload" *ngIf="visibleDocII">
+        <span class="col">{{ errDocFinaleAllegato }}</span>
+      </div>
+
+      <!-- TABELLA -->
+
+      <div class="row col-md-12 tableAssociati mt-3" style="padding: 0px 30px 0px 30px">
+        <table mat-table #documentiTable [dataSource]="listaDocumentiAllegati"
+          class="col-12 mt-3 mb-3 table table-hover table-responsive-xl tabellagreg">
+          <ng-container matColumnDef="documento">
+            <th class="columns_header" mat-header-cell *matHeaderCellDef>
+              Documento
+            </th>
+            <td class="smarttable" mat-cell *matCellDef="let documento">
+              {{ documento.nomeFile }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="tipologia">
+            <th class="columns_header" mat-header-cell *matHeaderCellDef>
+              Tipologia
+            </th>
+            <td class="smarttable" mat-cell *matCellDef="let documento">
+              {{ documento.tipoDocumentazione }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="azioni">
+            <th class="columns_header" mat-header-cell *matHeaderCellDef>
+              Azioni
+            </th>
+            <td class="smarttable" mat-cell *matCellDef="let documento; let i = index">
+              <button type="button" [disabled]="documento.nuovo" (click)="scaricaDocumento(documento)" class="btn pl-0"
+                data-toggle="tooltip" title="Scarica">
+                <span class="fas fa-download" style="color: #006cb4"></span>
+              </button>
+              <button type="button" (click)="eliminaDocumento(i)" class="btn" data-toggle="tooltip" title="Elimina"
+                style="margin-left: 10px" *ngIf="
+                  documento.tipoDocumentazione === docIniziale
+                    ? visibleTrashDocI
+                    : visibleTrashDocII
+                ">
+                <span class="fas fa-trash" style="color: #b8191a"></span>
+              </button>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="columnsListaDocAllegati; sticky: true"></tr>
+          <tr mat-row *matRowDef="let row; columns: columnsListaDocAllegati"></tr>
+        </table>
+
+        <div class="col-12">
+          <div class="col-12" *ngIf="listaDocumentiAllegati?.length == 0" style="text-align: center">
+            <label class="no-data-available">Non risultano documenti allegati dell'Ente</label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-4"></div>
+</div>
+
+<!-- CRONOLOGIA -->
+
+<div class="row greg" style="padding-top: 15px">
+  <div class="col-md-1"></div>
+  <div class="col-md-7">
+    <app-cronologia-modelli></app-cronologia-modelli>
+  </div>
+  <div class="col-md-4"></div>
+</div>
+
+<!-- CRONOLOGIA OLD
+<div class="row greg">
+
+  <div class="col-md-1"></div>
+
+  <div class="col-7">
+    <div class="row gregFilter">
+
+      <div class="col-md-12" style="left: 13px; padding-top: 30px;">
+          <h4 class="titleSection">CRONOLOGIA &nbsp; &nbsp;<img [@rotatedState]='state' src="assets/img/user/frecciagiu.png" (click)="apricronologia()" style="cursor: pointer;"></h4>
+      </div>
+      
+      <div class="row col-md-12 mt-3" style="padding: 0px 30px 0px 30px;">
+
+        <table mat-table [dataSource]="listaCronologiaAssociata" class="col-12 mt-3 mb-3 table table-striped table-hover table-responsive-xl" 
+          style="width: 100% !important; border: none" *ngIf="espansa">
+          <ng-container matColumnDef="dataEora">
+            <th class="columns_header" mat-header-cell *matHeaderCellDef> Data e Ora </th>
+            <td class="smarttable" mat-cell *matCellDef="let cronologia"> {{cronologia.dataOra | date:'dd/MM/yyyy HH:mm'}} </td>
+          </ng-container>
+    
+          <ng-container matColumnDef="utente">
+            <th class="columns_header" mat-header-cell *matHeaderCellDef> Utente </th>
+            <td class="smarttable" class="smarttable" mat-cell *matCellDef="let cronologia"> {{cronologia.utente}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="statoRendicontazione">
+            <th class="columns_header" mat-header-cell *matHeaderCellDef> Stato Rendicontazione </th>
+            <td class="smarttable" class="smarttable" mat-cell *matCellDef="let cronologia"> {{cronologia.statoRendicontazione.descStatoRendicontazione}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="notaEnte">
+            <th class="columns_header" mat-header-cell *matHeaderCellDef> {{!visible? "Nota" : "Nota per Ente"}} </th>
+            <td class="smarttable" class="smarttable" mat-cell *matCellDef="let cronologia"> {{cronologia.notaEnte}} </td>
+          </ng-container>
+    
+          <ng-container matColumnDef="notaInterna" *ngIf="visible">
+            <th class="columns_header" mat-header-cell *matHeaderCellDef> Nota Interna </th>
+            <td class="smarttable" class="smarttable" mat-cell *matCellDef="let cronologia"> {{cronologia.notaInterna}} </td>
+          </ng-container>
+          
+          <tr mat-header-row *matHeaderRowDef="visible? columnsCronologia : columnsCronologiaEnte; sticky: true"></tr>
+          <tr mat-row *matRowDef="let row; columns: visible? columnsCronologia : columnsCronologiaEnte;"></tr>
+        </table>
+
+        <div class="col-12">
+          <div class="col-12" *ngIf="listaCronologiaAssociata?.length == 0" style="text-align: center;">
+            <label class="no-data-available">Non risultano cronologie collegate all'Ente</label>
+          </div>
+        </div>
+
+      </div>
+
+          <div class="col-12" style="display: flex;">
+            <div class="col-2">
+              <h4>Nota</h4>
+            </div>
+            <div class="col-10">
+              <div class="mt-2" style="display: flex;">
+                <div class="pr-2 w-15">
+                    <label class="inputLabel" *ngIf="visible">Per Ente</label>
+                </div>
+            
+                <div class="w-100">
+                    <div class="form-floating">
+                        <textarea id="notaPerEnte" [(ngModel)]="cronologia.notaEnte" class="form-control" placeholder="Inserisci qui la nota per l'Ente">
+                        </textarea>
+                    </div>
+                </div>
+                
+              </div>
+              <div class="mt-2" style="display: flex;" *ngIf="visible">
+                <div class="pr-2 w-15">
+                    <label class="inputLabel">Interna</label>
+                </div>
+                <div class="w-100">
+                    <div class="form-floating">
+                        <textarea id="notaInterna" [(ngModel)]="cronologia.notaInterna" class="form-control" placeholder="Inserisci qui la nota Interna">
+                        </textarea>
+                    </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+   
+    </div>
+  </div>
+
+<div class="col-md-4"></div>
+
+</div>-->
+
+<!-- BUTTON -->
+<div class="row greg">
+  <div class="col-md-1"></div>
+
+  <div class="row col-md-7 button">
+    <div class="row w-100 space_b">
+      <div class="col pr-0 align-self-end" *ngIf="client.azioni.get('SalvaDatiEnte')[1]">
+        <button id="btnSave" type="submit" class="btn btn-primary button1" [disabled]="
+            !enteForm.valid ||
+            !responsabileEnteForm.valid ||
+            !parametriForm.valid
+          " (click)="salvaModifiche()">
+          SALVA MODIFICHE
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-4"></div>
+</div>

@@ -1,0 +1,82 @@
+<div class="row modal-header" style="border-bottom: 0px; padding-left: 0px;">
+  <h1 id="titolo" style="color: black; font-family: Roboto;" class="col-md-11 modal-title">{{data?.titolo}}</h1>
+  <button style="outline: none;" type="button" class="col-md-1 close" aria-label="Close" (click)="chiudiNo(data)">
+    <span aria-hidden="true">&times;</span>
+  </button>
+  <h4 id="titolo2" style="color: black; font-family: Roboto;" class="col-md-12 modal-title">
+    {{data?.denominazione}}
+  </h4>
+  
+</div>
+<!-- <h1 mat-dialog-title class="testo">{{data?.denominazione}}</h1> -->
+
+<div mat-dialog-content style="border-bottom: 1px solid #dee2e6;
+border-top: 1px solid #dee2e6;">
+  <div class="row" style="padding-left:20px;padding-right:20px;padding-top:10px;padding-bottom:10px;background:#00FF66;"
+    *ngIf="controlloObbl(false)">
+    <p class="titolowr" [innerHTML]="data?.messaggio.substr(0,data?.messaggio.indexOf(';'))"></p>
+  </div>
+  <div class="row error" *ngIf="data?.errors.length>0">
+    <div style="margin-left:20px">
+      <label class="titoloer">{{attenzione}}</label>
+      <ul>
+        <li *ngFor="let err of data?.errors">{{err}}</li>
+      </ul>
+      <!-- <p [innerHTML]="data?.messaggio"></p> -->
+    </div>
+  </div>
+
+  <div class="row" class="check" *ngIf="data?.check.length>0">
+    <div style="margin-left:20px">
+      <label class="titoloer">Attenzione:</label>
+      <ul>
+        <li *ngFor="let check of data?.check">{{check}}</li>
+      </ul>
+      <!-- <p [innerHTML]="data?.messaggio" *ngIf="data?.warnings.length>0 && data?.errors.length==0"></p> -->
+    </div>
+  </div>
+
+  <div class="row" class="warning" *ngIf="data?.warnings.length>0">
+    <div style="margin-left:20px">
+      <label class="titolowr">Warning:</label>
+      <ul>
+        <li *ngFor="let warn of data?.warnings">{{warn}}</li>
+      </ul>
+      <!-- <p [innerHTML]="data?.messaggio" *ngIf="data?.warnings.length>0 && data?.errors.length==0"></p> -->
+    </div>
+  </div>
+
+  <!-- <div class="row" style="padding-left:20px;padding-right:20px;padding-top:10px;padding-bottom:10px;background:red;" *ngIf="data?.warnings.length==0 && data?.errors.length==0 && data?.esito=='KO'">
+  <p class="titoloer"  [innerHTML]="data?.messaggio.substr(0,data?.messaggio.indexOf(';'))"></p>
+  </div> -->
+  <div class="row" style="padding-left:20px;padding-right:20px;padding-top:10px;padding-bottom:10px;background:#DFF0D9;"
+    *ngIf="controlloObbl(true)">
+    <p class="titolowr" [innerHTML]="data?.messaggio.substr(0,data?.messaggio.indexOf(';'))"></p>
+  </div>
+
+  <!-- <div class="row" style="padding-left:20px;padding-right:20px;padding-top:10px;padding-bottom:10px;background:#F0F3F8;" *ngIf="data?.warnings.length==0 && data?.errors.length==0 && data?.warningCheck==null">
+  <p class="titolowr"  [innerHTML]="data?.messaggio.substr(data?.messaggio.indexOf(';')+1,data?.messaggio.length)"></p>
+  </div>
+  <div class="row" style="padding-top:10px;padding-bottom:10px;background:#F0F3F8;" *ngIf="data?.errors.length==0 && data?.warningCheck==null ">
+        <ng-template [ngIf]="!data.check">
+          <label style="margin-left:20px" class="testo"  for="nota">Nota</label>
+          <textarea style="margin-left:20px;margin-right:20px" id="nota" [(ngModel)]="data.nota"
+            class="form-control" placeholder="Inserisci qui la nota">
+          </textarea>
+        </ng-template>                 
+        <ng-template [ngIf]="data.check && data?.warnings.length!=0">
+          <label style="margin-left:20px" class="testo"  for="nota">Motivazione</label>
+          <textarea style="margin-left:20px;margin-right:20px" id="nota" [(ngModel)]="data.nota"
+              class="form-control" placeholder="Inserisci qui la motivazione">
+          </textarea>
+        </ng-template>         
+  </div> -->
+
+
+</div>
+<div class="row">
+  <div class="col-md-9"></div>
+  <div class="col-md-3">
+    <!-- <button class="bottoni" mat-stroked-button (click)="chiudiNo(data)">CHIUDI</button> -->
+  </div>
+</div>

@@ -1,0 +1,295 @@
+<ng-template [ngIf]="rendicontazioneModC &&  ((rendicontazioneModC.listaPrestazioni[0] && rendicontazioneModC.listaPrestazioni[0]?.flag) || (rendicontazioneModC.listaPrestazioni[1] && rendicontazioneModC.listaPrestazioni[1]?.flag))">    
+    <div class="row" style="background: white; padding-top: 15px; padding-bottom: 15px; box-shadow: 1px 2px 8px #C4C4C4;">
+        <div class="col-md-9 fontbold" style="padding-bottom:10px;padding-top:10px;">
+            <div class="bold" style="padding-bottom:20px;">
+                {{datiEnte?.denominazione}} - Anno di esercizio: {{infoOperatore?.annoEsercizio}}
+            </div>
+            <div>
+                {{titolo}}
+            </div>
+        </div>
+    
+        <div class="col-md-3 fontbold" style="padding-bottom:30px;padding-top:10px;" *ngIf="client.azioni.get('EsportaModelloC')[1]"> 
+            <div  style="text-align: right;padding-right: 30px;">
+                <button type="button" class="btn" data-toggle="tooltip" title="Esporta in Excel" (click)="esportaexcel()">
+                    <i class="fa fa-file-excel" style="cursor: pointer;color:green;width: 40px;height: 40px;"></i>
+                </button>
+            </div>
+        </div>
+        
+        <ng-container *ngFor="let prestazione of prestazioniModC; let i=index">
+            <ng-template [ngIf]="rendicontazioneModC && rendicontazioneModC.listaPrestazioni[i].flag">
+                <div [ngClass]="{'row greg-mod-c-section-1' : i==0, 'row greg-mod-c-section-2' : i==1}">
+                    <div class="row" [ngClass]="{'disabledDiv': client.azioni.get('ModelloC')[0]}">
+                        <div class="col-md-8 testo-modello-c">
+                            {{prestazione.descPrestazione}}
+                            <ng-template [ngIf]="i==0">
+                                <ng-template #popContent>
+						  		{{R_A_1_1}}
+								</ng-template>
+						         <label style="white-space: nowrap; padding-left: 10px;" [placement]="['right', 'left', 'auto']" 
+						        [ngbPopover]="popContent"  triggers="hover">
+						          <img style="height: 20px; width: 20px; cursor: pointer;" src="assets/img/ui-modelli/help.png" class="greg-icon-help">
+						       </label>
+                            </ng-template>
+                            <ng-template [ngIf]="i==1">
+                             <ng-template #popContent1>
+						  		{{R_A_2_1}}
+								</ng-template>
+						         <label style="white-space: nowrap; padding-left: 10px;" [placement]="['right', 'left', 'auto']"
+						        [ngbPopover]="popContent1"  triggers="hover">
+						          <img style="height: 20px; width: 20px; cursor: pointer;" src="assets/img/ui-modelli/help.png" class="greg-icon-help">
+						       </label>
+                            </ng-template>
+                        </div>
+                        <br>
+                        <div *ngIf="i==1" class="col-md-12 testo-norm-modello-c">
+                            {{infoModCSplitted[0]}}<b>{{infoModCSplitted[1]}}</b>{{infoModCSplitted[2]}}<b>{{infoModCSplitted[3]}}</b>{{infoModCSplitted[4]}}<b>{{infoModCSplitted[5]}}</b>{{infoModCSplitted[6]}}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <table id="tableTotaliModelloC+{{i}}" class="table table-responsive-xl greg-modelloc-table" style="width: 100% !important;">
+                            <thead class="greg-modelloc-tbl-riga-header">
+                                <tr>
+                                    <th [ngClass]="{'prest-color-nucleo1' : i==0 , 'prest-color-nucleo2' : i==1}" class="max-dim">
+                                        <div class="row">
+                                            <div class="col-md-6" style="padding-left: 0px;"> 
+                                                <img style="height: 46px; width: 46px; display: inline-block;" src="assets/img/ui-modelli/casetta.png" class="greg-icon-help">
+                                            </div>
+                                            <div class="col-md-6 testo-modello-c" style="padding-left: 0px;">
+                                                {{prestazione.listaTargetUtenze[6].descTargetUtenze}}
+                                            </div>
+                                        </div>
+                                        
+                                    </th>
+                                    <ng-container *ngFor="let targetUtenza of prestazione.listaTargetUtenze; let j=index">
+                                        <ng-template [ngIf]="j<6">
+                                            <th class="col-auto fontnormale testo-modello-c max-dim">
+                                                {{targetUtenza.descTargetUtenze}}
+                                            </th>
+                                        </ng-template>
+                                    </ng-container>
+                                    <th class="max-dim">
+                                        TOTALE NUM. UTENTI
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <ng-template [ngIf]="i==1">
+                                    <tr  [ngClass]="{'disabledDiv': client.azioni.get('ModelloC')[0]}">
+                                        <td [ngClass]="{'prest-color-nucleo2' : i==1}" class="max-dim">
+                                            <div class="testo-norm-modello-c">Totale</div>
+                                    </td>
+                                        <ng-container *ngFor="let targetUtenza of prestazione.listaTargetUtenze; let j=index">  
+                                            <ng-template [ngIf]="j<6">               
+                                            <td [ngClass]="{'dettagli-utenze-dispari' : i==1 && (j==1 || j==3)}" class="max-dim">
+                                                    <div [ngClass]="{'testo-modello-c': j==1 || j==3, 'testo-norm-modello-c': j!=1 && j!=3}">Totale<ng-template [ngIf]="j==1 || j==3">*</ng-template></div>
+                                            </td> 
+                                            </ng-template>
+                                        </ng-container>
+                                        <td class="colonna-totale max-dim">
+
+                                        </td>
+                                    </tr>
+                                </ng-template>
+                                <tr  [ngClass]="{'disabledDiv': client.azioni.get('ModelloC')[0]}">
+                                    <td [ngClass]="{'prest-color-nucleo1' : i==0, 'prest-color-nucleo2' : i==1}" class="max-dim">
+                                        <input type="text" class="form-control inputnumber" [(ngModel)]="TData[i]?.listaTargetUtenze[6].valore" disabled
+                                            (blur)="changeKey(i, 6, $event.target.value)" (ngModelChange)="calcTableValue()" (keypress)="numberOnly($event)"
+                                            [class.campovuoto]="TData[i]?.listaTargetUtenze[6].valore === null || TData[i]?.listaTargetUtenze[6].valore === ''" [class.campovalorizzato]="TData[i]?.listaTargetUtenze[6].valore !== null && TData[i]?.listaTargetUtenze[6].valore !== ''"> 
+                                    </td>
+                                    <ng-container *ngFor="let targetUtenza of prestazione.listaTargetUtenze; let j=index">
+                                        <ng-template [ngIf]="j<6">
+                                            <td [ngClass]="{'dettagli-utenze-dispari' : i==1 && (j==1 || j==3)}" class="max-dim">
+                                                <input type="text" class="form-control inputnumber" [ngClass]="{'campo-totale-disabilita' : i==1 && (j==1 || j==3)}" [(ngModel)]="TData[i]?.listaTargetUtenze[j].valore" disabled
+                                            (blur)="changeKey(i,j, $event.target.value)" (ngModelChange)="calcTableValue()" (keypress)="numberOnly($event)"
+                                            [class.campovuoto]="TData[i]?.listaTargetUtenze[j].valore === null || TData[i]?.listaTargetUtenze[j].valore === ''" [class.campovalorizzato]="TData[i]?.listaTargetUtenze[j].valore !== null && TData[i]?.listaTargetUtenze[j].valore !== ''"> 
+                                            </td>
+                                        </ng-template>
+                                    </ng-container>
+                                    <td class="colonna-totale max-dim">
+                                        <input type="text" class="form-control inputnumber" [(ngModel)]="totaleUtenza[i]" readonly
+                                    [class.campovuoto]="totaleUtenza[i] === undefined || totaleUtenza[i] === ''" [class.campovalorizzato]="totaleUtenza[i] !== undefined && totaleUtenza[i] !== ''">
+                                    </td>
+                                </tr>
+                                <ng-template [ngIf]="i>0">
+                                    <ng-container *ngFor="let targetUtenza of prestazione.listaTargetUtenze; let j=index">
+                                        <ng-template [ngIf]="j==0">
+                                            <ng-container *ngFor="let dettagliUtenza of targetUtenza.listaDettagliUtenze; let k=index">
+                                                <tr  [ngClass]="{'disabledDiv': client.azioni.get('ModelloC')[0]}">
+                                                    <td [ngClass]="{'prest-color-nucleo1' : i==0 , 'prest-color-nucleo2' : i==1}" class="max-dim">
+                                                        <div class="testo-norm-modello-c">{{dettagliUtenza.descDettagliUtenze}}</div>
+                                                    </td>
+                                                    <ng-container *ngFor="let targetUtenza of prestazione.listaTargetUtenze; let m=index">
+                                                        <ng-template [ngIf]="m<6">
+                                                            <td [ngClass]="{'dettagli-utenze-dispari' : i==1 && (m==1 || m==3)}" class="max-dim">
+                                                                <div class="testo-norm-modello-c">{{dettagliUtenza.descDettagliUtenze}}</div>
+                                                            </td> 
+                                                        </ng-template>
+                                                    </ng-container>
+                                                    <td class="colonna-totale max-dim">
+                                                    </td>
+                                                </tr>
+                                                <tr  [ngClass]="{'disabledDiv': client.azioni.get('ModelloC')[0]}">
+                                                    <td [ngClass]="{'prest-color-nucleo1' : i==0 , 'prest-color-nucleo2' : i==1}" class="max-dim">
+                                            
+                                                            <input type="text" class="form-control inputnumber" [(ngModel)]="TData[i]?.listaTargetUtenze[6].listaDettagliUtenze[k].valore" disabled
+                                                        (blur)="changeKey(i,6, $event.target.value, k)" (ngModelChange)="calcTableValue()" (keypress)="numberOnly($event)"
+                                                        [class.campovuoto]="TData[i]?.listaTargetUtenze[6].listaDettagliUtenze[k].valore === null || TData[i]?.listaTargetUtenze[6].listaDettagliUtenze[k].valore === ''" [class.campovalorizzato]="TData[i]?.listaTargetUtenze[6].listaDettagliUtenze[k].valore !== null && TData[i]?.listaTargetUtenze[6].listaDettagliUtenze[k].valore !== ''"> 
+                                                    </td>
+                                                    <ng-container *ngFor="let targetUtenza of prestazione.listaTargetUtenze; let m=index">
+                                                        <ng-template [ngIf]="m<6">
+                                                            <td [ngClass]="{'dettagli-utenze-dispari' : i==1 && (m==1 || m==3)}" class="max-dim">
+                                                            
+                                                                    <input type="text" class="form-control inputnumber" [(ngModel)]="TData[i]?.listaTargetUtenze[m].listaDettagliUtenze[k].valore" disabled
+                                                                (blur)="changeKey(i, m, $event.target.value, k)" (ngModelChange)="calcTableValue()" (keypress)="numberOnly($event)"
+                                                                [class.campovuoto]="TData[i]?.listaTargetUtenze[m].listaDettagliUtenze[k].valore === null || TData[i]?.listaTargetUtenze[m].listaDettagliUtenze[k].valore === ''" [class.campovalorizzato]="TData[i]?.listaTargetUtenze[m].listaDettagliUtenze[k].valore !== null && TData[i]?.listaTargetUtenze[m].listaDettagliUtenze[k].valore !== ''"> 
+                                                            </td>
+                                                        </ng-template>
+                                                    </ng-container>
+                                                    <td class="colonna-totale">
+                                                    </td>
+                                                </tr>
+                                            </ng-container>
+                                        </ng-template>
+                                    </ng-container>
+                                </ng-template>
+                                <ng-template [ngIf]="i>0">
+                                    <tr>
+                                        <td [ngClass]="{'prest-color-nucleo1' : i==0 , 'prest-color-nucleo2' : i==1}">
+                                        </td>
+                                        <ng-container *ngFor="let targetUtenza of prestazione.listaTargetUtenze; let j=index">
+                                            <ng-template [ngIf]="j<6">
+                                                <td [ngClass]="{'dettagli-utenze-dispari' : i==1 && (j==1 || j==3)}" class="max-dim">                                  
+                                                    <ng-template [ngIf]="targetUtenza.listaDisabilita?.length>0">
+                                                        <div class="fontbold" (click)="espandiPart2(targetUtenza)">
+                                                            <span style="color:#006CB4; cursor: pointer;">Specifica disabilit&agrave;</span>* &nbsp;<img [@rotatedState]='targetUtenza.rotate' src="assets/img/user/frecciagiu.png" style="cursor: pointer;">
+                                                        </div>
+                                                    </ng-template>
+                                                </td>
+                                            </ng-template>
+                                        </ng-container> 
+                                        <td class="colonna-totale">                           
+                                        </td>
+                                    </tr>
+                                </ng-template>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="row"  [ngClass]="{'disabledDiv': client.azioni.get('ModelloC')[0]}">
+                    <ng-container *ngFor="let targetUtenza of prestazione.listaTargetUtenze; let j=index">
+                        <ng-template [ngIf]="targetUtenza.showDisabilita">               
+                            <div class="col-md-12 testo-modello-c">{{targetUtenza.descTargetUtenze}}</div>
+                            <br>
+                            <div class="col-md-12 testo-norm-modello-c">{{infoDisabilita(targetUtenza)}}</div>
+                            <br>
+                            <ng-template [ngIf]="targetUtenza.codTargetUtenze=='U23'"><div class="col-md-12 testo-modello-c">{{infoTotDisabilita(targetUtenza)}}</div></ng-template>
+                            <ng-template [ngIf]="targetUtenza.codTargetUtenze=='U25'"><div class="col-md-12 testo-modello-c">{{infoTotDisabilitaAdulti(targetUtenza)}}</div></ng-template>
+                            <table id="tableTotaliModelloC" class="table table-responsive-xl greg-modelloc-table" style="width: 100% !important;">
+                                <thead class="greg-modelloc-tbl-riga-header">
+                                    <tr>
+                                        <th [ngClass]="{'prest-color-nucleo1' : i==0 , 'prest-color-nucleo2' : i==1}" class="max-dim">
+                                            <div class="row">
+                                                <div class="col-md-6"  style="padding-left: 0px;">
+                                                    <img style="height: 46px; width: 46px; display: inline-block;" src="assets/img/ui-modelli/casetta.png" class="greg-icon-help">
+                                                </div>
+                                                <div class="col-md-6 testo-modello-c"  style="padding-left: 0px;">
+                                                    {{targetUtenza.listaDisabilita[7].descDisabilita}}
+                                                </div>
+                                            </div>
+                                        </th>
+                                        <ng-container *ngFor="let disabilita of targetUtenza.listaDisabilita; let k=index">
+                                            <ng-template [ngIf]="k<7">
+                                                <th class="col-auto fontnormale testo-modello-c max-dim">
+                                                    {{disabilita.descDisabilita}}
+                                                </th>
+                                            </ng-template>
+                                        </ng-container>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td [ngClass]="{'prest-color-nucleo1' : i==0 , 'prest-color-nucleo2' : i==1}" class="max-dim">
+                                            <div class="row">
+                                                <input type="text" class="form-control inputnumber"  [(ngModel)]="TData[i]?.listaTargetUtenze[j].listaDisabilita[7].valore" disabled
+                                                                (blur)="changeKey(i,j, $event.target.value, 7, undefined, true)" (ngModelChange)="calcTableValue()" (keypress)="numberOnly($event)"
+                                                                [class.campovuoto]="TData[i]?.listaTargetUtenze[j].listaDisabilita[7].valore === null || TData[i]?.listaTargetUtenze[j].listaDisabilita[7].valore === ''" [class.campovalorizzato]="TData[i]?.listaTargetUtenze[j].listaDisabilita[7].valore !== null && TData[i]?.listaTargetUtenze[j].listaDisabilita[7].valore !== ''"> 
+                                            </div>
+                                        </td>
+                                        <ng-container *ngFor="let disabilita of targetUtenza.listaDisabilita; let k=index">
+                                            <ng-template [ngIf]="k<7">
+                                                <td class="col-auto fontnormale max-dim">
+                                                    <input type="text" class="form-control inputnumber campo-totale-dettagli-disabilita" [(ngModel)]="TData[i]?.listaTargetUtenze[j].listaDisabilita[k].valore" disabled
+                                                                (blur)="changeKey(i,j, $event.target.value, k, undefined, true)" (ngModelChange)="calcTableValue()" (keypress)="numberOnly($event)"
+                                                                [class.campovuoto]="TData[i]?.listaTargetUtenze[j].listaDisabilita[k].valore === null || TData[i]?.listaTargetUtenze[j].listaDisabilita[k].valore === ''" [class.campovalorizzato]="TData[i]?.listaTargetUtenze[j].listaDisabilita[k].valore !== null && TData[i]?.listaTargetUtenze[j].listaDisabilita[k].valore !== ''"> 
+                                                </td>
+                                            </ng-template>
+                                        </ng-container>
+                                    </tr>
+                                    <tr>
+                                        <td [ngClass]="{'prest-color-nucleo1' : i==0 , 'prest-color-nucleo2' : i==1}" class="max-dim">
+
+                                        </td>
+                                        <ng-container *ngFor="let disabilita of targetUtenza.listaDisabilita; let k=index">
+                                            <ng-template [ngIf]="k<7">
+                                                <ng-container *ngFor="let dettaglioDisabilita of disabilita.listaDettagliDisabilita; let l=index">
+                                                    <td class="col-auto fontnormale max-dim">
+                                                        <div class="testo-norm-modello-c">{{dettaglioDisabilita.descDettagliDisabilita}}</div> 
+                                                    </td>
+                                                </ng-container>
+                                            </ng-template>
+                                        </ng-container>
+                                    </tr>
+                                    <tr>
+                                        <td [ngClass]="{'prest-color-nucleo1' : i==0 , 'prest-color-nucleo2' : i==1}" class="max-dim">
+                                            
+                                        </td>
+                                        <ng-container *ngFor="let disabilita of targetUtenza.listaDisabilita; let k=index">
+                                            <ng-template [ngIf]="k<7">
+                                                <ng-container *ngFor="let dettaglioDisabilita of disabilita.listaDettagliDisabilita; let l=index">
+                                                    <td class="col-auto fontnormale max-dim">
+                                                        <input type="text" class="form-control inputnumber campo-totale-dettagli-disabilita" [(ngModel)]="TData[i]?.listaTargetUtenze[j].listaDisabilita[k].listaDettagliDisabilita[l].valore" disabled
+                                                                (blur)="changeKey(i,j, $event.target.value, k, l, true)" (ngModelChange)="calcTableValue()" (keypress)="numberOnly($event)"
+                                                                [class.campovuoto]="TData[i]?.listaTargetUtenze[j].listaDisabilita[k].listaDettagliDisabilita[l].valore === null || TData[i]?.listaTargetUtenze[j].listaDisabilita[k].listaDettagliDisabilita[l].valore === ''" [class.campovalorizzato]="TData[i]?.listaTargetUtenze[j].listaDisabilita[k].listaDettagliDisabilita[l].valore !== null && TData[i]?.listaTargetUtenze[j].listaDisabilita[k].listaDettagliDisabilita[l].valore !== ''"> 
+                                                    </td>
+                                                </ng-container>
+                                            </ng-template>
+                                        </ng-container>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </ng-template>     
+                    </ng-container>
+                    
+                    </div>
+
+
+                </div>
+
+                <div class="row" style="padding-top: 15px; padding-bottom: 20px;">
+                </div>
+            </ng-template>
+        </ng-container>
+
+    </div>
+
+</ng-template>
+<!-- NO Prestazioni-->
+<ng-template [ngIf]="rendicontazioneModC && (!rendicontazioneModC.listaPrestazioni[0]?.flag && !rendicontazioneModC.listaPrestazioni[1]?.flag)">
+    <div class="row" style="background: white; padding-top: 15px; padding-bottom: 15px; box-shadow: 1px 2px 8px #C4C4C4;">
+        <h3 class="p-3">{{noPrest}}</h3>
+    </div>
+</ng-template>  
+
+    <div class="row" style="padding-top: 15px; padding-bottom: 20px;">
+    </div>
+
+    <!-- CRONOLOGIA -->
+    <app-cronologia-modelli-archivio></app-cronologia-modelli-archivio>
+
+    <br>
+
+    <!-- BOTTONI 
+    <app-pulsanti-funzioni [mostrasalva]="mostrasalva" [idRendicontazioneEnte]="idRendicontazioneEnte" (salvaEvent)="salvaModifiche($event)"></app-pulsanti-funzioni>-->
+

@@ -1,0 +1,158 @@
+<div style="background: white;" class="pb-3">
+    <div class="row" style="background: white; padding-top: 5px; padding-bottom: 5px; box-shadow: 1px 2px 8px #C4C4C4;">
+        <div class="col-md-9">
+            <div class="row col-md-12 bold" style="padding-bottom:10px;padding-top:10px;">
+                {{datiEnte?.denominazione}} - Anno di esercizio: {{infoOperatore?.annoEsercizio}}
+            </div> 
+            <div class="row col-md-12 macrospeseboldato" style="padding-bottom:10px;padding-top:10px;">
+                {{titolo}}
+            </div>
+        </div>
+        <div class="col-md-3 fontbold" style="padding-bottom:30px;padding-top:10px;" *ngIf="client.azioni.get('EsportaModelloMacroaggregati')[1]"> 
+            <div  style="text-align: right;padding-right: 30px;">
+            <button type="button" class="btn" data-toggle="tooltip" title="Esporta in Excel" (click)="esportaexcel()">
+                <i class="fa fa-file-excel" style="cursor: pointer;color:green;width: 40px;height: 40px;"></i>
+            </button>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12" style="background: white;">
+        <table mat-table matSort [dataSource]="rowSpesaMissione" class="mb-3 datatable table-hover table-responsive-xl w-100">
+            <ng-container *ngFor="let col of columnsCodifica; let i = index" matColumnDef="{{col}}">
+                <th [ngClass]="{'totalRow smarttable': i == columnsCodifica.length-1, 'codifica': true}" mat-header-cell *matHeaderCellDef>
+                        {{i==0 || i==1 || i==9 ? '' : col}}
+                </th>
+                <ng-container [ngSwitch]="i" *matCellDef="let element; let rowI = index">
+                <td *ngIf="rowI!=1 || (rowI==1 && i!=0)" [attr.rowspan]="getRowSpan(i, rowI)" [ngClass]="{'firstPad': i==0, 'totalRow smarttable': i == columnsCodifica.length-1 && rowI<rowSpesaMissione.length-1 || rowI==rowSpesaMissione.length-2, 'smarttable': rowI==rowSpesaMissione.length-3 || i==columnsCodifica.length-1, 'riga1': rowI==1 && i==1, 'missionePad' : i==0}"  mat-cell>
+                    <div *ngSwitchCase="0" class="macrospese">
+                        <div>
+                            {{element.descMissioneCartacea}}
+                       </div>
+                    </div>
+                    <div *ngSwitchCase="1" [ngClass]="{'codifica': rowI==rowSpesaMissione.length-2, 'macrospese': rowI==1 || rowI==2 || rowI==3 || rowI==6, 'macrospese': rowI!=rowSpesaMissione.length-2, 'programmaW': true, 'bordato': rowI==1 || rowI==2 || rowI==3 || rowI==6}">
+                            <div *ngIf="rowI==1 || rowI==2 || rowI==3 || rowI==6" style="padding-bottom: 10px; padding-top: 0px;">
+                                <img style="height: 20px; width: 20px;" src="assets/img/ui-modelli/Raggruppa.svg" class="greg-icon-help" data-bs-toggle="tooltip" data-bs-placement="right" title="{{imgTooltip}}">
+                            </div>
+                            <div [ngClass]="{'macrog-title-pad' : rowI==1 || rowI==2 || rowI==3 || rowI==6, 'macrog-title' : rowI==0 || rowI==4|| rowI==5 || rowI==7}" style="padding-left: 5px;">
+                                {{element.descProgrammaCartaceo}} 
+                                <div *ngIf="element.msgInformativo">
+                                <ng-template #popContent>
+						  		{{element.msgInformativo}}
+								</ng-template>
+								 <label style="white-space: nowrap; padding-left: 10px;" placement="right" 
+                                   [ngbPopover]="popContent" triggers="hover">
+                                    <img src="assets/img/ui-modelli/help.png" [ngClass]="{'immagineBordata' : rowI==1 || rowI==2 || rowI==3 || rowI==6}" class="greg-icon-help">
+                                    </label>
+                                </div>
+                            </div>
+                    </div>
+                    <div *ngSwitchCase="2">
+                        <input *ngIf="rowI<=4" type="text" class="form-control inputnumber inputF w-100" appTwoDigitDecimalNumber [(ngModel)]="TData[rowI]?.campi[i-2].value" (blur)="changeKey(rowI, $event.target.value, i)" (ngModelChange)="calcTableValue()" [disabled]="client.readOnlyII || client.azioni.get('ModelloMacroaggregati')[0]"
+                        [class.campovuoto]="TData[rowI]?.campi[i-2].value === null || TData[rowI]?.campi[i-2].value === ''" [class.campovalorizzato]="TData[rowI]?.campi[i-2].value !== null && TData[rowI]?.campi[i-2].value !== ''"> 
+                        <input *ngIf="rowI==5" type="text" class="form-control inputnumber inputF" appTwoDigitDecimalNumber [(ngModel)]="totaleC[i-2]" readonly
+                        [class.campovuoto]="totaleC[i-2] === undefined || totaleC[i-2] === ''" [class.campovalorizzato]="totaleC[i-2] !== undefined && totaleC[i-2] !== ''">
+                        <input *ngIf="rowI==6" type="text" class="form-control inputnumber inputF" appTwoDigitDecimalNumber [(ngModel)]="totaleCS[i-2]" readonly
+                        [class.campovuoto]="totaleCS[i-2] === undefined || totaleCS[i-2] === ''" [class.campovalorizzato]="totaleCS[i-2] !== undefined && totaleCS[i-2] !== ''"> 
+                    </div>
+                    <div *ngSwitchCase="3">
+                        <input *ngIf="rowI<=4" type="text" class="form-control inputnumber inputF" appTwoDigitDecimalNumber [(ngModel)]="TData[rowI]?.campi[i-2].value" (blur)="changeKey(rowI, $event.target.value, i)" (ngModelChange)="calcTableValue()" [disabled]="client.readOnlyII || client.azioni.get('ModelloMacroaggregati')[0]"
+                        [class.campovuoto]="TData[rowI]?.campi[i-2].value === null || TData[rowI]?.campi[i-2].value === ''" [class.campovalorizzato]="TData[rowI]?.campi[i-2].value !== null && TData[rowI]?.campi[i-2].value !== ''"> 
+                        <input *ngIf="rowI==5" type="text" class="form-control inputnumber inputF" appTwoDigitDecimalNumber [(ngModel)]="totaleC[i-2]" readonly
+                        [class.campovuoto]="totaleC[i-2] === undefined || totaleC[i-2] === ''" [class.campovalorizzato]="totaleC[i-2] !== undefined && totaleC[i-2] !== ''">
+                        <input *ngIf="rowI==6" type="text" class="form-control inputnumber inputF" appTwoDigitDecimalNumber [(ngModel)]="totaleCS[i-2]" readonly
+                        [class.campovuoto]="totaleCS[i-2] === undefined || totaleCS[i-2] === ''" [class.campovalorizzato]="totaleCS[i-2] !== undefined && totaleCS[i-2] !== ''">
+                    </div>
+                    <div *ngSwitchCase="4">
+                        <input *ngIf="rowI<=4" type="text" class="form-control inputnumber inputF" appTwoDigitDecimalNumber [(ngModel)]="TData[rowI]?.campi[i-2].value" (blur)="changeKey(rowI, $event.target.value, i)" (ngModelChange)="calcTableValue()" [disabled]="client.readOnlyII || client.azioni.get('ModelloMacroaggregati')[0]"
+                        [class.campovuoto]="TData[rowI]?.campi[i-2].value === null || TData[rowI]?.campi[i-2].value === ''" [class.campovalorizzato]="TData[rowI]?.campi[i-2].value !== null && TData[rowI]?.campi[i-2].value !== ''"> 
+                        <input *ngIf="rowI==5" type="text" class="form-control inputnumber inputF" appTwoDigitDecimalNumber [(ngModel)]="totaleC[i-2]" readonly
+                        [class.campovuoto]="totaleC[i-2] === undefined || totaleC[i-2] === ''" [class.campovalorizzato]="totaleC[i-2] !== undefined && totaleC[i-2] !== ''">
+                        <input *ngIf="rowI==6" type="text" class="form-control inputnumber inputF" appTwoDigitDecimalNumber [(ngModel)]="totaleCS[i-2]" readonly
+                        [class.campovuoto]="totaleCS[i-2] === undefined || totaleCS[i-2] === ''" [class.campovalorizzato]="totaleCS[i-2] !== undefined && totaleCS[i-2] !== ''">
+                    </div>
+                    <div *ngSwitchCase="5">
+                        <ng-template [ngIf]="TData[rowI].campi!==null && (TData[rowI].campi[0].value==null || TData[rowI].campi[0].value=='0,00' || TData[rowI].campi[0].value=='')">
+                            <input *ngIf="rowI<=4" type="text" class="form-control inputnumber inputF" appTwoDigitDecimalNumber [(ngModel)]="TData[rowI]?.campi[i-2].value" (blur)="changeKey(rowI, $event.target.value, i)" (ngModelChange)="calcTableValue()" [disabled]="(client.readOnlyII)  || client.azioni.get('ModelloMacroaggregati')[0] || (TData[rowI].campi[0].value==null || TData[rowI].campi[0].value=='0,00' || TData[rowI].campi[0].value=='')" data-toggle="tooltip" [title]="messaggioTooltip"
+                            [class.campovuoto]="TData[rowI]?.campi[i-2].value === null || TData[rowI]?.campi[i-2].value === ''" [class.campovalorizzato]="TData[rowI]?.campi[i-2].value !== null && TData[rowI]?.campi[i-2].value !== ''"> 
+                        </ng-template>
+                        <ng-template [ngIf]="TData[rowI].campi!==null && (TData[rowI].campi[0].value!==null && TData[rowI].campi[0].value!=='0,00' && TData[rowI].campi[0].value!=='')">
+                            <input *ngIf="rowI<=4" type="text" class="form-control inputnumber inputF" appTwoDigitDecimalNumber [(ngModel)]="TData[rowI]?.campi[i-2].value" (blur)="changeKey(rowI, $event.target.value, i)" (ngModelChange)="calcTableValue()" [disabled]="client.readOnlyII || client.azioni.get('ModelloMacroaggregati')[0]"
+                            [class.campovuoto]="TData[rowI]?.campi[i-2].value === null || TData[rowI]?.campi[i-2].value === ''" [class.campovalorizzato]="TData[rowI]?.campi[i-2].value !== null && TData[rowI]?.campi[i-2].value !== ''"> 
+                        </ng-template>
+                        <input *ngIf="rowI==5" type="text" class="form-control inputnumber inputF" appTwoDigitDecimalNumber [(ngModel)]="totaleC[i-2]" readonly
+                        [class.campovuoto]="totaleC[i-2] === undefined || totaleC[i-2] === ''" [class.campovalorizzato]="totaleC[i-2] !== undefined && totaleC[i-2] !== ''">
+                        <input *ngIf="rowI==6" type="text" class="form-control inputnumber inputF" appTwoDigitDecimalNumber [(ngModel)]="totaleCS[i-2]" readonly
+                        [class.campovuoto]="totaleCS[i-2] === undefined || totaleCS[i-2] === ''" [class.campovalorizzato]="totaleCS[i-2] !== undefined && totaleCS[i-2] !== ''">
+                    </div>
+                    <div *ngSwitchCase="6">
+                        <input *ngIf="rowI<=4" type="text" class="form-control inputnumber inputF" appTwoDigitDecimalNumber [(ngModel)]="TData[rowI]?.campi[i-2].value" (blur)="changeKey(rowI, $event.target.value, i)" (ngModelChange)="calcTableValue()" [disabled]="client.readOnlyII || client.azioni.get('ModelloMacroaggregati')[0]"
+                        [class.campovuoto]="TData[rowI]?.campi[i-2].value === null || TData[rowI]?.campi[i-2].value === ''" [class.campovalorizzato]="TData[rowI]?.campi[i-2].value !== null && TData[rowI]?.campi[i-2].value !== ''"> 
+                        <input *ngIf="rowI==5" type="text" class="form-control inputnumber inputF" appTwoDigitDecimalNumber [(ngModel)]="totaleC[i-2]" readonly
+                        [class.campovuoto]="totaleC[i-2] === undefined || totaleC[i-2] === ''" [class.campovalorizzato]="totaleC[i-2] !== undefined && totaleC[i-2] !== ''">
+                        <input *ngIf="rowI==6" type="text" class="form-control inputnumber inputF" appTwoDigitDecimalNumber [(ngModel)]="totaleCS[i-2]" readonly
+                        [class.campovuoto]="totaleCS[i-2] === undefined || totaleCS[i-2] === ''" [class.campovalorizzato]="totaleCS[i-2] !== undefined && totaleCS[i-2] !== ''">
+                    </div>
+                    <div *ngSwitchCase="7">
+                        <input *ngIf="rowI<=4" type="text" class="form-control inputnumber inputF" appTwoDigitDecimalNumber [(ngModel)]="TData[rowI]?.campi[i-2].value" (blur)="changeKey(rowI, $event.target.value, i)" (ngModelChange)="calcTableValue()" [disabled]="client.readOnlyII || client.azioni.get('ModelloMacroaggregati')[0]"
+                        [class.campovuoto]="TData[rowI]?.campi[i-2].value === null || TData[rowI]?.campi[i-2].value === ''" [class.campovalorizzato]="TData[rowI]?.campi[i-2].value !== null && TData[rowI]?.campi[i-2].value !== ''"> 
+                        <input *ngIf="rowI==5" type="text" class="form-control inputnumber inputF" appTwoDigitDecimalNumber [(ngModel)]="totaleC[i-2]" readonly
+                        [class.campovuoto]="totaleC[i-2] === undefined || totaleC[i-2] === ''" [class.campovalorizzato]="totaleC[i-2] !== undefined && totaleC[i-2] !== ''">
+                        <input *ngIf="rowI==6" type="text" class="form-control inputnumber inputF" appTwoDigitDecimalNumber [(ngModel)]="totaleCS[i-2]" readonly
+                        [class.campovuoto]="totaleCS[i-2] === undefined || totaleCS[i-2] === ''" [class.campovalorizzato]="totaleCS[i-2] !== undefined && totaleCS[i-2] !== ''">
+                    </div>
+                    <div *ngSwitchCase="8">
+                        <input *ngIf="rowI<=4" type="text" class="form-control inputnumber inputF" appTwoDigitDecimalNumber [(ngModel)]="TData[rowI]?.campi[i-2].value" (blur)="changeKey(rowI, $event.target.value, i)" (ngModelChange)="calcTableValue()" [disabled]="client.readOnlyII || client.azioni.get('ModelloMacroaggregati')[0]"
+                        [class.campovuoto]="TData[rowI]?.campi[i-2].value === null || TData[rowI]?.campi[i-2].value === ''" [class.campovalorizzato]="TData[rowI]?.campi[i-2].value !== null && TData[rowI]?.campi[i-2].value !== ''"> 
+                        <input *ngIf="rowI==5" type="text" class="form-control inputnumber inputF" appTwoDigitDecimalNumber [(ngModel)]="totaleC[i-2]" readonly
+                        [class.campovuoto]="totaleC[i-2] === undefined || totaleC[i-2] === ''" [class.campovalorizzato]="totaleC[i-2] !== undefined && totaleC[i-2] !== ''">
+                        <input *ngIf="rowI==6" type="text" class="form-control inputnumber inputF" appTwoDigitDecimalNumber [(ngModel)]="totaleCS[i-2]" readonly
+                        [class.campovuoto]="totaleCS[i-2] === undefined || totaleCS[i-2] === ''" [class.campovalorizzato]="totaleCS[i-2] !== undefined && totaleCS[i-2] !== ''">
+                    </div>
+                    <div *ngSwitchCase="9" style="text-align: center;">
+                        <input type="text" class="form-control inputnumber inputF" appTwoDigitDecimalNumber [(ngModel)]="totaleR[rowI]" readonly
+                        [class.campovuoto]="totaleR[rowI] === undefined || totaleR[rowI] === ''" [class.campovalorizzato]="totaleR[rowI] !== undefined && totaleR[rowI] !== ''">
+                    </div>
+                </td>
+                </ng-container>
+            </ng-container>
+            <ng-container *ngFor="let col of columnsHeader; let i = index"  matColumnDef="{{col}}">
+                    <th [ngClass]="{'titolo smarttable titoloPad': true, 'titoloBordo': i==1}"  [attr.colspan]="getColumnSpanH(i)" mat-header-cell *matHeaderCellDef>
+                            <div>
+                                {{col}} {{i==0 ? infoOperatore?.annoEsercizio : ''}}
+                            </div>
+                    </th>
+            </ng-container>
+            <ng-container *ngFor="let col of columnsMacroaggregati; let i = index" [ngSwitch]="i" matColumnDef="{{col}}">
+                <th [ngClass]="{'totalRow smarttable': i==columnsMacroaggregati.length-1, 'firstPad macrospese-title': i==0, 'macroAlign': i<columnsMacroaggregati.length-1 && i>0}"  [attr.colspan]="getColumnSpanM(i)" mat-header-cell *matHeaderCellDef>
+                    <div [ngClass]="{'macrospeseboldato': i == 0 || i == columnsMacroaggregati.length-1, 'macrospese': i > 0 && i<columnsMacroaggregati.length-1, 'macroP': i!=columnsMacroaggregati.length-1 && i!=0, 'macrog-title' : true}">
+                        {{col}}
+                        <ng-template [ngIf]="i>0 && i<8 && columnsMacroaggregatiData[i-1].msgInformativo">
+                        <ng-template #popContent1>
+						  {{columnsMacroaggregatiData[i-1].msgInformativo}}
+						</ng-template>
+						<label style="white-space: nowrap; padding-left: 0px;" placement="right" 
+						  [ngbPopover]="popContent1"  triggers="hover">
+                         <img style="height: 20px; width: 20px; margin-left: 0px !important;" src="assets/img/ui-modelli/help.png" class="greg-icon-help">
+                         </label>
+                        </ng-template>
+                    </div>
+                </th>
+            </ng-container> 
+            <tr mat-header-row *matHeaderRowDef="columnsHeader"></tr>
+            <tr mat-header-row *matHeaderRowDef="columnsMacroaggregati"></tr>
+            <tr mat-header-row *matHeaderRowDef="columnsCodifica"></tr>
+            <tr mat-row *matRowDef="let row; columns: columnsCodifica; let i = index;"></tr>
+        </table> 
+    </div>
+</div>
+
+<div class="row" style="padding-top: 15px; padding-bottom: 20px;">
+</div>
+
+<!-- CRONOLOGIA -->
+<app-cronologia-modelli></app-cronologia-modelli>
+
+<br>
+
+<!-- BOTTONI --> 
+<app-pulsanti-funzioni [mostrasalva]="mostrasalva" [idRendicontazioneEnte]="idRendicontazioneEnte" [modello]="'Mod. Macroaggregati'" (salvaEvent)="salvaModifiche($event)"></app-pulsanti-funzioni>

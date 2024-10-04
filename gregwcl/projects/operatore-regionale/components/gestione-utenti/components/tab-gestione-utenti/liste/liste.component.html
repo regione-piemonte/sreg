@@ -1,0 +1,270 @@
+<br>
+
+<div class="row greg" style="padding-top: 5px; padding-bottom: 5px;">
+
+  <div class="col-md-1"></div>
+
+  <div class="col" style="max-width: 3000px;">
+    <form [formGroup]="searchForm">
+      <div class="row gregFilter" (keyup.enter)="searchForm.valid? avviaRicerca() : null">
+
+
+        <div class="row col-md-12" style="padding-top:30px;padding-bottom:30px;">
+         
+          <mat-form-field class="col-md-4" style="padding-left: 0px; margin-top: -10px;">
+            <label class="filterLabel">Lista</label>
+            <input type="text" class="testo" placeholder="" matInput [formControl]="listaForm" 
+              [matAutocomplete]="autoLista">
+            <mat-autocomplete autoActiveFirstOption #autoLista="matAutocomplete" [panelWidth]="'auto'"
+              (optionSelected)="optionListaSelected($event.option)">
+
+              <ng-container *ngFor="let lista of listaFiltered">
+                  <mat-option [value]="lista.codice + ' - ' + lista.descrizione">
+                    {{ lista.codice }} - {{ lista.descrizione }}
+                  </mat-option>
+              </ng-container>
+            </mat-autocomplete>
+          </mat-form-field>
+          <!-- <div class="col-md-4 ricEs">
+            <label class="filterLabel">Lista</label>
+            <ng-container>
+              <select formControlName="lista" id="lista" class="form-control form-control-sm statoCombo campiricerca">
+                <option value="">Tutti</option>
+                <option *ngFor="let lista of liste" [value]="lista.id">{{lista.codice}} - {{lista.descrizione}}</option>
+              </select>
+            </ng-container>
+          </div> -->
+          <mat-form-field class="col-md-4" style="padding-left: 0px; margin-top: -10px;">
+            <label class="filterLabel">Ente</label>
+            <input type="text" class="testo" placeholder="" matInput [formControl]="enteForm"
+              [matAutocomplete]="autoEnte">
+            <mat-autocomplete autoActiveFirstOption #autoEnte="matAutocomplete" [panelWidth]="'auto'"
+              (optionSelected)="optionEnteSelected($event.option)">
+
+              <ng-container *ngFor="let ente of enteFiltered">
+                  <mat-option [value]="ente.codice + ' - ' + ente.descrizione">
+                    {{ ente.codice }} - {{ ente.descrizione }}
+                  </mat-option>
+              </ng-container>
+            </mat-autocomplete>
+          </mat-form-field>
+          <!-- <div class="col-md-4 ricEs">
+            <label class="filterLabel">Ente</label>
+            <ng-container>
+              <select formControlName="ente" id="ente" class="form-control form-control-sm campiricerca">
+                <option value="">Tutti</option>
+                <option *ngFor="let ente of enti" [value]="ente.id">{{ente.codice}} - {{ente.descrizione}}</option>
+              </select>
+            </ng-container>
+          </div>  -->
+         
+
+          <div class="col-md-4 verticalCentered ricEs" style="padding-top: 10px;">
+            <button id="btnSearch" type="submit" class="btn btn-primary block bottonifunzione"
+              [disabled]="!searchForm.valid" (click)="avviaRicerca()">
+              Cerca
+            </button>
+            <button id="btnLoading" class="btn btn-primary block" type="button" disabled style="display: none;">
+              <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+              Loading...
+            </button>
+          </div>
+
+        </div>
+
+      </div>
+    </form>
+  </div>
+
+  <div class="col-md-1"></div>
+
+</div>
+
+<div class="row greg" style="padding-top: 5px; padding-bottom: 5px;">
+  <div class="col-md-1"></div>
+
+  <div class="col-md-5" style="margin-bottom: 10px;">
+
+    <span class="results" style="margin-bottom: 10px;">Risultati: {{ dataListaRichieste.data.length }}</span>
+
+  </div>
+
+  <div class="col-md-5 align-self-end" style="margin-bottom: 10px;">
+  </div>
+
+  <div class="col-md-1"></div>
+  <div class="col-md-1"></div>
+  <div class="col-md-5 align-self-end" style="margin-bottom: 15px;">
+    <button type="button" class="btn btn-link pl-0" (click)="annullaRicerca()" style="color: #006CB4;">
+      <span style="margin-bottom: 10px;"></span>
+      <b style="font-size: 14px;">Annulla Ricerca</b>
+    </button>
+  </div>
+
+  <div class="col-md-5 align-self-end" style="margin-bottom: 15px;">
+    <span class="d-inline-block" data-bs-toggle="tooltip" title="Seleziona tutti gli Enti" style="float: right;">
+      <button id="btnApplica" style="font-size: 14px;" type="submit" class="btn btn-primary bottonifunzione"
+        (click)="creaLista()">
+        CREA LISTA
+      </button>
+    </span>
+  </div>
+  <div class="col-md-1"></div>
+</div>
+
+<div class="row greg section-denominente">
+  <div class="col-md-1"></div>
+
+  <div class="col-10">
+    <div class="row gregFilter">
+      <div class="col-md-12">
+        <table mat-table matSort [dataSource]="dataListaRichieste" multiTemplateDataRows
+          class="mb-3 table table-hover table-responsive-xl tabellagreg">
+
+          <ng-container matColumnDef="lista">
+            <th class="columns_header" style="width: 25%;" mat-header-cell *matHeaderCellDef> Lista
+            </th>
+            <td class="smarttable" mat-cell *matCellDef="let element"> {{element.codLista}} - {{element.descLista}}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="cestino">
+            <th class="columns_header" style="width: 0%;" mat-header-cell *matHeaderCellDef>
+            </th>
+            <td class="smarttable" mat-cell *matCellDef="let element; let i=index">
+              <button type="button" class="btn" data-toggle="tooltip" title="Elimina utente"
+                (click)="eliminaLista(element)">
+                <img src="assets/img/ui-modelli/cestino.svg" class="greg-icon-help fnpsImage" style="cursor: pointer;">
+              </button>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="matita">
+            <th class="columns_header" style="width: 0%;" mat-header-cell *matHeaderCellDef>
+            </th>
+            <td class="smarttable" mat-cell *matCellDef="let element">
+              <button type="button" class="btn" data-toggle="tooltip" title="Modifica dati anagrafici dell'utente"
+                (click)="openModificaLista(element)">
+                <img src="assets/img/user/editblue.png" class="greg-icon-help fnpsImage" style="cursor: pointer;">
+              </button>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="occhietto">
+            <th class="columns_header" style="width: 0%;" mat-header-cell *matHeaderCellDef> </th>
+            <td class="smarttable" mat-cell *matCellDef="let element">
+              <ng-template [ngIf]="!element.lista">
+                <img style="height: 20px; width: 20px; cursor: pointer;" src="assets/img/ui-modelli/visualizza.svg"
+                  class="greg-icon-help" (click)="changeLista(element)">
+              </ng-template>
+              <ng-template [ngIf]="element.lista">
+                <img style="height: 20px; width: 20px; cursor: pointer;" src="assets/img/ui-modelli/closedEye.svg"
+                  class="greg-icon-help" (click)="changeLista(element)">
+              </ng-template>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="enti">
+            <td class="smarttable" mat-cell *matCellDef="let element">
+              <div class="row">
+                <div class="col-md-12" style="padding-top: 10px; padding-left: 0px;"><b>Enti</b></div>
+                <div class="col-md-8" style="padding-top: 10px; padding-left: 0px;">
+                  <ng-container>
+                    <select [(value)]="element.ente.idEnte" (change)="onSelectionChangedEnte(element, $event.target.value)" class="form-control form-control-sm statoCombo campiricerca">
+                      <option [value]="0">Nessun Ente</option>
+                      <option *ngFor="let ente of element.entiMancate" [value]="ente.idEnte">
+                        {{ente.codEnte}} - {{ente.descEnte}}</option>
+                    </select>
+                  </ng-container>
+                </div>
+                <div class="col-md-4" style="padding-top: 10px; padding-left: 0px; padding-right: 10px;">
+                  <button type="button" class="btn btn-primary bottonifunzione buttonSpace" data-toggle="tooltip"
+                    [disabled]="disabilitaAggiungiEnti(element)" title="Salva azioni"
+                    (click)="aggiungiEnte(element)">
+                    Aggiungi
+                  </button>
+                </div>
+                <div class="col-md-12 tableAssociati" style="padding-top: 10px; padding-left: 0px; ">
+                  <table mat-table  [dataSource]="element.dataEnti"
+                    class="col-12 mb-3 table table-hover table-responsive-xl tabellagreg">
+                    <ng-container matColumnDef="ente">
+                      <th class="columns_header" mat-header-cell *matHeaderCellDef> Ente </th>
+                      <td class="smarttable" mat-cell *matCellDef="let ente"> {{ente.codEnte}} - {{ente.descEnte}}
+                      </td>
+                    </ng-container>
+                    <ng-container matColumnDef="cestino">
+                      <th class="columns_header pl-2" mat-header-cell *matHeaderCellDef> </th>
+                      <td class="smarttable pl-2" mat-cell *matCellDef="let ente">
+
+                        <button type="button" class="btn" data-toggle="tooltip" title="Elimina" (click)="eliminaEnte(element, ente)"
+                          style="margin-left: 10px;">
+                          <span class="fas fa-trash" style="color: #B8191A;"></span>
+                        </button>
+
+                      </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="enteRow;" class="riga-totale-azzurra"></tr>
+                    <tr mat-row *matRowDef="let row; columns:  enteRow; let ente; let i=index" class="riga-totale-azzurra"></tr>
+
+
+                  </table>
+                </div>
+              </div>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="vuoto1">
+            <td class="smarttable" mat-cell *matCellDef="let element">
+
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="salva">
+            <td class="smarttable" mat-cell *matCellDef="let element">
+              <ng-container *ngFor="let abilitente of element.abilitazioni">
+                <div class="row spazio">
+                  <div class="col-md-12">
+                  </div>
+                </div>
+              </ng-container>
+              <div class="row">
+                <div class="col-md-12" style="padding-left: 0px;">
+                  <button type="button" class="btn btn-primary bottonifunzione buttonSpace" data-toggle="tooltip" title="Salva abilitazioni"
+                    (click)="salvaEnti(element)">
+                    Salva
+                  </button>
+                </div>
+              </div>
+            </td>
+          </ng-container>
+
+         
+
+          <ng-container matColumnDef="vuoto2">
+            <td class="smarttable" mat-cell *matCellDef="let element">
+
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          <tr mat-row *matRowDef="let row; columns: secondRow; let element" class="riga-totale-azzurra"
+            [hidden]="!element.lista"></tr>
+          <!--  -->
+        </table>
+
+        <div class="col-md-12" *ngIf="dataListaRichieste?.data?.length == 0"
+          style="text-align: center;padding-top:30px;">
+          <label class="no-data-available">Nessuna scheda soddisfa i criteri di ricerca selezionati</label>
+        </div>
+
+        <mat-paginator class="paginator" [length]="dataListaRichieste?.data?.length" [pageSize]="10"
+          [pageSizeOptions]="[5, 10, 20]" [showFirstLastButtons]=true style="padding-top:30px;">
+        </mat-paginator>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-1"></div>
+</div>

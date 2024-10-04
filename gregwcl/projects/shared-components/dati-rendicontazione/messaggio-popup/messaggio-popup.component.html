@@ -1,0 +1,115 @@
+<div class="modal-header" style="border-bottom: 0px; padding-left: 0px;">
+  <h4 id="titolo" style="color: black; font-family: Roboto;" class="modal-title">
+    {{data?.titolo}}
+  </h4>
+  <button style="outline: none;" type="button" class="close" aria-label="Close" (click)="chiudiNo(data)">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<!-- <h1 mat-dialog-title class="testo">{{data?.titolo}}</h1> -->
+<div mat-dialog-content style="border-bottom: 1px solid #dee2e6;
+border-top: 1px solid #dee2e6;">
+  <div class="row error" *ngIf="data?.errors.length>0">
+    <div style="margin-left:20px">
+      <label class="titoloer">{{attenzione}}</label>
+      <ul>
+        <li *ngFor="let err of data?.errors">{{err}}</li>
+      </ul>
+      <p [innerHTML]="data?.messaggio"></p>
+    </div>
+  </div>
+  <div class="row check" *ngIf="data?.warningCheck!=null">
+    <div style="margin-left:20px">
+      <label class="titoloer">{{attenzione}}</label>
+      <ul>
+        <li>{{data?.warningCheck}}</li>
+      </ul>
+      <p [innerHTML]="data?.messaggio"></p>
+    </div>
+  </div>
+  <div class="row" [ngClass]="{'warning': !data.check, 'check': data.check}" *ngIf="data?.warnings.length>0">
+    <div style="margin-left:20px">
+      <label *ngIf="!data.check" class="titolowr">Warning:</label>
+      <label *ngIf="data.check" class="titoloer">Attenzione:</label>
+      <ul>
+        <li *ngFor="let warn of data?.warnings">{{warn}}</li>
+      </ul>
+      <p [innerHTML]="data?.messaggio"
+        *ngIf="data?.warnings.length>0 && data?.errors.length==0 && data?.warningCheck==null"></p>
+    </div>
+  </div>
+
+  <div class="row" style="padding-left:20px;padding-right:20px;padding-top:10px;padding-bottom:10px;background:#FEE7E8;"
+    *ngIf="data?.warnings.length==0 && data?.errors.length==0 && data?.esito=='KO'">
+    <p class="titoloer" [innerHTML]="data?.messaggio.substr(0,data?.messaggio.indexOf(';'))"></p>
+  </div>
+  <div class="row" style="padding-left:20px;padding-right:20px;padding-top:10px;padding-bottom:10px;background:#DFF0D9;"
+    *ngIf="data?.warnings.length==0 && data?.errors.length==0 && data?.esito=='OK' && data?.warningCheck==null">
+    <p class="titolowr" [innerHTML]="data?.messaggio.substr(0,data?.messaggio.indexOf(';'))"></p>
+  </div>
+  <div class="row" style="padding-left:20px;padding-right:20px;padding-top:10px;padding-bottom:10px;background:#F0F3F8;"
+    *ngIf="data?.warnings.length==0 && data?.errors.length==0 && data?.warningCheck==null">
+    <p class="titolowr" [innerHTML]="data?.messaggio.substr(data?.messaggio.indexOf(';')+1,data?.messaggio.length)"></p>
+  </div>
+  <div class="row" style="padding-top:10px;padding-bottom:10px;background:#F0F3F8;"
+    *ngIf="data?.errors.length==0 && data?.warningCheck==null ">
+    <ng-template [ngIf]="!data.check">
+      <label style="margin-left:20px" class="testo" for="nota">Nota</label>
+      <textarea style="margin-left:20px;margin-right:20px" id="nota" [(ngModel)]="data.nota" class="form-control"
+        placeholder="Inserisci qui la nota">
+          </textarea>
+    </ng-template>
+    <ng-template [ngIf]="data.check && data?.warnings.length!=0">
+      <label style="margin-left:20px" class="testo" for="nota">Motivazione</label>
+      <textarea style="margin-left:20px;margin-right:20px" id="nota" [(ngModel)]="data.nota" class="form-control"
+        placeholder="Inserisci qui la motivazione">
+          </textarea>
+    </ng-template>
+  </div>
+
+
+</div>
+<div *ngIf="!data.check">
+  <div mat-dialog-actions
+    *ngIf="(data?.errors.length>0 && data?.warnings.length>0) || (data?.errors.length>0 && data?.warnings.length==0) || data?.warningCheck!=null">
+    <div class="col-md-9"></div>
+    <div class="col-md-3">
+      <!-- <button class="bottoni" mat-stroked-button (click)="chiudiNo(data)">CHIUDI</button> -->
+    </div>
+  </div>
+  <div mat-dialog-actions
+    *ngIf="((data?.warnings.length>0 && data?.errors.length==0) || (data?.warnings.length==0 && data?.errors.length==0)) && data?.warningCheck==null">
+    <div class="col-md-3"></div>
+    <div class="col-md-2">
+      <button class="btn btn-link" mat-stroked-button (click)="chiudiNo(data)">NO</button>
+    </div>
+    <div class="col-md-2"></div>
+    <div class="col-md-2">
+      <button class="btn btn-primary block bottonifunzione" mat-stroked-button (click)="chiudiSi(data)"
+        [disabled]="checkMotivazione()"
+        [title]="checkMotivazione() ? 'Bisogna inserire una motivazione' : ''">SI</button>
+    </div>
+    <div class="col-md-3"></div>
+  </div>
+</div>
+
+<div *ngIf="data.check">
+  <div mat-dialog-actions *ngIf="(data?.warnings.length==0)">
+    <div class="col-md-9"></div>
+    <div class="col-md-3">
+      <!-- <button class="bottoni" mat-stroked-button (click)="chiudiNo(data)">CHIUDI</button> -->
+    </div>
+  </div>
+  <div mat-dialog-actions *ngIf="(data?.warnings.length>0)">
+    <div class="col-md-3"></div>
+    <div class="col-md-2">
+      <button class="btn btn-link" mat-stroked-button (click)="chiudiNo(data)">INDIETRO</button>
+    </div>
+    <div class="col-md-2"></div>
+    <div class="col-md-2">
+      <button class="btn btn-primary block bottonifunzione" mat-stroked-button (click)="chiudiSi(data)" [disabled]="checkMotivazione()"
+        [title]="checkMotivazione() ? 'Bisogna inserire una motivazione' : ''">CONFERMA</button>
+    </div>
+    <div class="col-md-3"></div>
+  </div>
+</div>

@@ -1,0 +1,77 @@
+<div class="modal-header" style="border-bottom: 0px; padding-left: 0px;">
+  <h4 id="titolo" style="color: black; font-family: Roboto;" class="modal-title">
+    {{data?.titolo}}
+  </h4>
+  <button style="outline: none;" type="button" class="close" aria-label="Close" (click)="annulla()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<!-- <h1 mat-dialog-title class="titolo">{{data?.titolo}}</h1> -->
+
+<div mat-dialog-content style="border-bottom: 1px solid #dee2e6;
+border-top: 1px solid #dee2e6;">
+  <div class="row" style="padding-top:10px; padding-bottom:10px;">
+    <p class="messaggio" [innerHTML]="data.messaggio">
+      <!-- {{data.messaggio}} -->
+    </p>
+  </div>
+  <div class="row" style="padding-top:10px; padding-bottom:10px;">
+    <p class="messaggio">Vuoi procedere?</p>
+  </div>
+</div>
+
+<ng-template [ngIf]="data.operazione">
+  <div class="row" style="display: flex;padding-top:10px;"
+    [ngClass]="{'disabledDiv': (client.azioni.get('CronologiaRegionale')[0] && client.azioni.get('CronologiaEnte')[0])}"
+    *ngIf="client.azioni.get('CronologiaRegionale')[1] || client.azioni.get('CronologiaEnte')[1]">
+    <div class="col-2 cronologia">
+      Nota
+    </div>
+    <div class="col-10 fontnormale">
+      <div class="mt-2" style="display: flex;">
+        <div class="pr-2 w-15" *ngIf="visibileSection">
+          <label class="inputLabel">Per Ente</label>
+        </div>
+
+        <div class="w-100">
+          <div class="form-floating">
+            <textarea id="notaPerEnte" [(ngModel)]="cronologia.notaEnte" class="form-control"
+              placeholder="{{somePlaceholder}}" [ngClass]="{'campovuoto': client.azioni.get('CronologiaRegionale')[1]}">
+                </textarea>
+          </div>
+        </div>
+
+      </div>
+      <div class="mt-2" style="display: flex;" *ngIf="visibileSection">
+        <div class="pr-2 w-15">
+          <label class="inputLabel">Interna</label>
+        </div>
+        <div class="w-100">
+          <div class="form-floating">
+            <textarea id="notaInterna" [(ngModel)]="cronologia.notaInterna" class="form-control"
+              placeholder="Inserisci qui la nota Interna">
+                </textarea>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<div mat-dialog-actions style="padding-bottom: 20px;
+padding-top: 20px;">
+  <div class="col-md-4">
+    <button class="btn btn-link" (click)="annulla()">
+      ANNULLA
+    </button>
+  </div>
+  <div class="col-md-4">
+  </div>
+  <div class="col-md-4">
+    <button class="btn btn-primary" mat-stroked-button (click)="conferma()" cdkFocusInitial>
+      CONFERMA
+    </button>
+  </div>
+  <div class="col-md-4"></div>
+</div>

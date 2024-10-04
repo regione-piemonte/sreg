@@ -1,0 +1,46 @@
+<section class="greg" style="height:70vh;">
+    <div class="container w-100" style="margin:auto">
+        <div class="row">
+            <div class="col-md-10 offset-md-1">
+                <div class="row">
+                    <div class="col-12" style="padding-top: 30px;">
+                        <div class="row" *ngIf="utente?.listaprofili.length >= 1">
+                            <div class="col-12 form-group">
+                                <p>
+                                    Selezionare il profilo con il quale si vuole accedere
+                                </p>
+                                <select (change)="onSelectionProfiloChanged()" class="form-control" [(ngModel)]="profiloSelezionato">
+                                    <option *ngFor="let profilo of utente.listaprofili; let i = index"  [ngValue]="profilo">
+                                       {{profilo.descProfilo | uppercase}}
+                                    </option>
+                                </select>
+                            </div>
+                          </div>
+                         <div class="row" *ngIf="profiloSelezionato.descProfilo !==''" style="padding-top: 15px;">
+                            <div class="col-12 form-group">
+                                <p>
+                                    Selezionare la lista degli enti su cui si vuole lavorare
+                                </p>
+                                <select (change)="onSelectionListaChanged()" class="form-control" [(ngModel)]="listaSelezionata">
+                                    <option *ngFor="let lista of profiloSelezionato.listaenti; let i = index"  [ngValue]="lista">
+                                       {{lista.descLista | uppercase}}
+                                    </option>
+                                </select>
+                            </div>
+                          </div>
+                         <div class="col-md-3 form-group" style="padding-top: 10px;">
+						<button id="btnSearch" type="submit" class="btn btn-primary block bottonifunzione" [disabled]="!abilitaconferma" (click)="onClick()">
+							Conferma
+						</button>
+						<button id="btnLoading" class="btn btn-primary block" type="button" disabled style="display: none;">
+							<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> 
+							Loading...
+						</button>
+					    </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

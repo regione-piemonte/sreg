@@ -1,0 +1,371 @@
+<div class="row" style="background: white; padding-top: 15px; padding-bottom: 15px; box-shadow: 1px 2px 8px #C4C4C4;">
+    <div class="col-md-9 fontboldTitle" style="padding-bottom:10px;padding-top:10px;">
+        <div class="bold" style="padding-bottom:20px;">
+            {{datiEnte?.denominazione}} - Anno di esercizio: {{infoOperatore?.annoEsercizio}}
+        </div>
+        <div>
+            {{titolo}}
+        </div>
+    </div>
+    <div class="col-md-3 fontbold" style="padding-bottom:30px;padding-top:10px;" *ngIf="client.azioni.get('EsportaModelloF')[1]"> 
+        <div  style="text-align: right;padding-right: 30px;">
+            <button type="button" class="btn" data-toggle="tooltip" title="Esporta in Excel" (click)="esportaexcel()">
+                <i class="fa fa-file-excel" style="cursor: pointer;color:green;width: 40px;height: 40px;"></i>
+            </button>
+        </div>
+    </div>    
+    <div  *ngIf="conteggioP" class="col-md-12 fontbold" style="padding-bottom:10px;padding-top:10px;">
+        <div>
+            CONTEGGIO PERSONALE
+        </div>
+    </div>
+    <table *ngIf="conteggioP" id="tableTotaliModelloF" class="table table-responsive-xl greg-modellof-table" style="width: 100% !important;" [ngClass]="{'disabledDiv': client.azioni.get('ModelloF')[0]}">
+        <thead class="greg-modellof-tbl-riga-header">
+            <tr>
+                <th>
+                    <div class="testo-modello-f">Profilo Professionale</div>
+                </th>
+                <ng-container *ngFor="let profilo of conteggioP?.listaProfiloProfessionale; let j=index">
+                    <th>
+                        <div class="testo-modello-f">{{profilo.descProfiloProfessionale}}</div>
+                    </th>
+                </ng-container>
+                <th>
+                    <div class="testo-modello-f">Totale</div>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td [attr.colspan]="conteggioP?.listaProfiloProfessionale.length+1"> 
+                   <div class="testo-modello-f">Personale dipendente dell'Ente
+                    <ng-template #popContent1>
+				  {{msg1}}
+				</ng-template>
+				<label style="white-space: nowrap; padding-left: 10px;" [placement]="['right', 'left', 'auto']" 
+			      [ngbPopover]="popContent1"  triggers="hover">
+                    <img style="height: 20px; width: 20px;" src="assets/img/ui-modelli/help.png" class="greg-icon-help">
+                    </label> 
+                   </div>
+                   
+                </td>
+                <td class="prest-color-nucleo1">
+
+                </td>
+            </tr>
+            <ng-container *ngFor="let personale of conteggioP?.listaPersonaleEnte; let i=index">
+                <ng-template [ngIf]="i<4">
+                <tr>
+                    <td>
+                        <div class="testo-norm-modello-f">{{personale.descPersonaleEnte}}</div>
+                    </td>
+                    <ng-container *ngFor="let valori of personale.listaValori; let j=index">
+                        <td>
+                            <input type="text" class="form-control inputnumber"  [(ngModel)]="TDataPersonale[i]?.listaValori[j].valore" disabled
+                                    (blur)="changeKey(i, j, $event.target.value, true)" (ngModelChange)="calcTableValue()" (keypress)="numberOnly($event)"
+                                    [class.campovuoto]="TDataPersonale[i]?.listaValori[j].valore === null || TDataPersonale[i]?.listaValori[j].valore === ''" [class.campovalorizzato]="TDataPersonale[i]?.listaValori[j].valore !== null && TDataPersonale[i]?.listaValori[j].valore !== ''"> 
+                        </td>
+                    </ng-container>
+                        <td style="background-color: #DBEEF7;">
+                            <div class="testo-modello-f" style="text-align: center;">{{totaleRP[i]}}</div>
+                        </td>
+                </tr>
+                </ng-template>
+            </ng-container>
+            <tr>
+                <td class="prest-color-nucleo1"><div class="testo-modello-f">Totale operatori dipendenti</div></td>
+                <ng-container *ngFor="let personale of conteggioP?.listaProfiloProfessionale; let j=index">
+                    <td class="prest-color-nucleo1">
+                        <div class="testo-modello-f" style="text-align: center;">{{totaleCP[j]}}</div>
+                    </td>
+                </ng-container>
+                <td class="prest-color-nucleo1">
+                    <div class="testo-modello-f" style="text-align: center;">{{totaleTotCP}}</div>
+                </td>
+            </tr>
+            <tr>
+                <td [attr.colspan]="conteggioP?.listaProfiloProfessionale.length+1"> 
+                    <div class="testo-modello-f">Personale non dipendente dell'Ente
+                     <ng-template #popContent2>
+					 {{msg2}}
+					</ng-template>
+					<label style="white-space: nowrap; padding-left: 10px;" [placement]="['right', 'left', 'auto']" 
+					[ngbPopover]="popContent2"  triggers="hover">
+                        <img style="height: 20px; width: 20px;" src="assets/img/ui-modelli/help.png" class="greg-icon-help">
+                        </label> 
+                    </div>
+                    
+                 </td>
+                 <td class="prest-color-nucleo1">
+ 
+                 </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="testo-norm-modello-f">{{conteggioP?.listaPersonaleEnte[4].descPersonaleEnte}}</div>
+                </td>
+                <ng-container *ngFor="let personale of conteggioP?.listaProfiloProfessionale; let j=index">
+                    <td>
+                        <input type="text" class="form-control inputnumber" [(ngModel)]="TDataPersonale[4]?.listaValori[j].valore" disabled
+                        (blur)="changeKey(4, j, $event.target.value, true)" (ngModelChange)="calcTableValue()" (keypress)="numberOnly($event)"
+                        [class.campovuoto]="TDataPersonale[4]?.listaValori[j].valore === null || TDataPersonale[4]?.listaValori[j].valore === ''" [class.campovalorizzato]="TDataPersonale[4]?.listaValori[j].valore !== null && TDataPersonale[4]?.listaValori[j].valore !== ''"> 
+                    </td>
+                </ng-container>
+                <td style="background-color: #DBEEF7;">
+                    <div class="testo-modello-f" style="text-align: center;">{{totaleRP[4]}}</div>
+                </td>
+            </tr>
+            <tr>
+                <td class="prest-color-nucleo2">
+                    <div class="testo-modello-f-white">Totale operatori</div>
+                    <div class="testo-norm-modello-f-white">(dipendenti + non dipendenti)</div>
+                </td>
+                <ng-container *ngFor="let personale of conteggioP?.listaProfiloProfessionale; let j=index">
+                    <td class="prest-color-nucleo2"> 
+                        <input type="text" class="form-control inputnumber" [(ngModel)]="totaleCOpP[j]" readonly
+                            [class.campovuoto]="totaleCOpP[j] === undefined || totaleCOpP[j] === ''" [class.campovalorizzato]="totaleCOpP[j] !== undefined && totaleCOpP[j] !== ''">
+                    </td>
+                </ng-container>
+                <td class="prest-color-nucleo2">
+                    <div class="testo-modello-f-white" style="text-align: center;">{{totaleTotCOpP}}</div>
+                </td>
+            </tr>
+            <ng-container *ngFor="let personale of conteggioP?.listaPersonaleEnte; let i=index">
+                <ng-template [ngIf]="i>4">
+                <tr>
+                    <td>
+                        <div class="testo-norm-modello-f">{{personale.descPersonaleEnte}}</div>
+                    </td>
+                    <ng-container *ngFor="let valori of personale.listaValori; let j=index">
+                        <td>
+                            <input type="text" class="form-control inputnumber" [(ngModel)]="TDataPersonale[i]?.listaValori[j].valore" disabled
+                                    (blur)="changeKey(i, j, $event.target.value, true)" (ngModelChange)="calcTableValue()" (keypress)="numberOnly($event)"
+                                    [class.campovuoto]="TDataPersonale[i]?.listaValori[j].valore === null || TDataPersonale[i]?.listaValori[j].valore === ''" [class.campovalorizzato]="TDataPersonale[i]?.listaValori[j].valore !== null && TDataPersonale[i]?.listaValori[j].valore !== ''"> 
+                        </td>
+                    </ng-container>
+                        <td style="background-color: #006CB4">
+                            <div class="testo-modello-f-white" style="text-align: center;">{{totaleRP[i]}}</div>
+                        </td>
+                </tr>
+                </ng-template>
+            </ng-container>
+        </tbody>
+    </table>    
+
+    <br>
+        <hr width="97%" align="center" style="border: 1px solid #DEE2E6;">
+    <br>
+
+    <div *ngIf="conteggioO" class="col-md-12 fontbold" style="padding-bottom:10px;padding-top:10px;">
+        <div>
+            CONTEGGIO MONTE ORE SETTIMANALE
+        </div>
+    </div>
+
+    <table *ngIf="conteggioO" id="tableTotaliModelloFOre" class="table table-responsive-xl greg-modellof-table" style="width: 100% !important;" [ngClass]="{'disabledDiv': client.azioni.get('ModelloF')[0]}">
+        <thead class="greg-modellof-tbl-riga-header">
+            <tr>
+                <th>
+                    <div class="testo-modello-f">Profilo Professionale</div>
+                </th>
+                <ng-container *ngFor="let profilo of conteggioO?.listaProfiloProfessionale; let j=index">
+                    <th>
+                        <div class="testo-modello-f">{{profilo.descProfiloProfessionale}}</div>
+                    </th>
+                </ng-container>
+                <th>
+                    <div class="testo-modello-f">Totale</div>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td [attr.colspan]="conteggioO?.listaProfiloProfessionale.length+1"> 
+                   <div class="testo-modello-f">Personale dipendente dell'Ente
+                    <ng-template #popContent3>
+				   {{msg3}}
+				</ng-template>
+				<label style="white-space: nowrap; padding-left: 10px;" [placement]="['right', 'left', 'auto']" 
+				[ngbPopover]="popContent3"  triggers="hover">
+                    <img style="height: 20px; width: 20px;" src="assets/img/ui-modelli/help.png" class="greg-icon-help">
+                    </label> 
+                   </div>
+                   
+                </td>
+                <td class="prest-color-nucleo1">
+
+                </td>
+            </tr>
+            <ng-container *ngFor="let personale of conteggioO?.listaPersonaleEnte; let i=index">
+                <ng-template [ngIf]="i<5">
+                <tr>
+                    <td>
+                        <div class="testo-norm-modello-f">{{personale.descPersonaleEnte}}</div>
+                    </td>
+                    <ng-container *ngFor="let valori of personale.listaValori; let j=index">
+                        <td>
+                            <input type="text" class="form-control inputnumber" [(ngModel)]="TDataOre[i]?.listaValori[j].valore" disabled
+                                    (blur)="changeKey(i, j, $event.target.value, false)" (ngModelChange)="calcTableValue()" (keypress)="numberOnly($event)"
+                                    [class.campovuoto]="TDataOre[i]?.listaValori[j].valore === null || TDataOre[i]?.listaValori[j].valore === ''" [class.campovalorizzato]="TDataOre[i]?.listaValori[j].valore !== null && TDataOre[i]?.listaValori[j].valore !== ''"> 
+                        </td>
+                    </ng-container>
+                        <td style="background-color: #DBEEF7;">
+                            <div class="testo-modello-f" style="text-align: center;">{{totaleRO[i]}}</div>
+                        </td>
+                </tr>
+                </ng-template>
+            </ng-container>
+            <tr>
+                <td class="prest-color-nucleo1"><div class="testo-modello-f">Totale monte ore per area di attivita' trasversale e utenza</div></td>
+                <ng-container *ngFor="let personale of conteggioO?.listaProfiloProfessionale; let j=index">
+                    <td class="prest-color-nucleo1">
+                        <div class="testo-modello-f" style="text-align: center;">{{totaleCO[j]}}</div>
+                    </td>
+                </ng-container>
+                <td class="prest-color-nucleo1">
+                    <div class="testo-modello-f" style="text-align: center;">{{totaleTotCO}}</div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="testo-norm-modello-f">{{conteggioO?.listaPersonaleEnte[5].descPersonaleEnte}}</div>
+                </td>
+                <ng-container *ngFor="let personale of conteggioO?.listaProfiloProfessionale; let j=index">
+                    <td>
+                        <input type="text" class="form-control inputnumber" [(ngModel)]="TDataOre[5]?.listaValori[j].valore" disabled
+                        (blur)="changeKey(5, j, $event.target.value, false)"(ngModelChange)="calcTableValue()" (keypress)="numberOnly($event)"
+                        [class.campovuoto]="TDataOre[5]?.listaValori[j].valore === null || TDataOre[5]?.listaValori[j].valore === ''" [class.campovalorizzato]="TDataOre[5]?.listaValori[j].valore !== null && TDataOre[5]?.listaValori[j].valore !== ''"> 
+                    </td>
+                </ng-container>
+                <td style="background-color: #DBEEF7;">
+                    <div class="testo-modello-f" style="text-align: center;">{{totaleRO[5]}}</div>
+                </td>
+            </tr>
+            <tr>
+                <td class="prest-color-nucleo1">
+                    <div class="testo-modello-f">Totale monte ore settimanale
+                     <ng-template #popContent4>
+					  {{msg4}}
+					</ng-template>
+					<label style="white-space: nowrap; padding-left: 10px;" [placement]="['right', 'left', 'auto']" 
+					[ngbPopover]="popContent4"  triggers="hover">
+                    <img style="height: 20px; width: 20px;" src="assets/img/ui-modelli/help.png" class="greg-icon-help">
+                    </label>
+                     </div>
+                    <div class="testo-picc-modello-f">per area di attivita' trasversale, utenza e per attivita' amministrative</div>
+                </td>
+                <ng-container *ngFor="let personale of conteggioO?.listaProfiloProfessionale; let j=index">
+                    <td class="prest-color-nucleo1">
+                        <input type="text" class="form-control inputnumber" [(ngModel)]="totaleCOpO[j]" readonly
+                            [class.campovuoto]="totaleCOpO[j] === undefined || totaleCOpO[j] === ''" [class.campovalorizzato]="totaleCOpO[j] !== undefined && totaleCOpO[j] !== ''">
+                    </td>
+                </ng-container>
+                <td class="prest-color-nucleo1">
+                    <div class="testo-modello-f" style="text-align: center;">{{totaleTotCOpO}}</div>
+                </td>
+            </tr>
+            <tr>
+                <td [attr.colspan]="conteggioO?.listaProfiloProfessionale.length+1"> 
+                    <div class="testo-modello-f">Personale non dipendente dell'Ente
+                     <ng-template #popContent5>
+					  {{msg5}}
+					</ng-template>
+					<label style="white-space: nowrap; padding-left: 10px;" [placement]="['right', 'left', 'auto']" 
+					[ngbPopover]="popContent5"  triggers="hover">
+                        <img style="height: 20px; width: 20px;" src="assets/img/ui-modelli/help.png" class="greg-icon-help">
+                        </label> 
+                    </div>
+                 </td>
+                 <td class="prest-color-nucleo1">
+ 
+                 </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="testo-norm-modello-f">{{conteggioO?.listaPersonaleEnte[6].descPersonaleEnte}}</div>
+                </td>
+                <ng-container *ngFor="let personale of conteggioO?.listaProfiloProfessionale; let j=index">
+                    <td>
+                        <input type="text" class="form-control inputnumber" [(ngModel)]="TDataOre[6]?.listaValori[j].valore" disabled
+                        (blur)="changeKey(6, j, $event.target.value, false)"(ngModelChange)="calcTableValue()" (keypress)="numberOnly($event)"
+                        [class.campovuoto]="TDataOre[6]?.listaValori[j].valore === null || TDataOre[6]?.listaValori[j].valore === ''" [class.campovalorizzato]="TDataOre[6]?.listaValori[j].valore !== null && TDataOre[6]?.listaValori[j].valore !== ''"> 
+                    </td>
+                </ng-container>
+                <td style="background-color: #DBEEF7;">
+                    <div class="testo-modello-f" style="text-align: center;">{{totaleRO[6]}}</div>
+                </td>
+            </tr>
+            <tr>
+                <td class="prest-color-nucleo2">
+                    <div class="testo-modello-f-white">Totale monte ore settimanale</div>
+                    <div class="testo-norm-modello-f-white">(personale dipendente + personale non dipendente)</div>
+                </td>
+                <ng-container *ngFor="let personale of conteggioO?.listaProfiloProfessionale; let j=index">
+                    <td class="prest-color-nucleo2"> 
+                        <input type="text" class="form-control inputnumber" [(ngModel)]="totaleCOpAttO[j]" readonly
+                            [class.campovuoto]="totaleCOpAttO[j] === undefined || totaleCOpAttO[j] === ''" [class.campovalorizzato]="totaleCOpAttO[j] !== undefined && totaleCOpAttO[j] !== ''">
+                    </td>
+                </ng-container>
+                <td class="prest-color-nucleo2">
+                    <div class="testo-modello-f-white" style="text-align: center;">{{totaleTotCOpAttO}}</div>
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+            </tr>
+            <tr>
+                <td class="prest-color-nucleo2">
+                    <div class="testo-modello-f-white">Monte ore settimanale pro capite del personale dipendente</div>
+                </td>
+                <ng-container *ngFor="let personale of conteggioO?.listaProfiloProfessionale; let j=index">
+                    <td class="prest-color-nucleo2"> 
+                        <input type="text" class="form-control inputnumber" [ngClass]="{'redText' : parsingInt(monteOreDip[j])>40, 'redBackground' : checkValidita(j, false)  }" [(ngModel)]="monteOreDip[j]" readonly
+                            [class.campovuoto]="monteOreDip[j] === undefined || monteOreDip[j] === ''" [class.campovalorizzato]="monteOreDip[j] !== undefined && monteOreDip[j] !== ''" data-toggle="tooltip" [title]="checkValidita(j, false) ? tooltip : ''">
+                    </td>
+                </ng-container>
+                <td class="prest-color-nucleo2">
+                    <div class="testo-modello-f-white" style="text-align: center;">{{totaleMonteOreDip}}</div>
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+            </tr>
+            <tr>
+                <td class="prest-color-nucleo2">
+                    <div class="testo-modello-f-white">Monte ore settimanale pro capite del personale esternalizzato</div>
+                </td>
+                <ng-container *ngFor="let personale of conteggioO?.listaProfiloProfessionale; let j=index">
+                    <td class="prest-color-nucleo2"> 
+                        <input type="text" class="form-control inputnumber" [ngClass]="{'redText' : parsingInt(monteOreNonDip[j])>40, 'redBackground' : checkValidita(j, true) }" [(ngModel)]="monteOreNonDip[j]" readonly
+                            [class.campovuoto]="monteOreNonDip[j] === undefined || monteOreNonDip[j] === ''" [class.campovalorizzato]="monteOreNonDip[j] !== undefined && monteOreNonDip[j] !== ''" data-toggle="tooltip" [title]="checkValidita(j, true) ? tooltip : ''">
+                    </td>
+                </ng-container>
+                <td class="prest-color-nucleo2">
+                    <div class="testo-modello-f-white" style="text-align: center;">{{totaleMonteOreNonDip}}</div>
+                </td>
+            </tr>
+        </tbody>
+    </table>  
+    </div>
+
+
+<div class="row" style="padding-top: 15px; padding-bottom: 20px;">
+</div>
+
+
+<!-- CRONOLOGIA -->
+<app-cronologia-modelli-archivio></app-cronologia-modelli-archivio>
+
+<br>
+
+<!-- BOTTONI 
+<app-pulsanti-funzioni [mostrasalva]="mostrasalva" [idRendicontazioneEnte]="idRendicontazioneEnte" (salvaEvent)="salvaModifiche($event)"></app-pulsanti-funzioni>-->

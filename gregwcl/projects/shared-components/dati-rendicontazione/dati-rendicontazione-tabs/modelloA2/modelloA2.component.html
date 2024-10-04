@@ -1,0 +1,520 @@
+<div class="row" style="background: white; padding-top: 20px; padding-bottom: 5px; box-shadow: 1px 2px 8px #C4C4C4;">
+    <div class="col-md-9 fontbold" style="padding-bottom:30px;padding-top:10px;">
+        <div class="bold" style="padding-bottom:20px;">
+            {{datiEnte?.denominazione}} - Anno di esercizio: {{infoOperatore?.annoEsercizio}}
+        </div>
+         <div>{{intestazione}}</div>
+    </div> 
+    <div class="col-md-3 fontbold" style="padding-bottom:30px;padding-top:10px;" *ngIf="client.azioni.get('EsportaModelloA2')[1]"> 
+        <div  style="text-align: right;padding-right: 30px;">
+            <button type="button" class="btn" data-toggle="tooltip" title="Esporta in Excel" (click)="esportaexcel()">
+                <i class="fa fa-file-excel" style="cursor: pointer;color:green;width: 40px;height: 40px;"></i>
+            </button>
+        </div>
+    </div>
+    <div class="col-md-12">
+       <div class="tab-row" style="padding-left: 15px;padding-right: 15px;">
+            <ul ngbNav #nav="ngbNav" [(activeId)]="activeTab" class="nav-tabs" style="width: 100%; font-weight: bold;">
+                <li class="gregTab" [ngbNavItem]="1">
+                    <a ngbNavLink>Trasferimento da Ente Gestore a Comune</a>
+                    <ng-template ngbNavContent>
+                        <div class="tab-row">
+
+                            <mat-horizontal-stepper #stepper [linear]="true">
+
+                                <mat-step [editable]="true" [completed]="listaCausali?.length > 0">
+
+                                    <ng-template matStepLabel><b>Definisci causali</b></ng-template>
+                                    <div class="col-md-12">
+
+                                        <p><b>Puoi definire e utilizzare fino a un massimo di 5 diverse causali</b></p>
+
+                                        <div class="row">
+                                            <div class="col-md-7">
+                                                <label class="label-size" for="causale">Causale</label>
+                                            </div>
+                                            <div class="col-md-2"></div>
+                                            <div class="col-md-3"></div>
+                                        </div>
+
+                                        <div class="row form-group">
+                                            <div class="col-md-7" style="padding-top: 3px;">
+                                                <input id="causale" [(ngModel)]="causaleInput" class="form-control input-size" [disabled]="client.readOnly || client.azioni.get('ModelloA2')[0]"
+                                                    type="text" placeholder="Scrivi una causale">
+                                            </div>
+                                            <div class="col-md-2">
+                                                <button class="btn btn-primary bottonifunzione"
+                                                    [disabled]="causaleInput == null || causaleInput?.trim().length == 0 || (client.readOnly) || client.azioni.get('ModelloA2')[0]"
+                                                    (click)="aggiungiCausale()">AGGIUNGI</button>
+                                            </div>
+                                            <div class="col-md-3"></div>
+                                        </div>
+                                    </div>
+                                    <br><br>
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                            <table #causaliTable [hidden]="listaCausali?.length == 0" mat-table
+                                                [dataSource]="listaCausali"
+                                                class="mb-3 table table-hover table-responsive-xl tabellagreg">
+                                                <ng-container matColumnDef="descCausale">
+                                                    <th class=" columns_header" mat-header-cell *matHeaderCellDef>
+                                                        Causali inserite </th>
+                                                    <td class="smarttable text-wrap" style="width: 700px;" mat-cell
+                                                        *matCellDef="let element; let i = index">
+                                                        <b>{{i+1}}. </b>{{element.descrizione}}
+                                                    </td>
+                                                </ng-container>
+
+                                                <ng-container matColumnDef="actions">
+                                                    <th class=" columns_header" mat-header-cell *matHeaderCellDef>
+                                                        Azioni </th>
+                                                    <td class="smarttable text-wrap" style="width: 200px;" mat-cell
+                                                        *matCellDef="let element">
+                                                        <button type="button" (click)="eliminaCausale(element)" [disabled]="client.readOnly || client.azioni.get('ModelloA2')[0]"
+                                                            class="btn" data-toggle="tooltip" title="elimina">
+                                                            <span class="fas fa-trash" style="color: #B8191A;"></span>
+                                                        </button>
+                                                    </td>
+                                                </ng-container>
+
+
+                                                <tr mat-header-row *matHeaderRowDef="['descCausale', 'actions']">
+                                                </tr>
+                                                <tr mat-row
+                                                    *matRowDef="let row; columns: ['descCausale', 'actions']; let i = index">
+                                                </tr>
+                                            </table>
+
+                                        </div>
+                                    </div>
+                                    <br><br>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <button [disabled]="listaCausali?.length == 0" class="btn btn-success"
+                                                matStepperNext style="float: right;">AVANTI</button>
+                                        </div>
+                                    </div>
+                                    <br>
+                                </mat-step>
+
+                                <mat-step [editable]="true">
+
+                                    <ng-template matStepLabel><b>Indica i trasferimenti</b></ng-template>
+                                    <div class="col-md-12">
+                                        <p><b>Indica l'importo in Euro del trasferimento al Comune selezionato,
+                                                specificando la causale</b></p>
+                                        <br>
+                                        <div class="row">
+                                            <div style="width: 188px;">
+                                                <label class="label-size" for="trasferimentoEnte">Trasferimento dall'Ente</label>
+                                            </div>
+                                            <div class="col-sm-1"></div>
+                                            <div style="width: 279px; margin-right: 20px;">
+                                                <label class="label-size" for="comuneEnte">Al comune</label>
+                                            </div>
+                                            <div style="width: 279px; margin-right: 20px;">
+                                                <label class="label-size" for="causaleEnte">Causale</label>
+                                            </div>
+                                            <div></div>
+                                        </div>
+
+                                        <div class="row form-group">
+                                            <div style="width: 188px; padding-top: 3px;">
+                                                <input id="trasferimentoEnte" class="form-control input-size" type="text" [disabled]="client.readOnly || client.azioni.get('ModelloA2')[0]"
+                                                    (blur)="transformAmountEnte('ente')" style="text-align: right; width: 188px;"
+                                                    [(ngModel)]="trasfEnteSwap" appTwoDigitDecimalNumber>
+                                            </div>
+                                            <div class="col-sm-1" style="text-align: center; padding-top: 3px;">
+                                                <img src="assets/img/user/frecciadestra.png" style="padding-top: 5px;">
+                                                <!-- <i class="fas fa-long-arrow-alt-right fa-3x"></i> -->
+                                            </div>
+                                            <div style="width: 279px; margin-right: 20px; padding-top: 3px;">
+                                                <ng-container>
+                                                    <select name="comuneEnte" id="comuneEnte" [disabled]="client.readOnly || client.azioni.get('ModelloA2')[0]"
+                                                        class="form-control form-control-sm statoCombo input-size" style="width: 279px;"
+                                                        [(ngModel)]="comuneSelected">
+                                                        <option [value]="null">Seleziona Comune</option>
+                                                        <option *ngFor="let comune of listaComuniAssociati"
+                                                            [ngValue]="comune">{{comune.codiceIstat + " - " +
+                                                            comune.desComune}}</option>
+                                                    </select>
+                                                </ng-container>
+                                            </div>
+                                            <div style="width: 279px; margin-right: 20px; padding-top: 3px;">
+                                                <ng-container>
+                                                    <select name="causaleEnte" id="causaleEnte" [disabled]="client.readOnly || client.azioni.get('ModelloA2')[0]"
+                                                        class="form-control form-control-sm statoCombo input-size" style="width: 279px;"
+                                                        [(ngModel)]="causaleSelected">
+                                                        <option [value]="null">Seleziona Causale</option>
+                                                        <option *ngFor="let causale of listaCausali"
+                                                            [ngValue]="causale">{{causale.descrizione}}</option>
+                                                    </select>
+                                                </ng-container>
+                                            </div>
+                                            <div>
+                                                <button class="btn btn-primary bottonifunzione" [disabled]="client.readOnly || client.azioni.get('ModelloA2')[0]"
+                                                    (click)="aggiungiTrasfEnte()">AGGIUNGI</button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <br><br>
+
+                                    <div class="row">
+
+                                        <div class="col-md-12" [hidden]="trasferimentiEnte?.length == 0">
+                                            <div style="padding-bottom: 20px;"><b>TOTALI TRASFERIMENTI AI COMUNI</b></div>
+                                            <table #trasferimentiEnteTable mat-table [dataSource]="trasferimentiEnte"
+                                                class="mb-3 table table-hover table-responsive-xl tabellagreg" style="max-width: 1440px;">
+                                                <ng-container matColumnDef="codIstat">
+                                                    <th class=" columns_header text-wrap istatCol" mat-header-cell
+                                                        *matHeaderCellDef>
+                                                        Codice ISTAT </th>
+                                                    <td class="smarttable text-wrap istatCol" mat-cell
+                                                        *matCellDef="let element">
+                                                        {{element.comune.codiceIstat}} </td>
+                                                    <!-- <td class="smarttable" mat-footer-cell *matFooterCellDef></td> -->
+                                                </ng-container>
+
+                                                <ng-container matColumnDef="comune">
+                                                    <th class=" columns_header text-wrap comuneCol" mat-header-cell
+                                                        *matHeaderCellDef>
+                                                        Comune </th>
+                                                    <td class="smarttable text-wrap comuneCol" mat-cell
+                                                        *matCellDef="let element">
+                                                        {{element.comune.desComune}} </td>
+                                                    <!-- <td class="smarttable" mat-footer-cell *matFooterCellDef></td> -->
+                                                </ng-container>
+
+                                                <ng-container matColumnDef="causale">
+                                                    <th class=" columns_header causaleCol" mat-header-cell *matHeaderCellDef>
+                                                        Causale </th>
+                                                    <td class="smarttable text-wrap causaleCol" mat-cell
+                                                        *matCellDef="let element">
+                                                        {{element.causale.descrizione}} </td>
+                                                    <!-- <td class="smarttable" mat-footer-cell *matFooterCellDef></td> -->
+                                                </ng-container>
+
+                                                <ng-container matColumnDef="importo">
+                                                    <th class=" columns_header importoCol" mat-header-cell *matHeaderCellDef>
+                                                        Importo </th>
+                                                    <td class="smarttable text-wrap importoCol" mat-cell
+                                                        *matCellDef="let element" style="text-align: right;">
+                                                        {{element.importo | currencyFormat}} </td>
+                                                    <!-- <td class="smarttable" mat-footer-cell *matFooterCellDef><b>
+                                                            TOTALE {{totaleEnte | number }} </b>
+                                                    </td> -->
+                                                </ng-container>
+
+                                                <ng-container matColumnDef="elimina">
+                                                    <th class=" columns_header azioneCol" mat-header-cell *matHeaderCellDef>
+                                                        Azione </th>
+                                                    <td class="smarttable azioneCol" mat-cell *matCellDef="let element">
+                                                        <button type="button" [disabled]="client.readOnly || client.azioni.get('ModelloA2')[0]"
+                                                            (click)="eliminaTrasferimentoEnte(element)" class="btn"
+                                                            data-toggle="tooltip" title="elimina" style="text-align: left;">
+                                                            <span class="fas fa-trash" style="color: #B8191A;"></span>
+                                                        </button>
+                                                    </td>
+                                                    <!-- <td class="smarttable" mat-footer-cell *matFooterCellDef></td> -->
+                                                </ng-container>
+
+
+                                                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                                                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                                                <!-- <tr mat-footer-row *matFooterRowDef="displayedColumns"></tr> -->
+                                            </table>
+
+                                            <table class="mb-3 table table-hover table-responsive-xl" style="max-width: 1440px;">
+                                                <tr>       
+                                                    <td class="smarttable text-wrap istatCol"></td>
+                                                    <td class="smarttable text-wrap comuneCol"></td>
+                                                    <td class="smarttable text-wrap causaleCol bold" style="text-align: right; ">TOTALE</td>
+                                                    <td class="smarttable text-wrap totaleCol "> <div class="total-box" style="text-align: right;">{{totaleEnte | currencyFormat }}</div></td>
+                                                    <td class="smarttable text-wrap azioneCol"></td>
+                                                </tr>
+                                            </table>
+                                            
+                                            <div class="col-12" *ngIf="trasferimentiEnte?.length == 0"
+                                                style="text-align: center;">
+                                                <label class="no-data-available">Nessun trasferimento
+                                                    inserito</label>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                    <br><br>
+                                    <div class="row">
+
+                                        <div class="col-md-12" [hidden]="trasferimentiEnteFiltered?.length == 0">
+                                            <div style="padding-bottom: 20px;"><b>TOTALI PER CAUSALI</b></div>
+                                            <table #trasferimentiEnteTableByCausale id="trasf-per-causale" mat-table
+                                                [dataSource]="trasferimentiEnteFiltered" style="max-width: 1440px;"
+                                                class="mb-3 table table-hover table-responsive-xl">
+
+
+                                                <ng-container matColumnDef="causale">
+                                                    <th class=" columns_header causaleCol2" mat-header-cell *matHeaderCellDef>
+                                                        Causale </th>
+                                                    <td class="smarttable text-wrap causaleCol2" mat-cell
+                                                        *matCellDef="let element"> {{element.causale.descrizione}}
+                                                    </td>
+                                                </ng-container>
+
+                                                <ng-container matColumnDef="importo">
+                                                    <th class=" columns_header importoCol" mat-header-cell *matHeaderCellDef>
+                                                        Importo </th>
+                                                    <td class="smarttable importoCol" mat-cell *matCellDef="let element" style="text-align: right;">
+                                                        {{element.importo | currencyFormat}} </td>
+                                                </ng-container>
+
+                                                <ng-container matColumnDef="empty">
+                                                    <th class=" columns_header azioneCol" mat-header-cell *matHeaderCellDef></th>
+                                                    <td class="smarttable azioneCol" mat-cell *matCellDef="let element"></td>
+                                                </ng-container>
+
+                                                <tr mat-header-row *matHeaderRowDef="['causale', 'importo', 'empty']"></tr>
+                                                <tr mat-row *matRowDef="let row; columns: ['causale', 'importo', 'empty'];">
+                                                </tr>
+                                            </table>
+
+                                            <table class="mb-3 table table-hover table-responsive-xl" style="max-width: 1440px;">
+                                                <tr>       
+                                                    <td class="smarttable text-wrap istatCol"></td>
+                                                    <td class="smarttable text-wrap comuneCol"></td>
+                                                    <td class="smarttable text-wrap causaleCol bold" style="text-align: right; ">TOTALE</td>
+                                                    <td class="smarttable text-wrap totaleCol "> <div class="total-box" style="text-align: right;">{{totaleEnte | currencyFormat }}</div></td>
+                                                    <td class="smarttable text-wrap azioneCol"></td>
+                                                </tr>
+                                            </table>
+
+                                            <div class="col-12" *ngIf="trasferimentiEnteFiltered?.length == 0"
+                                                style="text-align: center;">
+                                                <label class="no-data-available">Nessun trasferimento
+                                                    inserito</label>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div>
+                                        <button mat-button matStepperPrevious style="color: #0060C1; font-weight: bold;">INDIETRO</button>
+                                    </div>
+                                    <br>
+                                </mat-step>
+                            </mat-horizontal-stepper>
+                        </div>
+                    </ng-template>
+                </li>
+                <li class="gregTab" [ngbNavItem]="2">
+                    <a ngbNavLink>Trasferimento da Comune a Ente Gestore</a>
+                    <ng-template ngbNavContent>
+                        <div class="tab-row" style="background: white; margin-top: 20px; padding-bottom: 50px;">
+                            <div class="col-md-12">
+                                <p><b>Indica l'importo in Euro del trasferimento dal Comune selezionato all'Ente
+                                        Gestore, specificando la causale</b></p>
+                                <br>
+                                <div class="row">
+                                    <div style="width: 188px; margin-right: 20px;">
+                                        <label class="label-size" for="trasferimentoComune">Trasferimento</label>
+                                    </div>
+                                    <div style="width: 279px; margin-right: 20px;">
+                                        <label class="label-size" for="comuneComune">Dal comune</label>
+                                    </div>
+                                    <div style="width: 279px; margin-right: 20px;">
+                                        <label class="label-size" for="causaleComune">Causale</label>
+                                    </div>
+                                    <div></div>
+                                    <div></div>
+                                </div>
+
+                                <div class="row form-group">
+                                    <div style="width: 188px; margin-right: 20px; padding-top: 3px;">
+                                        <input id="trasferimentoComune" class="form-control input-size" type="text" [disabled]="client.readOnly || client.azioni.get('ModelloA2')[0]"
+                                            (blur)="transformAmountEnte('comune')" style="text-align: right; width: 188px;"
+                                            [(ngModel)]="trasfComuneSwap" appTwoDigitDecimalNumber>
+                                    </div>
+                                    <div style="width: 279px; margin-right: 20px; padding-top: 3px;">
+                                        <ng-container>
+                                            <select name="comuneComune" id="comuneComune" [disabled]="client.readOnly || client.azioni.get('ModelloA2')[0]"
+                                                class="form-control form-control-sm statoCombo input-size" style="width: 279px;"
+                                                [(ngModel)]="comuneSelectedAlt">
+                                                <option [value]="null">Seleziona Comune</option>
+                                                <option *ngFor="let comune of listaComuniAssociati" [ngValue]="comune">
+                                                    {{comune.codiceIstat + " - " +
+                                                    comune.desComune}}</option>
+                                            </select>
+                                        </ng-container>
+                                    </div>
+                                    <div style="width: 279px; margin-right: 20px; padding-top: 3px;">
+                                        <ng-container>
+                                            <select name="causaleComune" id="causaleComune" [disabled]="client.readOnly || client.azioni.get('ModelloA2')[0]"
+                                                class="form-control form-control-sm statoCombo input-size" style="width: 279px;"
+                                                [(ngModel)]="causaleSelectedAlt">
+                                                <option [value]="null">Seleziona Causale</option>
+                                                <option *ngFor="let causale of listaCausaliStatic" [ngValue]="causale">
+                                                    {{causale.descrizione}}</option>
+                                            </select>
+                                        </ng-container>
+                                    </div>
+                                    <div style="width: 210px; margin-right: 20px; padding-top: 3px;">
+                                        <img src="assets/img/user/frecciadestra.png" style="float: left; padding-top: 5px; margin-right: 20px;">
+                                        <!-- <i class="fas fa-long-arrow-alt-right fa-3x"></i> -->
+                                        <p style="padding-top: 7px;"><b>All'Ente Gestore</b></p>
+                                    </div>
+                                    <div style="text-align: center;">
+                                        <button class="btn btn-primary bottonifunzione" [disabled]="client.readOnly || client.azioni.get('ModelloA2')[0]"
+                                            (click)="aggiungiTrasfComune()">AGGIUNGI</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <br><br>
+
+                            <div class="row">
+
+                                <div class="col-md-12" [hidden]="trasferimentiComune?.length == 0">
+                                    <div style="padding-bottom: 20px;"><b>TOTALI TRASFERIMENTI ALL'ENTE</b></div>
+                                    <table #trasferimentiComuneTable mat-table [dataSource]="trasferimentiComune" style="max-width: 1440px;"
+                                        class="mb-3 table table-hover table-responsive-xl tabellagreg">
+                                        <ng-container matColumnDef="codIstat">
+                                            <th class=" columns_header text-wrap istatCol" mat-header-cell *matHeaderCellDef>
+                                                Codice ISTAT </th>
+                                            <td class="smarttable text-wrap istatCol" mat-cell *matCellDef="let element">
+                                                {{element.comune.codiceIstat}} </td>
+                                            <!-- <td class="smarttable" mat-footer-cell *matFooterCellDef></td> -->
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="comune">
+                                            <th class=" columns_header text-wrap comuneCol" mat-header-cell *matHeaderCellDef>
+                                                Comune </th>
+                                            <td class="smarttable text-wrap comuneCol" mat-cell *matCellDef="let element">
+                                                {{element.comune.desComune}} </td>
+                                            <!-- <td class="smarttable" mat-footer-cell *matFooterCellDef></td> -->
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="causale">
+                                            <th class=" columns_header causaleCol" mat-header-cell *matHeaderCellDef>
+                                                Causale </th>
+                                            <td class="smarttable text-wrap causaleCol" mat-cell *matCellDef="let element">
+                                                {{element.causale.descrizione}} </td>
+                                            <!-- <td class="smarttable" mat-footer-cell *matFooterCellDef></td> -->
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="importo">
+                                            <th class=" columns_header importoCol" mat-header-cell *matHeaderCellDef>
+                                                Importo </th>
+                                            <td class="smarttable text-wrap importoCol"  mat-cell
+                                                *matCellDef="let element" style="text-align: right; ">
+                                                {{element.importo | currencyFormat }} </td>
+                                            <!-- <td class="smarttable" mat-footer-cell *matFooterCellDef><b>
+                                                TOTALE {{totaleEnte | number }} </b>
+                                        </td> -->
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="elimina">
+                                            <th class=" columns_header azioneCol" mat-header-cell *matHeaderCellDef>
+                                                Azione </th>
+                                            <td class="smarttable azioneCol" mat-cell *matCellDef="let element"> 
+                                                <button type="button" (click)="eliminaTrasferimentoComune(element)" [disabled]="client.readOnly || client.azioni.get('ModelloA2')[0]"
+                                                    class="btn" data-toggle="tooltip" title="elimina" style="text-align: left;">
+                                                    <span class="fas fa-trash" style="color: #B8191A;"></span>
+                                                </button>
+                                            </td>
+                                            <!-- <td class="smarttable" mat-footer-cell *matFooterCellDef></td> -->
+                                        </ng-container>
+
+
+                                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                                        <!-- <tr mat-footer-row *matFooterRowDef="displayedColumns"></tr> -->
+                                    </table>
+                                    
+                                    <table class="mb-3 table table-hover table-responsive-xl" style="max-width: 1440px;">
+                                        <tr>       
+                                            <td class="smarttable text-wrap istatCol"></td>
+                                            <td class="smarttable text-wrap comuneCol"></td>
+                                            <td class="smarttable text-wrap causaleCol bold" style="text-align: right; ">TOTALE</td>
+                                            <td class="smarttable text-wrap totaleCol "> <div class="total-box" style="text-align: right;">{{totaleComune | currencyFormat }}</div></td>
+                                            <td class="smarttable text-wrap azioneCol"></td>
+                                        </tr>
+                                    </table>
+                                    
+                                    <div class="col-12" *ngIf="trasferimentiComune?.length == 0"
+                                        style="text-align: center;">
+                                        <label class="no-data-available">Nessun trasferimento
+                                            inserito</label>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                            <br><br>
+                            <div class="row">
+
+                                <div class="col-md-12" [hidden]="trasferimentiComuneFiltered?.length == 0">
+                                    <div style="padding-bottom: 20px;"><b>TOTALI PER CAUSALI</b></div>
+                                    <table #trasferimentiComuneTableByCausale id="trasf-per-causale-comune" mat-table
+                                        [dataSource]="trasferimentiComuneFiltered" style="max-width: 1440px;"
+                                        class="mb-3 table table-hover table-responsive-xl">
+
+
+                                        <ng-container matColumnDef="causale">
+                                            <th class=" columns_header causaleCol2" mat-header-cell *matHeaderCellDef>
+                                                Causale </th>
+                                            <td class="smarttable text-wrap causaleCol2" style="width: 833px" mat-cell
+                                                *matCellDef="let element"> {{element.causale.descrizione}}
+                                            </td>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="importo">
+                                            <th class=" columns_header importoCol" mat-header-cell *matHeaderCellDef>
+                                                Importo </th>
+                                            <td class="smarttable importoCol" mat-cell *matCellDef="let element" style="text-align: right;">
+                                                {{element.importo | currencyFormat}} </td>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="empty">
+                                            <th class=" columns_header azioneCol" mat-header-cell *matHeaderCellDef></th>
+                                            <td class="smarttable azioneCol" mat-cell *matCellDef="let element"></td>
+                                        </ng-container>
+
+                                        <tr mat-header-row *matHeaderRowDef="['causale', 'importo', 'empty']"></tr>
+                                        <tr mat-row *matRowDef="let row; columns: ['causale', 'importo', 'empty'];">
+                                        </tr>
+                                    </table>
+                                    <table class="mb-3 table table-hover table-responsive-xl" style="max-width: 1440px;">
+                                        <tr>       
+                                            <td class="smarttable text-wrap istatCol"></td>
+                                            <td class="smarttable text-wrap comuneCol"></td>
+                                            <td class="smarttable text-wrap causaleCol bold" style="text-align: right; ">TOTALE</td>
+                                            <td class="smarttable text-wrap totaleCol "> <div class="total-box" style="text-align: right;">{{totaleComune | currencyFormat }}</div></td>
+                                            <td class="smarttable text-wrap azioneCol"></td>
+                                        </tr>
+                                    </table>
+
+                                    <div class="col-12" *ngIf="trasferimentiComuneFiltered?.length == 0"
+                                        style="text-align: center;">
+                                        <label class="no-data-available">Nessun trasferimento
+                                            inserito</label>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </ng-template>
+                </li>
+            </ul>
+            <div [ngbNavOutlet]="nav" class="mt-2"></div>
+        </div>
+    </div>
+</div>
+<div class="row" style="padding-top: 15px; padding-bottom: 20px;">
+</div>
+<!-- CRONOLOGIA -->
+<app-cronologia-modelli></app-cronologia-modelli>
+
+<br>
+
+<!-- BUTTON -->
+<app-pulsanti-funzioni [mostrasalva]="mostrasalva" [idRendicontazioneEnte]="idRendicontazioneEnte" [modello]="'Mod. A2'" (salvaEvent)="salvaModifiche($event)"></app-pulsanti-funzioni>

@@ -1,0 +1,75 @@
+# This repository adheres to the publiccode.yml standard by including this 
+# metadata file that makes public software easily discoverable.
+# More info at https://github.com/italia/publiccode.yml
+
+publiccodeYmlVersion: '0.2'
+categories:
+  - erp
+description:
+  it:
+    features:
+      - |-
+        servizi di autenticazione e autorizzazione standard per la pubblica
+        amministrazione piemontese
+    genericName: sreg
+    localisedName: |-
+      Servizi per la Rendicontazione degli Enti Gestori dei servizi
+      socio-assistenziali
+    longDescription: |2
+       
+
+      La piattaforma SREG (Servizi per la Rendicontazione degli Enti Gestori dei
+      servizi socio-assistenziali) è uno strumento web finalizzato alla raccolta
+      dati e alla rendicontazione annuale dell'attività svolta e della spesa
+      sociale sostenuta dagli enti. Offre supporto ai vari attori nelle diverse
+      fasi del processo di rendicontazione, costituendo un sistema gestionale
+      completo e flessibile. Agli enti gestori offre una guida nella
+      compilazione dei moduli online di rilevazione della spesa delle funzioni
+      socio-assistenziali e organizza in varie scadenze il conferimento dei dati
+      alla Regione. Agli operatori regionali offre vari strumenti per la
+      gestione delle istruttorie, sia in termini di controlli automatici sui
+      dati, sia in termini di gestione e monitoraggio del processo, nonché nella
+      comunicazione diretta con i referenti compilatori. Il sistema include
+      anche l’organizzazione e gestione di un catalogo regionale degli
+      interventi e servizi sociali (o prestazioni) in modo flessibile e
+      direttamente traducibile nei parametri di riferimento delle rilevazioni a
+      livello nazionale. Coadiuva quindi gli enti anche nell'adempiere ai debiti
+      informativi verso il Ministero e l'ISTAT. Il sistema include anche un
+      front-end per la gestione anagrafica degli enti, delle utenze, delle loro
+      profilazioni e di tutte le abilitazioni all’uso dello strumento.
+    shortDescription: |-
+      SREG (Servizi per la Rendicontazione degli Enti Gestori dei servizi
+      socio-assistenziali)
+developmentStatus: stable
+it:
+  conforme:
+    gdpr: true
+    lineeGuidaDesign: true
+    misureMinimeSicurezza: true
+    modelloInteroperabilita: true
+  countryExtensionVersion: '0.2'
+  piattaforme:
+    anpr: false
+    cie: true
+    pagopa: false
+    spid: true
+  riuso:
+    codiceIPA: r_piemon
+legal:
+  license: EUPL-1.2
+localisation:
+  availableLanguages:
+    - it
+  localisationReady: false
+maintenance:
+  contacts:
+    - email: alessandro.trombotto@csi.it
+      name: alessandro trombotto
+  type: internal
+name: SREG
+platforms:
+  - linux
+releaseDate: '2024-09-30'
+softwareType: standalone/web
+softwareVersion: 1.0.0
+url: 'https://github.com/regione-piemonte/sreg'

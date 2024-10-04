@@ -1,0 +1,38 @@
+<div class="modal-header" style="border-bottom: 0px; padding-left: 0px;">
+  <h4 id="titolo" style="color: black; font-family: Roboto;" class="modal-title">
+    {{data?.titolo}}
+  </h4>
+  <button style="outline: none;" type="button" class="close" aria-label="Close" (click)="chiudiMotivazione()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<!-- <h1 mat-dialog-title class="testo">{{data?.titolo}}</h1> -->
+<div mat-dialog-content style="border-bottom: 1px solid #dee2e6;
+border-top: 1px solid #dee2e6;">
+
+  <div class="row" style="padding-top:10px; padding-bottom:10px;">
+    <div class="col-md-4"></div>
+    <div class="col-md-4"><select (change)="onSelectionAnnoChanged($event.target.value)"
+        class="form-control form-control-sm campiricerca">
+        <option *ngFor="let anno of data.anni" [value]="anno">{{anno}}</option>
+      </select> </div>
+    <div class="col-md-4"></div>
+
+  </div>
+
+</div>
+
+<div class="row" mat-dialog-actions style="padding-top: 20px;">
+  <div class="col-md-5">
+    <button class="btn btn-link" (click)="chiudiMotivazione()">
+      ANNULLA
+    </button>
+  </div>
+  <div class="col-md-2"></div>
+  <div class="col-md-5">
+    <button class="btn btn-primary" style="float: right;" mat-stroked-button (click)="confermoMotivazione()"
+      cdkFocusInitial>
+      CONFERMA
+    </button>
+  </div>
+</div>

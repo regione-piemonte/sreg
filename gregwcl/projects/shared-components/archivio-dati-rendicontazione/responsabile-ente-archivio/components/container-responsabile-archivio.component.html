@@ -1,0 +1,26 @@
+<div class="contenitore">
+    <div class="row greg" style="padding-top: 20px; padding-bottom: 5px;">
+    <div class="col-md-1"></div>
+
+    <div class="col-md-5 ">
+        <button type="button" class="btn btn-link pl-0" (click)="backButton()" *ngIf="!client.dettaglioPrestazione && !client.cruscotto">
+            <span class="fas fa-chevron-left"></span>
+            <span style="margin-bottom: 10px; margin-left: 10px;"></span>
+            Home
+        </button>
+        <button type="button" class="btn btn-link pl-0" (click)="backDatiEnte('../responsabile-ente-archivio')" *ngIf="client.dettaglioPrestazione">
+            <span class="fas fa-chevron-left"></span>
+            <span style="margin-bottom: 10px; margin-left: 10px;"></span>
+            Indietro
+        </button>
+        <button type="button" class="btn btn-link pl-0" (click)="backCruscotto()" *ngIf="client.cruscotto">
+            <span class="fas fa-chevron-left"></span>
+            <span style="margin-bottom: 10px; margin-left: 10px;"></span>
+            Indietro
+        </button>
+    </div>
+    <div class="col-md-6"></div>
+    </div>
+    <app-tab-responsabile-archivio></app-tab-responsabile-archivio>
+    <router-outlet></router-outlet>
+</div>

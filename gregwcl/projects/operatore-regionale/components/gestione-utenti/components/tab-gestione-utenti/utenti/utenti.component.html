@@ -1,0 +1,765 @@
+<br />
+
+<div class="row greg" style="padding-top: 5px; padding-bottom: 5px">
+  <div class="col-md-1"></div>
+
+  <div class="col" style="max-width: 3000px">
+    <form [formGroup]="searchForm">
+      <div
+        class="row gregFilter"
+        (keyup.enter)="searchForm.valid ? avviaRicerca() : null"
+      >
+        <div class="row col-md-12" style="padding-top: 30px">
+          <div class="col-md-3 ricEs">
+            <div class="form-group">
+              <label class="filterLabel">Cognome</label>
+              <input
+                formControlName="cognome"
+                id="cognome"
+                class="form-control campiricerca"
+                type="text"
+              />
+            </div>
+          </div>
+
+          <div class="col-md-3 ricEs">
+            <label class="filterLabel">Nome</label>
+            <input
+              formControlName="nome"
+              id="nome"
+              class="form-control campiricerca"
+              type="text"
+            />
+          </div>
+
+          <div class="col-md-3 ricEs">
+            <label class="filterLabel">Codice Fiscale</label>
+            <input
+              formControlName="codiceFiscale"
+              id="codiceFiscale"
+              class="form-control campiricerca"
+              type="text"
+            />
+          </div>
+
+          <div class="col-md-3 ricEs">
+            <label class="filterLabel">Email</label>
+            <input
+              formControlName="email"
+              id="email"
+              class="form-control campiricerca"
+              type="text"
+            />
+          </div>
+        </div>
+        <div
+          class="row col-md-12"
+          style="padding-top: 30px; padding-bottom: 30px"
+        >
+          <div class="col-md-3 ricEs">
+            <label class="filterLabel">Profilo</label>
+            <ng-container>
+              <select
+                formControlName="profilo"
+                id="profilo"
+                class="form-control form-control-sm statoCombo campiricerca"
+              >
+                <option value="">Tutti</option>
+                <option *ngFor="let profilo of profili" [value]="profilo.id">
+                  {{ profilo.codice }} - {{ profilo.descrizione }}
+                </option>
+              </select>
+            </ng-container>
+          </div>
+
+          <mat-form-field
+            class="col-md-3"
+            style="padding-left: 20px; margin-top: -10px"
+          >
+            <label class="filterLabel">Lista</label>
+            <input
+              type="text"
+              class="testo"
+              placeholder=""
+              matInput
+              [formControl]="listaForm"
+              [matAutocomplete]="autoLista"
+            />
+            <mat-autocomplete
+              autoActiveFirstOption
+              #autoLista="matAutocomplete"
+              [panelWidth]="'auto'"
+              (optionSelected)="optionListaSelected($event.option)"
+            >
+              <ng-container *ngFor="let lista of listaFiltered">
+                <mat-option [value]="lista.codice + ' - ' + lista.descrizione">
+                  {{ lista.codice }} - {{ lista.descrizione }}
+                </mat-option>
+              </ng-container>
+            </mat-autocomplete>
+          </mat-form-field>
+
+          <!-- <div class="col-md-3 ricEs">
+            <label class="filterLabel">Lista</label>
+            <ng-container>
+              <select formControlName="lista" id="lista" class="form-control form-control-sm statoCombo campiricerca">
+                <option value="">Tutti</option>
+                <option *ngFor="let lista of liste" [value]="lista.id">{{lista.codice}} - {{lista.descrizione}}</option>
+              </select>
+            </ng-container>
+          </div> -->
+          <mat-form-field
+            class="col-md-3"
+            style="padding-left: 20px; margin-top: -10px"
+          >
+            <label class="filterLabel">Ente</label>
+            <input
+              type="text"
+              class="testo"
+              placeholder=""
+              matInput
+              [formControl]="enteForm"
+              [matAutocomplete]="autoEnte"
+            />
+            <mat-autocomplete
+              autoActiveFirstOption
+              #autoEnte="matAutocomplete"
+              [panelWidth]="'auto'"
+              (optionSelected)="optionEnteSelected($event.option)"
+            >
+              <ng-container *ngFor="let ente of enteFiltered">
+                <mat-option [value]="ente.codice + ' - ' + ente.descrizione">
+                  {{ ente.codice }} - {{ ente.descrizione }}
+                </mat-option>
+              </ng-container>
+            </mat-autocomplete>
+          </mat-form-field>
+
+          <div class="col-md-3">
+            <div class="row">
+              <div class="col-md-12 px-0">
+                <label class="filterLabel">Abilitazioni attive</label>
+              </div>
+              <div class="col-md-12 px-4">
+                <input
+                  formControlName="attivo"
+                  id="attivo"
+                  class="form-check-input"
+                  type="checkbox"
+                />
+              </div>
+            </div>
+          </div>
+          <!-- <div class="col-md-3 ricEs">
+            <label class="filterLabel">Ente</label>
+            <ng-container>
+              <select formControlName="ente" id="ente" class="form-control form-control-sm campiricerca">
+                <option value="">Tutti</option>
+                <option *ngFor="let ente of enti" [value]="ente.id">{{ente.codice}} - {{ente.descrizione}}</option>
+              </select>
+            </ng-container>
+          </div> -->
+          <div class="col-md-9"></div>
+          <div
+            class="col-md-3 verticalCentered ricEs"
+            style="padding-top: 10px"
+          >
+            <button
+              id="btnSearch"
+              type="submit"
+              class="btn btn-primary block bottonifunzione"
+              [disabled]="!searchForm.valid"
+              (click)="avviaRicerca()"
+            >
+              Cerca
+            </button>
+            <button
+              id="btnLoading"
+              class="btn btn-primary block"
+              type="button"
+              disabled
+              style="display: none"
+            >
+              <span
+                class="spinner-border spinner-border-sm"
+                role="status"
+                aria-hidden="true"
+              ></span>
+              Loading...
+            </button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div class="col-md-1"></div>
+</div>
+
+<div class="row greg" style="padding-top: 5px; padding-bottom: 5px">
+  <div class="col-md-1"></div>
+
+  <div class="col-md-5" style="margin-bottom: 10px">
+    <span class="results" style="margin-bottom: 10px"
+      >Risultati: {{ dataListaRichieste.data.length }}</span
+    >
+  </div>
+
+  <div class="col-md-5 align-self-end" style="margin-bottom: 10px"></div>
+
+  <div class="col-md-1"></div>
+  <div class="col-md-1"></div>
+  <div class="col-md-5 align-self-end" style="margin-bottom: 15px">
+    <button
+      type="button"
+      class="btn btn-link pl-0"
+      (click)="annullaRicerca()"
+      style="color: #006cb4"
+    >
+      <span style="margin-bottom: 10px"></span>
+      <b style="font-size: 14px">Annulla Ricerca</b>
+    </button>
+  </div>
+
+  <div class="col-md-5 align-self-end" style="margin-bottom: 15px">
+    <span class="d-inline-block" data-bs-toggle="tooltip" style="float: right">
+      <button
+        id="btnApplica"
+        style="font-size: 14px"
+        type="submit"
+        class="btn btn-primary bottonifunzione"
+        (click)="creaUtente()"
+      >
+        CREA UTENTE
+      </button>
+    </span>
+  </div>
+  <div class="col-md-1"></div>
+</div>
+
+<div class="row greg section-denominazione">
+  <div class="col-md-1"></div>
+
+  <div class="col-10">
+    <div class="row gregFilter">
+      <div class="col-md-12">
+        <table
+          mat-table
+          matSort
+          [dataSource]="dataListaRichieste"
+          multiTemplateDataRows
+          class="mb-3 table table-hover table-responsive-xl tabellagreg"
+        >
+          <ng-container matColumnDef="cognome">
+            <th
+              class="columns_header"
+              style="width: 25%"
+              mat-header-cell
+              *matHeaderCellDef
+              mat-sort-header
+            >
+              Cognome
+            </th>
+            <td class="smarttable text-wrap" mat-cell *matCellDef="let element">
+              {{ element.cognome }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="nome">
+            <th
+              class="columns_header"
+              style="width: 25%"
+              mat-header-cell
+              *matHeaderCellDef
+              mat-sort-header
+            >
+              Nome
+            </th>
+            <td class="smarttable" mat-cell *matCellDef="let element">
+              {{ element.nome }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="codiceFiscale">
+            <th
+              class="columns_header"
+              style="width: 25%"
+              mat-header-cell
+              *matHeaderCellDef
+              mat-sort-header
+            >
+              Codice Fiscale
+            </th>
+            <td class="smarttable" mat-cell *matCellDef="let element">
+              {{ element.codiceFiscale }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="email">
+            <th
+              class="columns_header"
+              style="width: 25%"
+              mat-header-cell
+              *matHeaderCellDef
+              mat-sort-header
+            >
+              Email
+            </th>
+            <td class="smarttable" mat-cell *matCellDef="let element">
+              {{ element.email }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="cestino">
+            <th
+              class="columns_header"
+              style="width: 0%"
+              mat-header-cell
+              *matHeaderCellDef
+            ></th>
+            <td
+              class="smarttable"
+              mat-cell
+              *matCellDef="let element; let i = index"
+            >
+              <button
+                type="button"
+                class="btn"
+                data-toggle="tooltip"
+                title="Elimina utente"
+                (click)="eliminaUtente(element)"
+              >
+                <img
+                  src="assets/img/ui-modelli/cestino.svg"
+                  class="greg-icon-help fnpsImage"
+                  style="cursor: pointer"
+                />
+              </button>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="matita">
+            <th
+              class="columns_header"
+              style="width: 0%"
+              mat-header-cell
+              *matHeaderCellDef
+            ></th>
+            <td class="smarttable" mat-cell *matCellDef="let element">
+              <button
+                type="button"
+                class="btn"
+                data-toggle="tooltip"
+                title="Modifica dati anagrafici dell'utente"
+                (click)="openModificaUtente(element)"
+              >
+                <img
+                  src="assets/img/user/editblue.png"
+                  class="greg-icon-help fnpsImage"
+                  style="cursor: pointer"
+                />
+              </button>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="occhietto">
+            <th
+              class="columns_header"
+              style="width: 0%"
+              mat-header-cell
+              *matHeaderCellDef
+            ></th>
+            <td class="smarttable" mat-cell *matCellDef="let element">
+              <ng-template [ngIf]="!element.utente">
+                <img
+                  style="height: 20px; width: 20px; cursor: pointer"
+                  src="assets/img/ui-modelli/visualizza.svg"
+                  class="greg-icon-help"
+                  (click)="changeUtente(element)"
+                />
+              </ng-template>
+              <ng-template [ngIf]="element.utente">
+                <img
+                  style="height: 20px; width: 20px; cursor: pointer"
+                  src="assets/img/ui-modelli/closedEye.svg"
+                  class="greg-icon-help"
+                  (click)="changeUtente(element)"
+                />
+              </ng-template>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="abilitazioni">
+            <td
+              class="smarttable px-0"
+              [attr.colspan]="displayedColumns.length"
+              mat-cell
+              *matCellDef="let element"
+            >
+              <div class="row col-md-12">
+                <div class="col-md-3 py-2">
+                  <b>Profilo</b>
+                </div>
+                <div class="col-md-3 py-2">
+                  <b>Lista</b>
+                </div>
+                <div class="col-md-2 py-2">
+                  <b>Inizio Validita'</b>
+                </div>
+                <div class="col-md-2 py-2">
+                  <b>Fine Validita'</b>
+                </div>
+                <div class="col-md-1 py-2"></div>
+                <div class="col-md-1 py-2"></div>
+                <ng-container
+                  *ngFor="
+                    let abilitazione of element.abilitazioni;
+                    let j = index
+                  "
+                >
+                  <div class="col-md-3 py-3">
+                    <ng-container>
+                      <select
+                        [(value)]="abilitazione.profilo.id"
+                        (change)="
+                          onSelectionChangedProfilo(
+                            element,
+                            $event.target.value,
+                            j
+                          )
+                        "
+                        class="form-control form-control-sm statoCombo campiricerca"
+                        [disabled]="
+                          abilitazione.stato == 'esistente' ||
+                          abilitazione.stato == 'modificato'
+                        "
+                      >
+                        <option [value]="0">Nessun Profilo</option>
+                        <option
+                          *ngFor="let profilo of profili"
+                          [value]="profilo.id"
+                        >
+                          {{ profilo.codice }} - {{ profilo.descrizione }}
+                        </option>
+                      </select>
+                    </ng-container>
+                  </div>
+                  <div class="col-md-3 py-3">
+                    <ng-container>
+                      <select
+                        [(value)]="abilitazione.lista.id"
+                        (change)="
+                          onSelectionChangedLista(
+                            element,
+                            $event.target.value,
+                            j
+                          )
+                        "
+                        class="form-control form-control-sm statoCombo campiricerca"
+                        [disabled]="
+                          abilitazione.stato == 'esistente' ||
+                          abilitazione.stato == 'modificato'
+                        "
+                      >
+                        <option [value]="0">Nessuna Lista</option>
+                        <option *ngFor="let lista of liste" [value]="lista.id">
+                          {{ lista.codice }} -
+                          {{ lista.descrizione }}
+                        </option>
+                      </select>
+                    </ng-container>
+                  </div>
+                  <div class="col-md-2">
+                    <mat-form-field class="w-100">
+                      <input
+                        class="testo"
+                        matInput
+                        [matDatepicker]="pickerDataDal"
+                        userInputFormat="DD/MM/YYYY"
+                        [(ngModel)]="abilitazione.dataInizioValidita"
+                        [disabled]="
+                          abilitazione.stato == 'esistente' ||
+                          abilitazione.stato == 'modificato'
+                        "
+                      />
+                      <mat-datepicker-toggle matSuffix [for]="pickerDataDal">
+                      </mat-datepicker-toggle>
+                      <mat-datepicker #pickerDataDal></mat-datepicker>
+                    </mat-form-field>
+                  </div>
+                  <div class="col-md-2">
+                    <mat-form-field class="w-100">
+                      <input
+                        class="testo"
+                        matInput
+                        [matDatepicker]="pickerDataAl"
+                        userInputFormat="DD/MM/YYYY"
+                        [(ngModel)]="abilitazione.dataFineValidita"
+                        [min]="abilitazione.dataInizioValidita"
+                        (dateChange)="cambiaDataFine(element, $event, j)"
+                      />
+                      <mat-datepicker-toggle matSuffix [for]="pickerDataAl">
+                      </mat-datepicker-toggle>
+                      <mat-datepicker #pickerDataAl></mat-datepicker>
+                    </mat-form-field>
+                  </div>
+                  <div class="col-md-1 py-3">
+                    <button
+                      type="button"
+                      class="btn"
+                      data-toggle="tooltip"
+                      title="Elimina abilitazione"
+                      (click)="eliminaAbilitazione(element, j)"
+                    >
+                      <img
+                        src="assets/img/ui-modelli/cestino.svg"
+                        class="greg-icon-help fnpsImage"
+                        style="cursor: pointer; padding: 0px"
+                      />
+                    </button>
+                  </div>
+                  <div class="col-md-1"></div>
+                </ng-container>
+                <div class="col-md-3"></div>
+                <div class="col-md-3"></div>
+                <div class="col-md-2"></div>
+                <div class="col-md-2"></div>
+                <div class="col-md-1">
+                  <button
+                    type="button"
+                    class="btn"
+                    data-toggle="tooltip"
+                    title="Aggiungi abilitazione"
+                    (click)="aggiungiAbilitazione(element)"
+                  >
+                    <img
+                      src="assets/img/ui-modelli/plus_button.svg"
+                      class="greg-icon-help fnpsImage"
+                      style="cursor: pointer; padding: 0px"
+                    />
+                  </button>
+                </div>
+                <div class="col-md-1">
+                  <button
+                    type="button"
+                    class="btn btn-primary bottonifunzione buttonSpace"
+                    data-toggle="tooltip"
+                    title="Salva abilitazioni"
+                    [disabled]="disabilitaSalvaAbilitazione(element)"
+                    (click)="salvaAbilitazioni(element)"
+                  >
+                    Salva
+                  </button>
+                </div>
+              </div>
+            </td>
+            <!-- <td class="smarttable" mat-cell *matCellDef="let element"><b>Profilo</b>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="titoloLista">
+            <td class="smarttable" colspan="2" mat-cell *matCellDef="let element"><b>Lista</b>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="titoloInizio">
+            <td class="smarttable" mat-cell *matCellDef="let element"><b>Inizio Validita'</b>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="titoloFine">
+            <td class="smarttable" mat-cell *matCellDef="let element"><b>Fine Validita'</b>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="vuoto1">
+            <td class="smarttable" mat-cell *matCellDef="let element">
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="vuoto2">
+            <td class="smarttable" mat-cell *matCellDef="let element">
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="profilo">
+            <td class="smarttable" style="padding-left: 7px;" mat-cell *matCellDef="let element">
+              <ng-container *ngFor="let abilitazione of element.abilitazioni; let j=index">
+                <div class="row py-3" style="padding-left: 0px;">
+                  <div class="col-md-12">
+                    <ng-container>
+                      <select [(value)]="abilitazione.profilo.id"
+                        (change)="onSelectionChangedProfilo(element, $event.target.value, j)"
+                        class="form-control form-control-sm statoCombo campiricerca">
+                        <option [value]="0">Nessun Profilo</option>
+                        <option *ngFor="let profilo of profili" [value]="profilo.id">{{profilo.codice}} -
+                          {{profilo.descrizione}}</option>
+                      </select>
+                    </ng-container>
+                  </div>
+                </div>
+              </ng-container>
+              <div class="row spazio">
+                <div class="col-md-12">
+                </div>
+              </div>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="lista">
+            <td class="smarttable" colspan="2" mat-cell *matCellDef="let element">
+              <ng-container *ngFor="let abilitazione of element.abilitazioni; let j=index">
+                <div class="row py-3">
+                  <div class="col-md-12" style="padding-left: 0px;">
+                    <ng-container>
+                      <select [(value)]="abilitazione.lista.id"
+                        (change)="onSelectionChangedLista(element, $event.target.value, j)"
+                        class="form-control form-control-sm statoCombo campiricerca">
+                        <option [value]="0">Nessuna Lista</option>
+                        <option *ngFor="let lista of liste" [value]="lista.id">{{lista.codice}} -
+                          {{lista.descrizione}}
+                        </option>
+                      </select>
+                    </ng-container>
+                  </div>
+                </div>
+              </ng-container>
+              <div class="row spazio">
+                <div class="col-md-12">
+                </div>
+              </div>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="inizioValidita">
+            <td class="smarttable" mat-cell *matCellDef="let element">
+              <ng-container *ngFor="let abilitazione of element.abilitazioni; let j=index">
+                <div class="row spazioAbilitazioni">
+                  <div class="col-md-12" style="padding-left: 0px;">
+                    <mat-form-field class="w-100">
+                      <input class="testo" matInput [matDatepicker]="pickerDataDal" userInputFormat="DD/MM/YYYY"
+                        [(ngModel)]="abilitazione.dataInizioValidita">
+                      <mat-datepicker-toggle matSuffix [for]="pickerDataDal">
+                      </mat-datepicker-toggle>
+                      <mat-datepicker #pickerDataDal></mat-datepicker>
+                    </mat-form-field>
+                  </div>
+                </div>
+              </ng-container>
+              <div class="row spazio">
+                <div class="col-md-12">
+                </div>
+              </div>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="fineValidita">
+            <td class="smarttable" mat-cell *matCellDef="let element">
+              <ng-container *ngFor="let abilitazione of element.abilitazioni; let j=index">
+                <div class="row spazioAbilitazioni">
+                  <div class="col-md-12" style="padding-left: 0px;">
+                    <mat-form-field class="w-100">
+                      <input class="testo" matInput [matDatepicker]="pickerDataAl" userInputFormat="DD/MM/YYYY"
+                        [(ngModel)]="abilitazione.dataFineValidita">
+                      <mat-datepicker-toggle matSuffix [for]="pickerDataAl">
+                      </mat-datepicker-toggle>
+                      <mat-datepicker #pickerDataAl></mat-datepicker>
+                    </mat-form-field>
+
+                  </div>
+                </div>
+              </ng-container>
+              <div class="row spazio">
+                <div class="col-md-12">
+                </div>
+              </div>
+            </td>
+          </ng-container>
+
+
+          <ng-container matColumnDef="cestinoAbilitazione">
+            <td class="smarttable" mat-cell *matCellDef="let element">
+              <ng-container *ngFor="let abilitazione of element.abilitazioni; let j=index">
+                <div class="row spazioCestino">
+
+                  <div class="col-md-12" style="padding-left: 0px;">
+                    <button type="button" class="btn" data-toggle="tooltip" title="Elimina abilitazione"
+                      (click)="eliminaAbilitazione(element, j)">
+                      <img src="assets/img/ui-modelli/cestino.svg" class="greg-icon-help fnpsImage"
+                        style="cursor: pointer; padding: 0px">
+                    </button>
+                  </div>
+                </div>
+              </ng-container>
+              <div class="row">
+                <div class="col-md-12" style="padding-left: 0px;">
+                  <button type="button" class="btn" data-toggle="tooltip" title="Aggiungi abilitazione"
+                    (click)="aggiungiAbilitazione(element)">
+                    <img src="assets/img/ui-modelli/plus_button.svg" class="greg-icon-help fnpsImage"
+                      style="cursor: pointer; padding: 0px">
+                  </button>
+                </div>
+              </div>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="salva">
+            <td class="smarttable" mat-cell *matCellDef="let element">
+              <ng-container *ngFor="let abilitazione of element.abilitazioni">
+                <div class="row spazio">
+                  <div class="col-md-12">
+                  </div>
+                </div>
+              </ng-container>
+              <div class="row">
+                <div class="col-md-12" style="padding-left: 0px;">
+                  <button type="button" class="btn btn-primary bottonifunzione buttonSpace" data-toggle="tooltip"
+                    title="Salva abilitazioni" [disabled]="disabilitaSalvaAbilitazione(element)"
+                    (click)="salvaAbilitazioni(element)">
+                    Salva
+                  </button>
+                </div>
+              </div>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="vuoto6">
+            <td class="smarttable" mat-cell *matCellDef="let element">
+
+            </td> -->
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+          <tr
+            mat-row
+            *matRowDef="let row; columns: secondRow; let element"
+            class="riga-totale-azzurra"
+            [hidden]="!element.utente"
+          ></tr>
+          <!-- <tr mat-row *matRowDef="let row; columns: thirdRow; let element" class="riga-totale-azzurra"
+            [hidden]="!element.utente"></tr> -->
+          <!--  -->
+        </table>
+
+        <div
+          class="col-md-12"
+          *ngIf="dataListaRichieste?.data?.length == 0"
+          style="text-align: center; padding-top: 30px"
+        >
+          <label class="no-data-available"
+            >Nessuna scheda soddisfa i criteri di ricerca selezionati</label
+          >
+        </div>
+
+        <mat-paginator
+          class="paginator"
+          [length]="dataListaRichieste?.data?.length"
+          [pageSize]="10"
+          [pageSizeOptions]="[5, 10, 20]"
+          [showFirstLastButtons]="true"
+          style="padding-top: 30px"
+        >
+        </mat-paginator>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-1"></div>
+</div>

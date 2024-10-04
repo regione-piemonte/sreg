@@ -1,0 +1,428 @@
+<br>
+<div class="row greg" style="padding-top: 30px;">
+  <div class="col-md-1"></div>
+
+  <div class="col-md-2">
+    <button type="button" class="btn btn-link pl-0" (click)="backButton()">
+      <span class="fas fa-chevron-left"></span>
+      <span style="margin-bottom: 10px; margin-left: 10px;"></span>
+      Home
+    </button>
+  </div>
+
+  <div class="col-md-3"></div>
+
+</div>
+
+<div class="row greg" style="padding-top: 30px;">
+
+  <div class="col-md-1"></div>
+
+  <div class="col-md-2">
+    <h4 class="text-nowrap titlePage">Dati Anagrafici</h4>
+  </div>
+  
+</div>
+
+<!-- DENOMINAZIONE ENTE -->
+<div class="row greg section-denominazione"
+  [ngClass]="{'disabledDiv': client.azioni.get('EnteContatti')[0]}"
+  *ngIf="client.azioni.get('EnteContatti')[1]">
+  <div class="col-md-1"></div>
+
+  <div class="col-7">
+    <div class="row gregFilter">
+     
+    <div class="col-md-12">
+      <form [formGroup]="aperturaForm">
+        <div class="row">
+            <div class="col-md-2" style="padding-top: 20px">
+                <mat-form-field class="w-100">
+                    <mat-label>Data apertura (*)</mat-label>
+                    <input matInput [matDatepicker]="pickerDataChiusura" userInputFormat="DD/MM/YYYY"
+                        formControlName="dataApertura" [max]="dataSistema">
+                    <mat-datepicker-toggle matSuffix [for]="pickerDataChiusura">
+                    </mat-datepicker-toggle>
+                    <mat-datepicker #pickerDataChiusura></mat-datepicker>
+                </mat-form-field>
+            </div>
+        </div>
+      </form>
+    </div>
+
+      <div class="col-12" style="left: 13px; padding-top: 30px;">
+        <h4 class="titleSection">Denominazione Ente (*)</h4>
+      </div>
+      <form [formGroup]="enteForm" class="w-100">
+        <div class="row col-md-12" style="padding-top:30px;">
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="inputLabel">Codice Regionale (*)</label>
+              <input id="codiceRegionale" class="form-control" formControlName="codiceRegionale" type="text">
+              <span class="spanDanger"
+              *ngIf="enteForm.get('codiceRegionale').value && !enteForm.get('codiceRegionale').valid">
+              Il campo deve essere lungo al massimo 2, e contenere solo caratteri numerici
+            </span>
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="inputLabel">Codice Fiscale (*)</label>
+              <input id="codiceFiscale" maxlength="11" class="form-control" formControlName="codiceFiscale" type="text">
+            </div>
+            <span class="spanDanger"
+              *ngIf="enteForm.get('codiceFiscale').value && !enteForm.get('codiceFiscale').valid">
+              Il campo deve essere di massimo 11 caratteri e deve essere valorizzato
+            </span>
+          </div>
+        </div>
+
+        <div class="row col-md-12" style="padding-top:30px;">
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="inputLabel">Denominazione (*)</label>
+              <input id="denominazioneEnte" maxlength="300" class="form-control" formControlName="denominazione"
+                type="text" data-toggle="tooltip" [title]="enteForm.value.denominazione">
+            </div>
+            <span class="spanDanger"
+              *ngIf="enteForm.get('denominazione').value && !enteForm.get('denominazione').valid">
+              Il campo deve essere di massimo 300 caratteri e deve essere valorizzato
+            </span>
+          </div>
+
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="inputLabel">Partita IVA</label>
+              <input id="partitaIva" maxlength="12" class="form-control" formControlName="partitaIva" type="text">
+            </div>
+            <span class="spanDanger" *ngIf="enteForm.get('partitaIva').value && !enteForm.get('partitaIva').valid">
+              Il campo deve essere di massimo 12 caratteri
+            </span>
+          </div>
+        </div>
+
+        <div class="row col-md-12" style="padding-top:30px;">
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="inputLabel">Tipo Ente (*)</label>
+              <select name="tipoEnte" formControlName="tipoEnte" id="tipoEnte" class="form-control statoCombo">
+                <option *ngFor="let tipoente of listaTipoEnti" value="{{tipoente.codTipoEnte}}">{{tipoente.desTipoEnte}}
+                </option>
+              </select>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <label class="inputLabel">Provincia Sede Legale (*)</label>
+            <ng-container>
+              <select name="provinciaSedeLegale" formControlName="provincia" id="provinciaSedeLegale"
+                class="form-control statoCombo" (change)="setListaComuniDenominazione()">
+                <option *ngFor="let provincia of listaProvince" value="{{provincia.codIstatProvincia}}">
+                  {{provincia.desProvincia}}</option>
+              </select>
+            </ng-container>
+          </div>
+        </div>
+
+        <div class="row col-md-12" style="padding-top:30px;">
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="inputLabel">Codice ISTAT Ente (*)</label>
+              <input id="codiceIstatEnte" maxlength="9" class="form-control" formControlName="codiceIstat" type="text">
+            </div>
+            <span class="spanDanger" *ngIf="enteForm.get('codiceIstat').value && !enteForm.get('codiceIstat').valid">
+              Il campo deve essere di massimo 9 caratteri alfanumerici e deve essere valorizzato
+            </span>
+          </div>
+
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="inputLabel">Comune Sede Legale (*)</label>
+              <select name="comuneSedeLegale" formControlName="comune" id="comuneSedeLegale"
+                class="form-control statoCombo">
+                <option *ngFor="let comune of listaComuniDenominazione" value="{{comune.codIstatComune}}">
+                  {{comune.desComune}}</option>
+              </select>
+            </div>
+          </div>
+
+        </div>
+          
+
+        <div class="row col-md-12" style="padding-top:30px;">
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="inputLabel">ASL della Sede Legale (*)</label>
+              <select name="aslSedeLegaleEnte" formControlName="asl" id="aslSedeLegaleEnte"
+                class="form-control statoCombo">
+                <option *ngFor="let asl of listaAsl" value="{{asl.codAsl}}">{{asl.desAsl}}</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="inputLabel">Email (*)</label>
+              <input id="emailEnte" class="form-control" formControlName="email" type="text">
+            </div>
+            <span class="spanDanger" *ngIf="enteForm.get('email').value && !enteForm.get('email').valid">
+              Il formato dei dati inseriti non e' corretto
+            </span>
+          </div>
+        </div>
+
+        <div class="row col-md-12" style="padding-top:30px; padding-bottom:40px;">
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="inputLabel">Numero di Telefono (*)</label>
+              <input id="telefonoEnte" maxlength="12" class="form-control" formControlName="telefono" type="text">
+            </div>
+            <span class="spanDanger" *ngIf="enteForm.get('telefono').value && !enteForm.get('telefono').valid">
+              Il campo deve essere di massimo 12 numeri
+            </span>
+          </div>
+
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="inputLabel">PEC (*)</label>
+              <input id="pecEnte" class="form-control" formControlName="pec" type="text">
+            </div>
+            <span class="spanDanger" *ngIf="enteForm.get('pec').value && !enteForm.get('pec').valid">
+              Il formato dei dati inseriti non e' corretto
+            </span>
+          </div>
+        </div>
+      </form>
+
+    </div>
+  </div>
+
+  <div class="col-md-4"></div>
+</div>
+
+<!-- RESPONSABILE ENTE -->
+<div class="row greg section-denominazione"
+  [ngClass]="{'disabledDiv': client.azioni.get('EnteResponsabile')[0]}"
+  *ngIf="client.azioni.get('EnteResponsabile')[1]">
+
+  <div class="col-md-1"></div>
+
+  <div class="col-7">
+    <div class="row gregFilter">
+
+      <div class="col-12" style="left: 13px; padding-top: 30px;">
+        <h4 class="titleSection">Responsabile Ente Gestore (*)</h4>
+      </div>
+
+      <form [formGroup]="responsabileEnteForm" class="w-100">
+        <div class="row col-md-12" style="padding-top:30px;">
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="inputLabel">Cognome (*)</label>
+              <input id="cognomeResponsabileEnte" class="form-control" maxlength="40" formControlName="cognome"
+                type="text">
+            </div>
+            <span class="spanDanger"
+              *ngIf="responsabileEnteForm.get('cognome').value && !responsabileEnteForm.get('cognome').valid">
+              Il campo deve essere di massimo 40 caratteri testuali e deve essere valorizzato
+            </span>
+          </div>
+
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="inputLabel">Nome (*)</label>
+              <input id="nomeResponsabileEnte" class="form-control" maxlength="40" formControlName="nome" type="text">
+            </div>
+            <span class="spanDanger"
+              *ngIf="responsabileEnteForm.get('nome').value && !responsabileEnteForm.get('nome').valid">
+              Il campo deve essere di massimo 40 caratteri testuali e deve essere valorizzato
+            </span>
+          </div>
+        </div>
+
+        <div class="row col-md-12" style="padding-top:30px;">
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="inputLabel">Cellulare</label>
+              <input id="cellulareResponsabileEnte" class="form-control" maxlength="12" formControlName="cellulare"
+                type="text">
+            </div>
+            <span class="spanDanger"
+              *ngIf="responsabileEnteForm.get('cellulare').value && !responsabileEnteForm.get('cellulare').valid">
+              Il campo deve essere di massimo 12 numeri
+            </span>
+          </div>
+
+
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="inputLabel">Telefono (*)</label>
+              <input id="telefonoResponsabileEnte" class="form-control" maxlength="12" formControlName="telefono"
+                type="text">
+            </div>
+            <span class="spanDanger"
+              *ngIf="responsabileEnteForm.get('telefono').value && !responsabileEnteForm.get('telefono').valid">
+              Il campo deve essere di massimo 12 numeri
+            </span>
+          </div>
+        </div>
+
+        <div class="row col-md-12" style="padding-top:30px; padding-bottom:40px;">
+          <div class="col-md-4">
+            <div class="form-group">
+              <label style="white-space: nowrap;">Codice Fiscale (*)</label>
+              <input id="codiceFiscaleResponsabileEnte" class="form-control" maxlength="16"
+                formControlName="codiceFiscale" type="text">
+            </div>
+            <span class="spanDanger"
+              *ngIf="responsabileEnteForm.get('codiceFiscale').value && !responsabileEnteForm.get('codiceFiscale').valid">
+              Il campo deve essere di massimo 16 numeri e deve essere valorizzato
+            </span>
+          </div>
+
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="inputLabel">Email (*)</label>
+              <input id="eMailResponsabileEnte" class="form-control" formControlName="eMail" type="text">
+            </div>
+            <span class="spanDanger"
+              *ngIf="responsabileEnteForm.get('eMail').value && !responsabileEnteForm.get('eMail').valid">
+              Il formato dei dati inseriti non e' corretto
+            </span>
+          </div>
+        </div>
+      </form>
+    </div>
+
+
+  </div>
+
+  <div class="col-md-4"></div>
+</div>
+
+<!-- COMUNI ASSOCIATI-->
+<div class="row greg section-denominazione" *ngIf="client.azioni.get('EnteComuni')[1]">
+  <!-- disabilitare manualmente -->
+  <div class="col-md-1"></div>
+
+  <div class="col-7">
+    <div class="row gregFilter">
+
+      <div class="col-12" style="left: 13px; padding-top: 30px;">
+        <h4 class="titleSection">Comuni Associati</h4>
+      </div>
+
+      <div class="row col-md-12" style="padding-top:30px;"
+        *ngIf="!client.azioni.get('EnteComuni')[0]">
+        <div class="col-4">
+          <label class="inputLabel">Provincia</label>
+          <ng-container>
+            <select name="provinciaComuneAssociato" id="provinciaComuneAssociato" class="form-control statoCombo"
+              [(ngModel)]="provinciaSelected" (ngModelChange)="filterComuni()">
+              <option [value]="null">Seleziona Provincia</option>
+              <option *ngFor="let provincia of listaProvince" value="{{provincia.codIstatProvincia}}">
+                {{provincia.desProvincia}}</option>
+            </select>
+          </ng-container>
+        </div>
+      </div>
+
+      <div class="row col-md-12" style="padding-top:30px;"
+        *ngIf="!client.azioni.get('EnteComuni')[0]">
+        <div class="col-4">
+          <label class="inputLabel">Comune</label>
+        </div>
+      </div>
+
+      <div class="row col-md-12" style="padding-bottom: 30px"
+        *ngIf="!client.azioni.get('EnteComuni')[0]">
+        <div class="col-4">
+          <ng-container>
+            <select name="comuneComuneAssociato" id="comuneComuneAssociato" class="form-control statoCombo"
+              [(ngModel)]="comuneSelected" (ngModelChange)="selectProvincia()">
+              <option [value]="null">Seleziona Comune</option>
+              <option *ngFor="let comune of listaComuniToAss" value="{{comune.codIstatComune}}">{{comune.desComune}}
+              </option>
+            </select>
+          </ng-container>
+        </div>
+
+        <div class="col-6 verticalCentered" *ngIf="!client.azioni.get('EnteComuni')[0]">
+          <div class="col-auto">
+            <button id="btnApplica" type="submit" class="btn btn-primary block bottonifunzione"
+              (click)="addComuneAssociato()">
+              Aggiungi
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- TABELLA -->
+
+      <div class="row col-md-12 tableAssociati mt-3" style="padding-left: 30px; padding-right: 30px;">
+        <table mat-table #comuniTable [dataSource]="listaComuniAssociati"
+          class="col-12 mb-3 table table-hover table-responsive-xl tabellagreg">
+          <ng-container matColumnDef="codiceIstat">
+            <th class="columns_header" mat-header-cell *matHeaderCellDef> Codice ISTAT </th>
+            <td class="smarttable" mat-cell *matCellDef="let comune"> {{comune.codiceIstat}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="comune">
+            <th class="columns_header" mat-header-cell *matHeaderCellDef> Comune </th>
+            <td class="smarttable" class="smarttable" mat-cell *matCellDef="let comune"> {{comune.desComune}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="azioni" *ngIf="!client.azioni.get('EnteComuni')[0]">
+            <th class="columns_header" mat-header-cell *matHeaderCellDef> Azioni </th>
+            <td class="smarttable" mat-cell *matCellDef="let comune">
+              <button type="button" (click)="deleteComuneAssociato(comune.codiceIstat)" class="btn pl-0"
+                data-toggle="tooltip" title="Elimina">
+                <span class="fas fa-trash" style="color: #B8191A;"></span>
+              </button>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row
+            *matHeaderRowDef="columnsComuniAssociati ; sticky: true">
+          </tr>
+          <tr mat-row
+            *matRowDef="let row; columns: columnsComuniAssociati">
+          </tr>
+        </table>
+
+        <div class="col-12">
+          <div class="col-12" *ngIf="listaComuniAssociati?.length == 0" style="text-align: center;">
+            <label class="no-data-available">Non risulta alcun comune associato all'Ente</label>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <div class="col-md-4"></div>
+
+</div>
+
+<!-- BUTTON -->
+<div class="row greg">
+
+  <div class="col-md-1"></div>
+
+  <div class="row col-md-7 button">
+
+    <div class="row w-100 space_b">
+      <div class="col pr-0 align-self-end">
+        <button id="btnSave" type="submit" class="btn btn-primary button1"
+          [disabled]="(!enteForm.valid || !responsabileEnteForm.valid || !aperturaForm.valid)" (click)="salvaModifiche()">
+          CREA ENTE
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-4"></div>
+
+</div>

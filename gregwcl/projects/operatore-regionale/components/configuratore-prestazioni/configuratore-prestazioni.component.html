@@ -1,0 +1,876 @@
+<div class="row greg" style="padding-top: 5px; padding-bottom: 5px;">
+    <div class="col-md-12"></div>
+    <div class="col-md-1"></div>
+    <div class="col-md-10 testoBold spazioTitolo">
+        Prestazione Regionale 1
+    </div>
+    <div class="col-md-1"></div>
+    <div class="col-md-12 "></div>
+    <div class="col-md-12 "></div>
+    <div class="col-md-1"></div>
+    <div class="col-md-10 testo ">
+        Indica almeno 3 caratteri e seleziona la Prestazione su cui intendi operare
+    </div>
+    <div class="col-md-1"></div>
+    <div class="col-md-1"></div>
+    <div class="col-md-10">
+        <mat-form-field class="col-md-9" style="padding-left: 0px;">
+
+            <input type="text" class="testo" placeholder="" matInput [formControl]="prestazioniForm"
+                [matAutocomplete]="autoStrutture">
+            <mat-autocomplete autoActiveFirstOption #autoStrutture="matAutocomplete" [panelWidth]="'auto'"
+                (optionSelected)="optionPrestazioniSelected($event.option)">
+
+                <ng-container *ngFor="let prestazione of prestazioniFiltered">
+
+                    <ng-template [ngIf]="dataAlPReg1(prestazione)">
+                        <mat-option [value]="prestazione.codPrestRegionale + ' - ' + prestazione.desPrestRegionale">
+                            {{ prestazione.codPrestRegionale }} - {{ prestazione.desPrestRegionale }}
+                        </mat-option>
+                    </ng-template>
+                    <ng-template [ngIf]="!dataAlPReg1(prestazione)">
+                        <mat-option
+                            [value]="prestazione.codPrestRegionale + ' - ' + prestazione.desPrestRegionale + ' - fino al: ' + (prestazione.al | date:'dd/MM/yyyy')">
+                            {{ prestazione.codPrestRegionale }} - {{ prestazione.desPrestRegionale }} - fino al:
+                            {{prestazione.al | date:'dd/MM/yyyy'}}
+                        </mat-option>
+                    </ng-template>
+
+                </ng-container>
+            </mat-autocomplete>
+        </mat-form-field>
+    </div>
+    <div class="col-md-1"></div>
+</div>
+<div class="row" *ngIf="dettaglioPrestazione">
+    <div class="col-md-1"></div>
+    <div class="col-md-10 ">
+        <div class="row gregFilter">
+            <div class="col-md-12 testoBoldDettaglio" style="padding-top: 10px; padding-bottom: 10px;">Dettaglio
+                prestazione regionale 1</div>
+            <div class="col-md-4 testo" style="padding-bottom: 5px">
+                Tipologia
+            </div>
+            <div class="col-md-2 testo" style="padding-bottom: 5px">
+                Struttura
+            </div>
+            <div class="col-md-2 testo" style="padding-bottom: 5px">
+                Quota
+            </div>
+            <div class="col-md-2 testo" style="padding-bottom: 5px">
+                Collegamento a...
+            </div>
+            <div class="col-md-2 testo" style="padding-bottom: 5px">
+                N. Ordine
+            </div>
+            <div class="col-md-4" style="padding-bottom: 10px">
+                <select (change)="onSelectionChangedTipologia($event.target.value)" [(value)]="tip"
+                    [disabled]="dettaglioPrestazione.modificabile" class="form-control form-control-sm campiricerca">
+                    <option [value]="null">
+                        -- Seleziona --
+                    </option>
+                    <option *ngFor="let tipologia of tipologie" [value]="tipologia.codice">
+                        {{tipologia.descrizione}}
+                    </option>
+                </select>
+            </div>
+            <div class="col-md-2" style="padding-bottom: 10px">
+                <select (change)="onSelectionChangedStruttura($event.target.value)" [(value)]="strutt"
+                    class="form-control form-control-sm campiricerca"
+                    [disabled]="disableMenu('strutt') || dettaglioPrestazione.modificabile">
+                    <option [value]="null">
+                        -- Seleziona --
+                    </option>
+                    <option *ngFor="let struttura of strutture" [value]="struttura.codice">
+                        {{struttura.descrizione}}
+                    </option>
+                </select>
+            </div>
+            <div class="col-md-2" style="padding-bottom: 10px">
+                <select (change)="onSelectionChangedQuota($event.target.value)" [(value)]="q"
+                    class="form-control form-control-sm campiricerca"
+                    [disabled]="disableMenu('quota') || dettaglioPrestazione.modificabile">
+                    <option [value]="null">
+                        -- Seleziona --
+                    </option>
+                    <option *ngFor="let quota of quote" [value]="quota.codice">
+                        {{quota.descrizione}}
+                    </option>
+                </select>
+            </div>
+            <div class="col-md-2" style="padding-bottom: 10px">
+                <select (change)="onSelectionChangedCollegamento($event.target.value)" [(value)]="coll"
+                    class="form-control form-control-sm campiricerca"
+                    [disabled]="disableMenu('quota') || dettaglioPrestazione.modificabile">
+                    <option [value]="0">
+                        -- Seleziona --
+                    </option>
+                    <option *ngFor="let prest of prestColl" [value]="prest.id">
+                        {{prest.codice}}
+                    </option>
+                </select>
+            </div>
+            <div class="col-md-2" style="padding-bottom: 10px">
+                <input type="text" class="form-control inputnumber inputF w-100" (keypress)="numberOnly($event)"
+                    [(ngModel)]="dettaglioPrestazione.ordinamento">
+            </div>
+        </div>
+    </div>
+    <div class="col-md-1"></div>
+</div>
+
+<div class="row" *ngIf="dettaglioPrestazione">
+    <div class="col-md-1"></div>
+    <div class="col-md-10 ">
+        <div class="row gregFilter">
+            <div class="col-md-2 testoBoldDettaglio" style="padding-top: 10px; padding-bottom: 10px;">
+                {{dettaglioPrestazione.codPrestRegionale}} </div>
+            <div class="col-md-1 testoBoldDettaglio"
+                style="padding-top: 10px; padding-bottom: 10px; margin-right: -70px;">
+                - </div>
+            <div class="col-md-9 testoBoldDettaglio" style="padding-top: 3px;"><input type="text"
+                    class="form-control inputnumber inputF w-100" style="text-align: left;"
+                    [(ngModel)]="dettaglioPrestazione.desPrestRegionale">
+            </div>
+            <div class="col-md-2 testo" style="padding-top: 20px">
+                Dal
+            </div>
+            <div class="col-md-2 testo" style="padding-top: 20px">
+                Al
+            </div>
+            <div class="col-md-8" style="padding-bottom: 10px">
+            </div>
+            <div class="col-md-2" style="padding-bottom: 10px">
+                <mat-form-field class="w-100">
+                    <input class="testo" matInput [matDatepicker]="pickerDataDal" userInputFormat="DD/MM/YYYY"
+                        [disabled]="dettaglioPrestazione.modificabile" [(ngModel)]="dettaglioPrestazione.dal">
+                    <mat-datepicker-toggle matSuffix [for]="pickerDataDal">
+                    </mat-datepicker-toggle>
+                    <mat-datepicker #pickerDataDal></mat-datepicker>
+                </mat-form-field>
+            </div>
+            <div class="col-md-2" style="padding-bottom: 10px">
+                <mat-form-field class="w-100">
+                    <input class="testo" matInput [matDatepicker]="pickerDataAl" userInputFormat="DD/MM/YYYY"
+                        [min]="dettaglioPrestazione.dataMin" [(ngModel)]="dettaglioPrestazione.al">
+                    <mat-datepicker-toggle matSuffix [for]="pickerDataAl">
+                    </mat-datepicker-toggle>
+                    <mat-datepicker #pickerDataAl></mat-datepicker>
+                </mat-form-field>
+            </div>
+            <div class="col-md-8" style="padding-bottom: 10px">
+            </div>
+            <div class="col-md-3 testo" style="padding-top: 20px">
+                Macroaggregati di bilancio
+            </div>
+            <div class="col-md-2 testo" style="padding-top: 20px">
+                Dal
+            </div>
+            <div class="col-md-7" style="padding-bottom: 10px">
+            </div>
+            <div class="col-md-3" style="padding-top: 20px; padding-bottom: 10px">
+                <select (change)="onSelectionChangedMacro($event.target.value)" [(value)]="macroaggregato"
+                    class="form-control form-control-sm campiricerca">
+                    <option [value]="0">
+                        -- Seleziona --
+                    </option>
+                    <option *ngFor="let m of macro" [value]="m.id">
+                        {{m.descrizione}}
+                    </option>
+                </select>
+            </div>
+            <div class="col-md-2" style="padding-bottom: 10px">
+                <mat-form-field class="w-100">
+                    <input class="testo" matInput [matDatepicker]="pickerDatadalMacro" userInputFormat="DD/MM/YYYY"
+                        [disabled]="disableMacro()" [min]="limitMacro()" [max]="dettaglioPrestazione.al"
+                        [(ngModel)]="dataMacro">
+                    <mat-datepicker-toggle matSuffix [for]="pickerDatadalMacro">
+                    </mat-datepicker-toggle>
+                    <mat-datepicker #pickerDatadalMacro></mat-datepicker>
+                </mat-form-field>
+            </div>
+            <div class="col-md-3 testo" style="padding-top: 20px">
+                <button id="btnSave" type="submit" class="btn btn-primary button1"
+                    [disabled]="disableMacro() || dataMacro == null" (click)="aggiungiMacro()">
+                    AGGIUNGI
+                </button>
+            </div>
+            <div class="col-md-4" style="padding-bottom: 10px">
+            </div>
+
+            <div class="col-md-12" style="padding: 0px;">
+                <table class="table table-responsive-xl greg-table" style="width: 97% !important; padding: 0px;">
+                    <thead class="greg-riga-header">
+                        <th class="smarttable testoBoldHeader" style="width: 20%;">Codice</th>
+                        <th class="smarttable testoBoldHeader" style="width: 30%;">Macroaggregati di bilancio</th>
+                        <th class="smarttable testoBoldHeader" style="width: 20%;">Dal</th>
+                        <th class="smarttable testoBoldHeader" style="width: 20%;">Al</th>
+                        <th class="smarttable testoBoldHeader" style="width: 10%;">Elimina</th>
+                    </thead>
+                    <tbody>
+                        <ng-container *ngFor="let macro of dettaglioPrestazione.macroaggregati">
+                            <ng-template [ngIf]="macro.dataCancellazione==null">
+                                <tr>
+                                    <td class="smarttable testoTable">{{macro?.codMacroaggregati}}</td>
+                                    <td class="smarttable testoTable">{{macro?.descMacroaggregati}}</td>
+                                    <td class="smarttable testoTable">{{macro?.dal | date:'dd/MM/yyyy'}}</td>
+                                    <td class="smarttable testoTable">
+                                        <mat-form-field>
+                                            <input matInput [matDatepicker]="pickerDataAl" userInputFormat="DD/MM/YYYY"
+                                                [disabled]="disabilitaAlMacro(macro)" [max]="dettaglioPrestazione.al"
+                                                [min]="limitValorizzatoMacro(macro)" [(ngModel)]="macro.al">
+                                            <mat-datepicker-toggle matSuffix [for]="pickerDataAl">
+                                            </mat-datepicker-toggle>
+                                            <mat-datepicker #pickerDataAl></mat-datepicker>
+                                        </mat-form-field>
+                                    </td>
+                                    <td class="smarttable testoTable">
+                                        <button type="button" class="btn" data-toggle="tooltip"
+                                            [title]="macro.modificabile ? 'Il macroaggregato non e\' eliminabile poiche\' esiste almeno un data entry valorizzato' : ''"
+                                            [disabled]="macro.modificabile" (click)="eliminaMacro(macro)">
+                                            <img src="assets/img/ui-modelli/cestino.svg"
+                                                class="greg-icon-help fnpsImage" style="cursor: pointer;">
+                                        </button>
+                                    </td>
+                                </tr>
+                            </ng-template>
+                        </ng-container>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-12" style="padding: 10px;"></div>
+            <div class="col-md-3 testo" style="padding-top: 20px">
+                Utenze regionali 1
+            </div>
+            <div class="col-md-2 testo" style="padding-top: 20px">
+                Missioni/prog.
+            </div>
+            <div class="col-md-2 testo" style="padding-top: 20px">
+                Spesa
+            </div>
+            <div class="col-md-2 testo" style="padding-top: 20px">
+                Dal
+            </div>
+            <div class="col-md-3 testo" style="padding-top: 10px;">
+            </div>
+            <div class="col-md-3 testo" style="padding-top: 20px;padding-bottom: 10px;">
+                <select (change)="onSelectionChangedUtenze($event.target.value)" [(value)]="utenza"
+                    class="form-control form-control-sm campiricerca">
+                    <option [value]="0">
+                        -- Seleziona --
+                    </option>
+                    <option *ngFor="let u of utenze" [value]="u.id">
+                        {{u.descrizione}}
+                    </option>
+                </select>
+            </div>
+            <div class="col-md-2 testo" style="padding-top: 20px;padding-bottom: 10px;">
+                <select (change)="onSelectionChangedMissione($event.target.value)" [(value)]="missione"
+                    [disabled]="disableUtenza()" class="form-control form-control-sm campiricerca">
+                    <option [value]="0">
+                        -- Seleziona --
+                    </option>
+                    <option *ngFor="let m of missioneProg" [value]="m.id">
+                        {{m.codice}}
+                    </option>
+                </select>
+            </div>
+            <div class="col-md-2 testo" style="padding-top: 20px;padding-bottom: 10px;">
+                <select (change)="onSelectionChangedSpese($event.target.value)" [(value)]="spesa"
+                    [disabled]="disableUtenza()" class="form-control form-control-sm campiricerca">
+                    <option [value]="0">
+                        -- Seleziona --
+                    </option>
+                    <option *ngFor="let s of spese" [value]="s.id">
+                        {{s.codice}}
+                    </option>
+                </select>
+            </div>
+            <div class="col-md-2 testo" style="padding-top: 10px;">
+                <mat-form-field>
+                    <input matInput [matDatepicker]="pickerDataUtenzaAl" userInputFormat="DD/MM/YYYY"
+                        [disabled]="disableUtenza()" [min]="limitUtenza()" [max]="dettaglioPrestazione.al"
+                        [(ngModel)]="dataUtenza">
+                    <mat-datepicker-toggle matSuffix [for]="pickerDataUtenzaAl">
+                    </mat-datepicker-toggle>
+                    <mat-datepicker #pickerDataUtenzaAl></mat-datepicker>
+                </mat-form-field>
+            </div>
+            <div class="col-md-3 testo" style="padding-top: 20px;padding-bottom: 10px;padding-left: 60px;">
+                <button id="btnSave" type="submit" class="btn btn-primary button1"
+                    [disabled]="disableUtenza() || dataUtenza == null" (click)="aggiungiUtenza()">
+                    AGGIUNGI
+                </button>
+            </div>
+            <div class="col-md-12" style="padding: 0px;">
+                <table class="table table-responsive-xl greg-table" style="width: 97% !important; padding: 0px;">
+                    <thead class="greg-riga-header">
+                        <th class="smarttable testoBoldHeader" style="width: 0%;">Codice</th>
+                        <th class="smarttable testoBoldHeader" style="width: 20%;">Utenza</th>
+                        <th class="smarttable testoBoldHeader" style="width: 0%;">Missioni/programmi</th>
+                        <th class="smarttable testoBoldHeader" style="width: 20%;">Spese</th>
+                        <th class="smarttable testoBoldHeader" style="width: 0%;">Dal</th>
+                        <th class="smarttable testoBoldHeader" style="width: 0%;">Al</th>
+                        <th class="smarttable testoBoldHeader" style="width: 0%;">Elimina</th>
+                    </thead>
+                    <tbody>
+                        <ng-container *ngFor="let utenza of dettaglioPrestazione.targetUtenzaPrestReg1; let i=index;">
+                            <ng-template [ngIf]="utenza.dataCancellazione==null">
+                                <tr>
+                                    <td class="smarttable testoTable">{{utenza?.codUtenza}}</td>
+                                    <td class="smarttable testoTable">{{utenza?.descUtenza}}</td>
+                                    <td class="smarttable testoTable"><select
+                                            (change)="onSelectionChangedMissioneUtenza($event.target.value, i)"
+                                            [(value)]="utenza.codMissioneProgramma"
+                                            [ngStyle]="getColoreMissioneProgramma(utenza, i)"
+                                            class="form-control form-control-sm campiricerca">
+                                            <option [value]="'Vuoto'">
+                                                -- Seleziona --
+                                            </option>
+                                            <option *ngFor="let s of missioneProg" [value]="s.codice">
+                                                {{s.codice}}
+                                            </option>
+                                        </select></td>
+                                    <td class="smarttable testoTable"><select
+                                            (change)="onSelectionChangedSpeseUtenza($event.target.value, i)"
+                                            [(value)]="utenza.codTipologiaSpesa"
+                                            class="form-control form-control-sm campiricerca">
+                                            <option [value]="'Vuoto'">
+                                                -- Seleziona --
+                                            </option>
+                                            <option *ngFor="let s of spese" [value]="s.codice">
+                                                {{s.codice}}
+                                            </option>
+                                        </select></td>
+                                    <td class="smarttable testoTable">{{utenza?.dal | date:'dd/MM/yyyy'}}</td>
+                                    <td class="smarttable testoTable">
+                                        <mat-form-field>
+                                            <input matInput [matDatepicker]="pickerDatautenzaAl"
+                                                [max]="dettaglioPrestazione.al" [min]="limitValorizzatoUtenza(utenza)"
+                                                userInputFormat="DD/MM/YYYY" [(ngModel)]="utenza.al"
+                                                [disabled]="disabilitaAlUtenza(utenza)"
+                                                (ngModelChange)="valorizzaUtenzaAl(utenza)">
+                                            <mat-datepicker-toggle matSuffix [for]="pickerDatautenzaAl">
+                                            </mat-datepicker-toggle>
+                                            <mat-datepicker #pickerDatautenzaAl></mat-datepicker>
+                                        </mat-form-field>
+                                    </td>
+                                    <td class="smarttable testoTable">
+                                        <button type="button" class="btn" data-toggle="tooltip"
+                                            [title]="utenza.modificabile ? 'L\'utenza non e\' eliminabile poiche\' esiste almeno un data entry valorizzato' : ''"
+                                            [disabled]="utenza?.modificabile" (click)="eliminaUtenza(utenza)">
+                                            <img src="assets/img/ui-modelli/cestino.svg"
+                                                class="greg-icon-help fnpsImage" style="cursor: pointer;">
+                                        </button>
+                                    </td>
+                                </tr>
+                            </ng-template>
+                        </ng-container>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-12" style="padding: 10px;"></div>
+            <div class="col-md-3 testoBold">Note per la compilazione</div>
+            <div class="col-md-9 testoBold"><textarea type="text" class="form-control inputnumber inputF w-100 divtext"
+                    style="text-align: left; height: 120px;"
+                    [(ngModel)]="dettaglioPrestazione.notaPrestazione"></textarea></div>
+        </div>
+    </div>
+    <div class="col-md-12" style="padding: 10px;"></div>
+    <div class="col-md-9"></div>
+    <div class="col-md-2 align-self-end" style="margin-bottom: 15px; padding-right: 10px;">
+        <span class="d-inline-block" data-bs-toggle="tooltip" title="Nuova Prestazione 2" style="float: right;">
+            <button id="btnApplica" type="submit" class="btn btn-primary bottonifunzione bottoninu"
+                (click)="nuovaPrestazione2()">
+                NUOVA PRESTAZIONE 2
+            </button>
+        </span>
+    </div>
+    <div class="col-md-1"></div>
+    <div class="col-md-1"></div>
+    <div class="col-md-10 testoBold spazioTitolo">
+        Prestazioni regionali 2 collegate alla Prestazione regionale 1
+    </div>
+    <div class="col-md-1"></div>
+    <div class="col-md-1"></div>
+    <div class="col-md-10 testo ">
+        Indica almeno 3 caratteri e seleziona la Prestazione su cui intendi operare
+    </div>
+    <div class="col-md-1"></div>
+    <div class="col-md-1"></div>
+    <div class="col-md-7">
+        <mat-form-field class="col-md-12" style="padding-left: 0px;">
+            <input type="text" class="testo" placeholder="" matInput [formControl]="prestazioni2Form"
+                [matAutocomplete]="auto2Strutture">
+            <mat-autocomplete autoActiveFirstOption #auto2Strutture="matAutocomplete" [panelWidth]="'auto'"
+                (optionSelected)="optionPrestazioni2Selected($event.option)">
+                <ng-container *ngFor="let prestazione of prestazioni2Filtered">
+                    <ng-template [ngIf]="dataAl(prestazione)">
+                        <mat-option *ngIf="!prestazione.utilizzato"
+                            [value]="prestazione.codPrest2 + ' - ' + prestazione.descPrest2">
+                            {{ prestazione.codPrest2 }} - {{ prestazione.descPrest2 }}
+                        </mat-option>
+                    </ng-template>
+                    <ng-template [ngIf]="!dataAl(prestazione)">
+                        <mat-option *ngIf="!prestazione.utilizzato"
+                            [value]="prestazione.codPrest2 + ' - ' + prestazione.descPrest2 + ' - fino al: ' + (prestazione.al | date:'dd/MM/yyyy')">
+                            {{ prestazione.codPrest2 }} - {{ prestazione.descPrest2 }} - fino al:
+                            {{prestazione.al | date:'dd/MM/yyyy'}}
+                        </mat-option>
+                    </ng-template>
+                </ng-container>
+            </mat-autocomplete>
+        </mat-form-field>
+    </div>
+    <div class="col-md-2" style="padding-bottom: 10px">
+        <mat-form-field class="w-100">
+            <input class="testo" matInput [matDatepicker]="pickerDatadalPrest2" userInputFormat="DD/MM/YYYY"
+                [max]="dettaglioPrestazione.al" [disabled]="disablePrest2()" [min]="limitPrest2()"
+                [(ngModel)]="dataPrest2">
+            <mat-datepicker-toggle matSuffix [for]="pickerDatadalPrest2">
+            </mat-datepicker-toggle>
+            <mat-datepicker #pickerDatadalPrest2></mat-datepicker>
+        </mat-form-field>
+    </div>
+    <div class="col-md-1" style="padding-left: 10px;"> <button id="btnSave" type="submit"
+            class="btn btn-primary button1" [disabled]="disablePrest2() || dataPrest2 == null"
+            (click)="aggiungiPrest2()">
+            AGGIUNGI
+        </button></div>
+    <div class="col-md-1"></div>
+    <div class="col-md-12" style="padding: 10px;"></div>
+    <div class="col-md-1"></div>
+    <div class="col-md-10 testoBoldElenco">Elenco Prestazioni regionali 2</div>
+    <div class="col-md-1"></div>
+    <div class="col-md-1"></div>
+    <div class="col-md-10">
+        <table class="table table-responsive-xl greg-table" style="width: 100% !important;  margin-left: 0px;">
+            <thead class="greg-riga-header">
+                <th class="smarttable testoBoldHeader" style="width: 20%;">Codice</th>
+                <th class="smarttable testoBoldHeader" style="width: 30%;">Descrizione</th>
+                <th class="smarttable testoBoldHeader" style="width: 10%;"></th>
+                <th class="smarttable testoBoldHeader" style="width: 10%;">Dal</th>
+                <th class="smarttable testoBoldHeader" style="width: 10%;">Al</th>
+                <th class="smarttable testoBoldHeader" style="width: 10%;">Elimina</th>
+            </thead>
+            <tbody>
+                <ng-container *ngFor="let prest of dettaglioPrestazione?.prest1Prest2; let i=index;">
+                    <ng-template [ngIf]="prest.dataCancellazione==null">
+                        <tr>
+                            <td class="smarttable testoTable">{{prest?.codPrest2}}</td>
+                            <td class="smarttable testoTable">{{prest?.descPrest2}}</td>
+                            <td class="smarttable testoTable">
+                                <div class="col-md-1" *ngIf="!prest.prest2">
+                                    <img style="height: 20px; width: 20px; cursor: pointer;"
+                                        src="assets/img/ui-modelli/visualizza.svg" class="greg-icon-help"
+                                        (click)="changePrest2(prest)">
+                                </div>
+                                <div class="col-md-1" *ngIf="prest.prest2">
+                                    <img style="height: 20px; width: 20px; cursor: pointer;"
+                                        src="assets/img/ui-modelli/closedEye.svg" class="greg-icon-help"
+                                        (click)="changePrest2(prest)">
+                                </div>
+                            </td>
+                            <td class="smarttable testoTable">{{prest.dalRelazione | date:'dd/MM/yyyy'}}</td>
+                            <td class="smarttable testoTable">
+                                <mat-form-field>
+                                    <input matInput [matDatepicker]="pickerDataPrest2Al" userInputFormat="DD/MM/YYYY"
+                                        [(ngModel)]="prest.alRelazione" (ngModelChange)="valorizzaAl(prest)"
+                                        [max]="dettaglioPrestazione.al" [min]="limitValorizzatoPrest2(prest)"
+                                        [disabled]="disabilitaAlPrest2(prest)">
+                                    <mat-datepicker-toggle matSuffix [for]="pickerDataPrest2Al">
+                                    </mat-datepicker-toggle>
+                                    <mat-datepicker #pickerDataPrest2Al></mat-datepicker>
+                                </mat-form-field>
+                            </td>
+                            <td class="smarttable testoTable">
+                                <button type="button" class="btn" data-toggle="tooltip"
+                                    [title]="prest.modificabile ? 'La prestazione regionale 2 non e\' eliminabile poiche\' esiste almeno un data entry valorizzato' : ''"
+                                    [disabled]="prest.modificabile" (click)="eliminaPrest2(prest)">
+                                    <img src="assets/img/ui-modelli/cestino.svg" class="greg-icon-help fnpsImage"
+                                        style="cursor: pointer;">
+                                </button>
+                            </td>
+                        </tr>
+                        <tr *ngIf="prest.prest2">
+                            <td colspan="6">
+                                <div class="row" style="background: #F7F7F7 0% 0% no-repeat padding-box;">
+                                    <div class="col-md-12">
+                                        <table class="table table-responsive-xl gregTableInterno"
+                                            style="width: 97% !important;">
+                                            <thead class="greg-riga-header">
+                                                <th class="smarttable testoBoldHeader" style="width: 20%;">Codice</th>
+                                                <th class="smarttable testoBoldHeader" style="width: 30%;">Utenza</th>
+                                                <th class="smarttable testoBoldHeader" style="width: 10%;">Dal</th>
+                                                <th class="smarttable testoBoldHeader" style="width: 10%;">Al</th>
+                                            </thead>
+                                            <tbody>
+                                                <ng-container *ngFor="let utenza of prest?.utenzeConf; let i=index;">
+                                                    <ng-template [ngIf]="utenza.dataCancellazione==null">
+                                                        <tr>
+                                                            <td class="smarttable testoTable">{{utenza?.codUtenza}}</td>
+                                                            <td class="smarttable testoTable">{{utenza?.descUtenza}}
+                                                            </td>
+                                                            <td class="smarttable testoTable">{{utenza?.dal |
+                                                                date:'dd/MM/yyyy'}}
+                                                            </td>
+                                                            <td class="smarttable testoTable">
+                                                                {{utenza.al | date:'dd/MM/yyyy'}}
+                                                            </td>
+                                                        </tr>
+                                                    </ng-template>
+                                                </ng-container>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="col-md-12 testoBold">
+                                        Prestazione ISTAT collegata
+                                    </div>
+                                    <div class="col-md-12" style="padding: 10px;"></div>
+                                    <div class="col-md-12">
+                                        <table class="table table-responsive-xl gregTableInterno"
+                                            style="width: 97% !important;">
+                                            <thead class="greg-riga-header">
+                                                <th class="smarttable testoBoldHeader" style="width: 20%;">Codice</th>
+                                                <th class="smarttable testoBoldHeader" style="width: 20%;">Prestazione
+                                                </th>
+                                                <th class="smarttable testoBoldHeader" style="width: 20%;">Codice</th>
+                                                <th class="smarttable testoBoldHeader" style="width: 20%;">Utenza</th>
+                                                <th class="smarttable testoBoldHeader" style="width: 10%;">Dal</th>
+                                                <th class="smarttable testoBoldHeader" style="width: 10%;">Al</th>
+                                            </thead>
+                                            <tbody>
+                                                <ng-container *ngFor="let p of prest.prestIstat">
+                                                    <tr>
+                                                        <td class="smarttable testoTable">{{p?.codPrestIstat}}</td>
+                                                        <td class="smarttable testoTable">{{p?.descPrestIstat}}</td>
+                                                        <td class="smarttable testoTable"></td>
+                                                        <td class="smarttable testoTable"></td>
+                                                        <td class="smarttable testoTable"></td>
+                                                        <td class="smarttable testoTable"></td>
+                                                    </tr>
+                                                    <ng-container *ngFor="let u of p.utenzeMinConf">
+                                                        <ng-template [ngIf]="u.dataCancellazione==null">
+                                                            <tr>
+                                                                <td class="smarttable testoTable"></td>
+                                                                <td class="smarttable testoTable"></td>
+                                                                <td class="smarttable testoTable">{{u?.codUtenza}}</td>
+                                                                <td class="smarttable testoTable">{{u?.descUtenza}}</td>
+                                                                <td class="smarttable testoTable">{{u?.dal |
+                                                                    date:'dd/MM/yyyy'}}
+                                                                </td>
+                                                                <td class="smarttable testoTable">{{u?.al |
+                                                                    date:'dd/MM/yyyy'}}
+                                                                </td>
+                                                            </tr>
+                                                        </ng-template>
+                                                    </ng-container>
+                                                </ng-container>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="col-md-12 testoBold">
+                                        Nomenclatore 2013
+                                    </div>
+                                    <div class="col-md-12" style="padding: 10px;"></div>
+                                    <div class="col-md-12">
+                                        <table class="table table-responsive-xl gregTableInterno"
+                                            style="width: 97% !important;">
+                                            <thead class="greg-riga-header">
+                                                <th class="smarttable testoBoldHeader" style="width: 0%;">Codice</th>
+                                                <th class="smarttable testoBoldHeader" style="width: 69%;">Descrizione
+                                                </th>
+                                                <th class="smarttable testoBoldHeader" style="width: 20%;">Dal</th>
+                                                <th class="smarttable testoBoldHeader" style="width: 20%;">Al</th>
+                                            </thead>
+                                            <tbody>
+                                                <ng-container *ngFor="let n of prest?.nomenclatore">
+                                                    <ng-template [ngIf]="n.dataCancellazione==null">
+                                                        <tr>
+                                                            <td class="smarttable testoTable">
+                                                                <div class="row">
+                                                                    <div class="col-md-12" *ngIf="n.codMacroArea!=' '">
+                                                                        {{n.codMacroArea}}</div>
+                                                                    <div class="col-md-12" *ngIf="n.codSottoArea!=' '">
+                                                                        {{n.codSottoArea}}</div>
+                                                                    <div class="col-md-12"
+                                                                        *ngIf="n.codSottoAreaDet!=' '">
+                                                                        {{n.codSottoAreaDet}}</div>
+                                                                    <div class="col-md-12" *ngIf="n.codPresidio!=' '">
+                                                                        {{n.codPresidio}}</div>
+                                                                    <div class="col-md-12"
+                                                                        *ngIf="n.codClassificazionePresidio!=' '">
+                                                                        {{n.codClassificazionePresidio}}</div>
+                                                                    <div class="col-md-12"
+                                                                        *ngIf="n.codFunzionePresidio!=' '">
+                                                                        {{n.codFunzionePresidio}}</div>
+                                                                    <div class="col-md-12" *ngIf="n.codVoce!=' '">
+                                                                        {{n.codVoce}}</div>
+                                                                    <div class="col-md-12" *ngIf="n.codSottoVoce!=' '">
+                                                                        {{n.codSottoVoce}}</div>
+                                                                    <div class="col-md-12"
+                                                                        *ngIf="n.codTipoResidenza!=' '">
+                                                                        {{n.codTipoResidenza}}</div>
+                                                                </div>
+                                                            </td>
+                                                            <td class="smarttable testoTable">
+                                                                <div class="col-md-12" *ngIf="n.descMacroArea!=' '">
+                                                                    {{n.descMacroArea}}</div>
+                                                                <div class="col-md-12" *ngIf="n.descSottoArea!=' '">
+                                                                    {{n.descSottoArea}}</div>
+                                                                <div class="col-md-12" *ngIf="n.descSottoAreaDet!=' '">
+                                                                    {{n.descSottoAreaDet}}</div>
+                                                                <div class="col-md-12" *ngIf="n.descPresidio!=' '">
+                                                                    {{n.descPresidio}}</div>
+                                                                <div class="col-md-12"
+                                                                    *ngIf="n.descClassificazionePresidio!=' '">
+                                                                    {{n.descClassificazionePresidio}}</div>
+                                                                <div class="col-md-12"
+                                                                    *ngIf="n.descFunzionePresidio!=' '">
+                                                                    {{n.descFunzionePresidio}}</div>
+                                                                <div class="col-md-12" *ngIf="n.descVoce!=' '">
+                                                                    {{n.descVoce}}</div>
+                                                                <div class="col-md-12" *ngIf="n.descSottoVoce!=' '">
+                                                                    {{n.descSottoVoce}}</div>
+                                                                <div class="col-md-12" *ngIf="n.descTipoResidenza!=' '">
+                                                                    {{n.descTipoResidenza}}</div>
+                                                            </td>
+                                                            <td class="smarttable testoTable">{{n.dal |
+                                                                date:'dd/MM/yyyy'}}</td>
+                                                            <td class="smarttable testoTable">{{n.al |
+                                                                date:'dd/MM/yyyy'}}</td>
+                                                        </tr>
+                                                    </ng-template>
+                                                </ng-container>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="col-md-9"></div>
+                                    <div class="col-md-2 align-self-end" style="margin-bottom: 15px;">
+                                        <span class="d-inline-block" data-bs-toggle="tooltip"
+                                            title="Modifica Prestazione 2" style="float: right;">
+                                            <button id="btnApplica" type="submit"
+                                                class="btn btn-primary bottonifunzione bottoninu"
+                                                (click)="modificaPrestazione2(prest)">
+                                                MODIFICA
+                                            </button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </ng-template>
+                </ng-container>
+            </tbody>
+        </table>
+    </div>
+    <div class="col-md-1"></div>
+    <div class="col-md-12" style="padding: 10px;"></div>
+    <div class="col-md-1"></div>
+    <div class="col-md-10 testoBold spazioTitolo">
+        Prestazione Ministeriale
+    </div>
+    <div class="col-md-1"></div>
+    <div class="col-md-1"></div>
+    <div class="col-md-10 testo ">
+        Indica almeno 3 caratteri e seleziona la Prestazione su cui intendi operare
+    </div>
+    <div class="col-md-1"></div>
+    <div class="col-md-1"></div>
+    <div class="col-md-7">
+        <mat-form-field class="col-md-12" style="padding-left: 0px;">
+            <input type="text" class="testo" placeholder="" matInput [formControl]="prestazioniMinForm"
+                [matAutocomplete]="autoMinStrutture">
+            <mat-autocomplete autoActiveFirstOption #autoMinStrutture="matAutocomplete" [panelWidth]="'auto'"
+                (optionSelected)="optionPrestazioniMinSelected($event.option)">
+                <mat-option *ngFor="let prestazione of prestazioniMinFiltered"
+                    [value]="prestazione.codPrestMin + ' - ' + prestazione.descPrestMin">
+                    {{ prestazione.codPrestMin }} - {{ prestazione.descPrestMin }}
+                </mat-option>
+            </mat-autocomplete>
+        </mat-form-field>
+    </div>
+    <div class="col-md-2" style="padding-bottom: 10px">
+        <mat-form-field class="w-100">
+            <input class="testo" matInput [matDatepicker]="pickerDatadalPrestMin" userInputFormat="DD/MM/YYYY"
+                [max]="dettaglioPrestazione.al" [min]="limitPrestMin()" [disabled]="disablePrestMin()"
+                [(ngModel)]="dataPrestMin">
+            <mat-datepicker-toggle matSuffix [for]="pickerDatadalPrestMin">
+            </mat-datepicker-toggle>
+            <mat-datepicker #pickerDatadalPrestMin></mat-datepicker>
+        </mat-form-field>
+    </div>
+    <div class="col-md-1" style="padding-left: 10px;"> <button id="btnSave" type="submit"
+            class="btn btn-primary button1" [disabled]="disablePrestMin() || dataPrestMin==null"
+            (click)="aggiungiPrestMin()">
+            AGGIUNGI
+        </button></div>
+    <div class="col-md-1"></div>
+    <div class="col-md-1"></div>
+    <div class="col-md-10">
+        <table class="table table-responsive-xl greg-table" style="width: 100% !important; margin-left: 0px;">
+            <thead class="greg-riga-header">
+                <th class="smarttable testoBoldHeader" style="width: 20%;">Codice</th>
+                <th class="smarttable testoBoldHeader" style="width: 30%;">Descrizione</th>
+                <th class="smarttable testoBoldHeader" style="width: 10%;">Dal</th>
+                <th class="smarttable testoBoldHeader" style="width: 10%;">Al</th>
+                <th class="smarttable testoBoldHeader" style="width: 10%;">Elimina</th>
+            </thead>
+            <tbody>
+                <ng-container *ngFor="let p of dettaglioPrestazione?.prest1PrestMin">
+                    <ng-template [ngIf]="p.dataCancellazione==null">
+                        <tr>
+                            <td class="smarttable testoTable">{{p?.codPrestMin}}</td>
+                            <td class="smarttable testoTable">{{p?.descPrestMin}}</td>
+                            <td class="smarttable testoTable">{{p.dal | date:'dd/MM/yyyy'}}</td>
+                            <td class="smarttable testoTable">
+                                <mat-form-field>
+                                    <input matInput [matDatepicker]="pickerDataMinAl" userInputFormat="DD/MM/YYYY"
+                                        [min]="limitValorizzatoPrestMin(p)" [disabled]="disabilitaAlMin(p)"
+                                        [(ngModel)]="p.al">
+                                    <mat-datepicker-toggle matSuffix [for]="pickerDataMinAl">
+                                    </mat-datepicker-toggle>
+                                    <mat-datepicker #pickerDataMinAl></mat-datepicker>
+                                </mat-form-field>
+                            </td>
+                            <td class="smarttable testoTable">
+                                <button type="button" class="btn" data-toggle="tooltip"
+                                    [title]="p?.modificabile ? 'La prestazione ministeriale non e\' eliminabile poiche\' esiste almeno un data entry valorizzato' : ''"
+                                    [disabled]="p?.modificabile" (click)="eliminaPrestMin(p)">
+                                    <img src="assets/img/ui-modelli/cestino.svg" class="greg-icon-help fnpsImage"
+                                        style="cursor: pointer;">
+                                </button>
+                            </td>
+                        </tr>
+                    </ng-template>
+                </ng-container>
+            </tbody>
+        </table>
+    </div>
+    <div class="col-md-1"></div>
+    <div class="col-md-12" style="padding: 10px;"></div>
+    <div class="col-md-1"></div>
+    <div class="col-md-2 align-self-end" style="margin-bottom: 15px; padding-right: 10px;">
+        <span class="d-inline-block" data-bs-toggle="tooltip" title="Salva" style="float: left;">
+            <button id="btnApplica" type="submit" class="btn btn-link" [disabled]="disableSave()"
+                (click)="annullaModifica(dettaglioPrestazione.idPrestazione)">
+                ANNULLA
+            </button>
+        </span>
+    </div>
+    <div class="col-md-6"></div>
+    <div class="col-md-2 align-self-end" style="margin-bottom: 15px; padding-right: 10px;">
+        <span class="d-inline-block" data-bs-toggle="tooltip" title="Salva" style="float: right;">
+            <button id="btnApplica" type="submit" class="btn btn-primary bottonifunzione bottoninu"
+                [disabled]="disableSave()" (click)="salvaPrestazione1()">
+                SALVA
+            </button>
+        </span>
+    </div>
+    <div class="col-md-1"></div>
+    <div class="col-md-12" style="padding: 10px;"></div>
+    <ng-template [ngIf]="prestazioneColl!=null">
+        <div class="col-md-1"></div>
+        <div class="col-md-2" style="padding-top: 30px;">
+            <h4 style="color: black; font-family: Roboto"> {{prestazioneColl?.desTipologia}}
+            </h4>
+        </div>
+        <div class="col-md-2" style="padding-top: 30px;">
+            <h4 style="color: black; font-family: Roboto"> {{prestazioneColl?.tipo}}
+            </h4>
+        </div>
+        <div class="col-md-7"></div>
+
+
+        <div class="col-md-1"></div>
+        <div class="col-md-10">
+            <div class="row gregFilter" style="padding-bottom: 25px;">
+                <ng-template [ngIf]="dataAlPRegColl(prestazioneColl)">
+                    <div class="col-md-10" style="left: 13px; padding-top: 30px;">
+                        <h4 class="titleSection testoBoldDettaglio">{{prestazioneColl?.codPrestRegionale}} -
+                            {{prestazioneColl?.desPrestRegionale}}</h4>
+                    </div>
+                </ng-template>
+                <ng-template [ngIf]="!dataAlPRegColl(prestazioneColl)">
+                    <div class="col-md-10" style="left: 13px; padding-top: 30px;">
+                        <h4 class="titleSection testoBoldDettaglio">{{prestazioneColl?.codPrestRegionale}} -
+                            {{prestazioneColl?.desPrestRegionale}} - fino al:
+                            {{prestazione?.al | date:'dd/MM/yyyy'}}</h4>
+                    </div>
+                </ng-template>
+                <ng-template [ngIf]="dataAlPRegColl(prestazioneColl)">
+                    <div class="col-md-1" style="left: 13px; padding-top: 30px;">
+                        <button id="btnVai" type="submit" class="btn btn-primary bottonifunzione buttonSpace"
+                            (click)="vai(prestazioneColl?.codPrestRegionale +' - ' + prestazioneColl?.desPrestRegionale)">
+                            VAI
+                        </button>
+                    </div>
+                </ng-template>
+                <ng-template [ngIf]="!dataAlPRegColl(prestazioneColl)">
+                    <div class="col-md-1" style="left: 13px; padding-top: 30px;">
+                        <button id="btnVai" type="submit" class="btn btn-primary bottonifunzione buttonSpace"
+                            (click)="vai(prestazioneColl?.codPrestRegionale +' - ' + prestazioneColl?.desPrestRegionale + ' - fino al: ' + prestazione?.dataFine)">
+                            VAI
+                        </button>
+                    </div>
+                </ng-template>
+
+            </div>
+        </div>
+        <div class="col-md-1"></div>
+    </ng-template>
+    <ng-template [ngIf]="haMoltePrestColl">
+        <ng-container *ngFor="let prest of dettaglioPrestazione?.prestazioniCollegate">
+
+            <div class="col-md-1"></div>
+            <div class="col-md-2" style="padding-top: 30px;">
+                <h4 style="color: black; font-family: Roboto"> {{prest?.desTipologia}}
+                </h4>
+            </div>
+            <div class="col-md-2" style="padding-top: 30px;">
+                <h4 style="color: black; font-family: Roboto"> {{prest?.tipo}}
+                </h4>
+            </div>
+            <div class="col-md-7"></div>
+
+
+            <div class="col-md-1"></div>
+            <div class="col-md-10">
+                <div class="row gregFilter" style="padding-bottom: 25px;">
+                    <ng-template [ngIf]="dataAlPRegColl(prest)">
+                        <div class="col-md-10" style="left: 13px; padding-top: 30px;">
+                            <h4 class="titleSection testoBoldDettaglio">{{prest?.codPrestRegionale}} -
+                                {{prest?.desPrestRegionale}}</h4>
+                        </div>
+                    </ng-template>
+                    <ng-template [ngIf]="!dataAlPRegColl(prest)">
+                        <div class="col-md-10" style="left: 13px; padding-top: 30px;">
+                            <h4 class="titleSection testoBoldDettaglio">{{prest?.codPrestRegionale}} -
+                                {{prest?.desPrestRegionale}} - fino al:
+                                {{prest?.al | date:'dd/MM/yyyy'}}</h4>
+                        </div>
+                    </ng-template>
+                    <ng-template [ngIf]="dataAlPRegColl(prest)">
+                        <div class="col-md-1" style="left: 13px; padding-top: 30px;">
+                            <button id="btnVai" type="submit" class="btn btn-primary bottonifunzione buttonSpace"
+                                (click)="vai(prest?.codPrestRegionale +' - ' + prest?.desPrestRegionale)">
+                                VAI
+                            </button>
+                        </div>
+                    </ng-template>
+                    <ng-template [ngIf]="!dataAlPRegColl(prest)">
+                        <div class="col-md-1" style="left: 13px; padding-top: 30px;">
+                            <button id="btnVai" type="submit" class="btn btn-primary bottonifunzione buttonSpace"
+                                (click)="vai(prest?.codPrestRegionale +' - ' + prest?.desPrestRegionale + ' - fino al: ' + prest?.dataFine)">
+                                VAI
+                            </button>
+                        </div>
+                    </ng-template>
+                </div>
+            </div>
+            <div class="col-md-1"></div>
+        </ng-container>
+    </ng-template>
+    <div class="col-md-12" style="padding: 10px;"></div>
+    <div class="col-md-12" style="padding: 10px;"></div>
+</div>

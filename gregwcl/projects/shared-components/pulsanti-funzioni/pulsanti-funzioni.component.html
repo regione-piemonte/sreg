@@ -1,0 +1,82 @@
+<!-- BUTTON -->
+<div class="row " style="padding-top: 5px; padding-bottom: 5px;" *ngIf="client.mostrabottoniera">
+    <div class="row col-md-12 button">
+        <div class="row w-100 space_b">
+            <div class="col pr-0 align-self-end">
+                <button id="btnRettifica" type="submit" class="btn btn-primary bottonifunzione buttonSpace"
+                    *ngIf="client.RichiestaRettificaI" (click)="richiestaRettifica1()">
+                    RICHIESTA RETTIFICA I
+                </button>
+                <button id="btnConferma" type="submit" class="btn btn-primary bottonifunzione buttonSpace"
+                    *ngIf="client.ConfermaDatiI" (click)="confermaDati1()">
+                    CONFERMA DATI I
+                </button>
+                <button id="btnRettifica2" type="submit" class="btn btn-primary bottonifunzione buttonSpace"
+                    *ngIf="client.RichiestaRettificaII" (click)="richiestaRettifica2()">
+                    RICHIESTA RETTIFICA II
+                </button>
+                <button id="btnConferma2" type="submit" class="btn btn-primary bottonifunzione buttonSpace"
+                    *ngIf="client.ConfermaDatiII" (click)="confermaDati2()">
+                    CONFERMA DATI II
+                </button>
+                <button id="btnSave" type="submit" class="btn btn-primary bottonifunzione buttonSpace"
+                    *ngIf="client.SalvaModelliI" (click)="salvaModifiche()">
+                    SALVA MODIFICHE
+                </button>
+                <button id="btnSaveII" type="submit" class="btn btn-primary bottonifunzione buttonSpace"
+                    *ngIf="client.SalvaModelliII" (click)="salvaModifiche()">
+                    SALVA MODIFICHE
+                </button>
+                <button id="btnSaveIII" type="submit" class="btn btn-primary bottonifunzione buttonSpace"
+                    *ngIf="client.SalvaModelliIII" (click)="salvaModifiche()">
+                    SALVA MODIFICHE
+                </button>
+                <button id="btnSaveIV" type="submit" class="btn btn-primary bottonifunzione buttonSpace"
+                    *ngIf="client.SalvaModelliIV" (click)="salvaModifiche()">
+                    SALVA MODIFICHE
+                </button>
+                <button id="btnInviaI" type="submit" class="btn btn-primary bottonifunzione buttonSpace"
+                    *ngIf="client.InviaI" (click)="inviaI()">
+                    INVIA I
+                </button>
+                <button id="btnInviaII" type="submit" class="btn btn-primary bottonifunzione buttonSpace"
+                    *ngIf="client.InviaII" (click)="inviaII()">
+                    INVIA II
+                </button>
+                <button id="btnValida" type="submit" class="btn btn-primary bottonifunzione buttonSpace"
+                    *ngIf="client.Valida" (click)="valida()">
+                    VALIDA
+                </button>
+                <button id="btnStoricizza" type="submit" class="btn btn-primary bottonifunzione buttonSpace"
+                    *ngIf="client.Storicizza" (click)="storicizza()">
+                    STORICIZZA
+                </button>
+                <button id="btnCheckI" type="submit" class="btn btn-primary bottonifunzione buttonSpace"
+                    *ngIf="client.CheckI && attivaCheckI()" (click)="check()">
+                    CHECK
+                </button>
+                <button id="btnCheckII" type="submit" class="btn btn-primary bottonifunzione buttonSpace"
+                    *ngIf="client.CheckII && attivaCheckII()" (click)="check()">
+                    CHECK
+                </button>
+                <button id="btnConcludi" type="submit" class="btn btn-primary bottonifunzione buttonSpace"
+                    *ngIf="client.Concludi" (click)="concludi()">
+                    CONCLUDI RENDICONTAZIONE
+                </button>
+                <button id="btnConcludi" type="submit" class="btn btn-primary bottonifunzione buttonSpace"
+                    *ngIf="client.RiapriRendicontazione" (click)="riapri()">
+                    RIAPRI RENDICONTAZIONE
+                </button>
+                <button id="btnValidaAlZero" type="submit" class="btn btn-primary bottonifunzione buttonSpace"
+                    *ngIf="client.ValidaAlZero" (click)="validaAlZero()">
+                    CONFERMA RESPONSABILE
+                </button>
+                <button id="btnAnnullaValidazioneAlZero" type="submit"
+                    class="btn btn-primary bottonifunzione buttonSpace" *ngIf="client.AnnullaValidazioneAlZero"
+                    (click)="annullaValidazioneAlZero()">
+                    ANNULLA LA CONFERMA
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,286 @@
+<div class="modal-header">
+    <h4 id="titolo" class="titlePage">
+       Unione Enti
+    </h4>
+    <button style="outline: none;" type="button" class="close" aria-label="Close"
+       (click)="activeModal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+    </button>
+ </div>
+ <div class="row greg" style="background-color: white !important;">
+    <div class="modal-body" style="overflow-x: auto; position: relative;">
+        <form [formGroup]="enteForm">
+            <div class="row">
+               <div class="col-md-5">
+               <h4 class="text-nowrap titlePage">Unione dal</h4>
+                  <mat-form-field class="w-100">
+                     <input matInput [matDatepicker]="pickerDataChiusura" userInputFormat="DD/MM/YYYY"
+                     formControlName="dataMerge"  placeholder="dd-mm-yyyy" [min]="dataMerge" (dateChange)="onDateChange()">
+                     <mat-datepicker-toggle matSuffix [for]="pickerDataChiusura">
+                     </mat-datepicker-toggle>
+                     <mat-datepicker #pickerDataChiusura></mat-datepicker>
+                  </mat-form-field>
+               </div>
+            </div>  
+            
+         <div class="row" style="font-size: 14px;">
+          <div class="col-md-5  destinazioneTop">Ente destinazione</div>
+          <div class="col-md-2" style="text-align: center;"><span style="background-color: #cccccf;">Dati da Riportare</span></div>
+          <div class="col-md-5 daUnireTop" >Ente da unire</div>
+       </div>
+       <div class="row" style="font-size: 14px;">
+          <div class="col-md-5 destinazioneLaterale">
+             <mat-form-field style="width: 30vw;">
+                <mat-select (selectionChange)="cambiaValueDest()" [(value)]="enteDest" [disabled]="enableDropDest" panelClass="panelNostro">
+                   <mat-option *ngFor=" let entedest of entidestinazione" value="{{entedest.codiceRegionale}}">
+                    {{entedest.codiceRegionale}}-{{entedest.denominazione}}
+                   </mat-option>
+                </mat-select>
+             </mat-form-field>
+          </div>
+          <div class="col-md-2"></div>
+          <div class="col-md-5 daUnirelaterale">
+             <mat-form-field style="width: 30vw;">
+                <mat-select (selectionChange)="cambiaValueDaunire()" [(value)]="enteDaUnire" [disabled]="enableDropSlave" panelClass="panelNostro">
+                   <mat-option *ngFor=" let entedest of entidaUnire" value="{{entedest.codiceRegionale}}">
+                    {{entedest.codiceRegionale}}-{{entedest.denominazione}}
+                 </mat-option>
+                </mat-select>
+             </mat-form-field>
+          </div>
+       </div>
+       <div class="row">
+          <div class="col-md-5 destinazioneLaterale">
+            <div class="row inputLabel">
+             <div class="col-md-4">Codice regionale</div>
+             <div class="col-md-8">
+                <input class="form-control"  formControlName="codiceRegionale" matInput>
+            </div>
+            </div>
+          </div>
+          <div class="col-md-2"></div>
+          <div class="col-md-5 daUnirelaterale" >
+            <div class="row inputLabel">
+             <div class="col-md-4">Codice regionale</div>
+             <div class="col-md-8">
+                <input class="form-control" formControlName="codiceRegionale2" matInput>
+			</div>
+            </div>
+          </div>
+       </div>
+       <div class="row">
+          <div class="col-md-5 destinazioneLaterale" >
+            <div class="row inputLabel">
+             <div class="col-md-4">Codice fiscale</div>
+             <div class="col-md-8">
+                <input class="form-control" formControlName="codiceFiscale" matInput>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-2"></div>
+          <div class="col-md-5 daUnirelaterale" >
+            <div class="row inputLabel">
+             <div class="col-md-4">Codice fiscale</div>
+             <div class="col-md-8">
+                <input class="form-control" formControlName="codiceFiscale2"  matInput>
+              </div>
+            </div>
+          </div>
+       </div>
+       <div class="row">
+          <div class="col-md-5 destinazioneLaterale" >
+            <div class="row inputLabel">
+             <div class="col-md-4">Denominazione</div>
+             <div class="col-md-8">
+                <input class="form-control" matInput formControlName="denominazione">
+              </div>
+            </div>
+          </div>
+          <div class="col-md-2" style="text-align: center;"><input #checkboxes type="checkbox"  (change)="changeValueUnion(0,$event,'denominazione')" [disabled]="disabledUnisci" ></div>
+          <div class="col-md-5 daUnirelaterale" >
+            <div class="row inputLabel">
+             <div class="col-md-4">Denominazione</div>
+             <div class="col-md-8">
+                <input class="form-control" matInput formControlName="denominazione2">
+              </div>
+            </div>
+          </div>
+       </div>
+       <div class="row">
+          <div class="col-md-5 destinazioneLaterale" >
+            <div class="row inputLabel">
+             <div class="col-md-4">Partita IVA</div>
+             <div class="col-md-8">
+                <input class="form-control" matInput  formControlName="partitaIva">
+              </div>
+            </div>
+          </div>
+          <div class="col-md-2" style="text-align: center;"><input #checkboxes type="checkbox" (change)="changeValueUnion(1,$event,'partitaIva')" [disabled]="disabledUnisci" ></div>
+          <div class="col-md-5 daUnirelaterale">
+            <div class="row inputLabel">
+             <div class="col-md-4">Partita IVA</div>
+             <div class="col-md-8">
+                <input class="form-control" matInput  formControlName="partitaIva2">
+              </div>
+            </div>
+          </div>
+       </div>
+       <div class="row">
+          <div class="col-md-5 destinazioneLaterale">
+            <div class="row inputLabel">
+             <div class="col-md-4">Tipo Ente</div>
+             <div class="col-md-8">
+                <input class="form-control" formControlName="tipoEnte" matInput>
+             </div>
+            </div>
+          </div>
+          <div class="col-md-2"></div>
+          <div class="col-md-5 daUnirelaterale" >
+            <div class="row inputLabel">
+             <div class="col-md-4">Tipo Ente</div>
+             <div class="col-md-8">
+                <input class="form-control" formControlName="tipoEnte2" matInput>
+              </div>
+            </div>
+          </div>
+       </div>
+       <div class="row">
+          <div class="col-md-5 destinazioneLaterale">
+            <div class="row inputLabel">
+             <div class="col-md-4">Comune Sede Legale</div>
+             <div class="col-md-8">
+                <input class="form-control" formControlName="comune" matInput>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-2" style="text-align: center;"><input #checkboxes type="checkbox" (change)="changeValueUnion(2,$event,'comune')" [disabled]="disabledUnisci" ></div>
+          <div class="col-md-5 daUnirelaterale" >
+            <div class="row inputLabel">
+             <div class="col-md-4">Comune Sede Legale</div>
+             <div class="col-md-8">
+                <input class="form-control" formControlName="comune2" matInput>
+              </div>
+            </div>
+          </div>
+       </div>
+       <div class="row">
+          <div class="col-md-5 destinazioneLaterale">
+            <div class="row inputLabel">
+             <div class="col-md-4">Codice istat ente</div>
+             <div class="col-md-8">
+                <input class="form-control" formControlName="codiceIstat" matInput>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-2" style="text-align: center;"><input #checkboxes type="checkbox" (change)="changeValueUnion(3,$event,'codiceIstat')" [disabled]="disabledUnisci" ></div>
+          <div class="col-md-5 daUnirelaterale" >
+            <div class="row inputLabel">
+             <div class="col-md-4">Codice istat ente</div>
+             <div class="col-md-8">
+                <input class="form-control" formControlName="codiceIstat2"  matInput>
+              </div>
+            </div>
+          </div>
+       </div>
+       <div class="row">
+          <div class="col-md-5 destinazioneLaterale" >
+            <div class="row inputLabel">
+             <div class="col-md-4">ASL della Sede Legale</div>
+             <div class="col-md-8">
+                <input class="form-control" formControlName="asl" matInput>
+             </div>
+            </div>
+          </div>
+          <div class="col-md-2" style="text-align: center;"><input #checkboxes type="checkbox" (change)="changeValueUnion(4,$event,'asl')" [disabled]="disabledUnisci" ></div>
+          <div class="col-md-5 daUnirelaterale" >
+            <div class="row inputLabel">
+             <div class="col-md-4">ASL della Sede Legale</div>
+             <div class="col-md-8">
+                <input class="form-control" formControlName="asl2" matInput>
+             </div>
+            </div>
+          </div>
+       </div>
+       <div class="row">
+          <div class="col-md-5 destinazioneLaterale">
+            <div class="row inputLabel">
+             <div class="col-md-4">Email</div>
+             <div class="col-md-8">
+                <input class="form-control" formControlName="email" matInput>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-2" style="text-align: center;"><input #checkboxes type="checkbox" (change)="changeValueUnion(5,$event,'email')" [disabled]="disabledUnisci" ></div>
+          <div class="col-md-5 daUnirelaterale">
+            <div class="row inputLabel">
+             <div class="col-md-4">Email</div>
+             <div class="col-md-8">
+                <input class="form-control" formControlName="email2" matInput>
+              </div>
+            </div>
+          </div>
+       </div>
+       <div class="row">
+          <div class="col-md-5 destinazioneLaterale" >
+            <div class="row inputLabel">
+             <div class="col-md-4">Numero di Telefono</div>
+             <div class="col-md-8">
+                <input class="form-control" formControlName="telefono" matInput>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-2" style="text-align: center;"><input #checkboxes type="checkbox" (change)="changeValueUnion(6,$event,'telefono')" [disabled]="disabledUnisci" ></div>
+          <div class="col-md-5 daUnirelaterale" >
+            <div class="row inputLabel">
+             <div class="col-md-4">Numero di Telefono</div>
+             <div class="col-md-8">
+                <input class="form-control" formControlName="telefono2" matInput>
+              </div>
+            </div>
+          </div>
+       </div>
+       <div class="row">
+          <div class="col-md-5 destinazioneLaterale" >
+            <div class="row inputLabel">
+             <div class="col-md-4">Pec</div>
+             <div class="col-md-8">
+                <input class="form-control" formControlName="pec" matInput>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-2" style="text-align: center;"><input #checkboxes type="checkbox" (change)="changeValueUnion(7,$event,'pec')" [disabled]="disabledUnisci" ></div>
+          <div class="col-md-5 daUnirelaterale" >
+            <div class="row inputLabel">
+             <div class="col-md-4">Pec</div>
+             <div class="col-md-8">
+                <input class="form-control" formControlName="pec2" matInput>
+              </div>
+            </div>
+          </div>
+       </div>
+       <div class="row">
+          <div class="col-md-5 destinazioneBot">
+            <div class="row inputLabel">
+             <div class="col-md-4">Comuni collegati</div>
+             <div class="col-md-8"></div>
+            </div>
+          </div>
+          <div class="col-md-2" style="text-align: center;"><input #checkboxes type="checkbox" (change)="changeValueUnion(8,$event,'comuni')" [disabled]="disabledUnisci" ></div>
+          <div class="col-md-5 daUnireBot" >
+            <div class="row inputLabel">
+             <div class="col-md-4">Comuni collegati</div>
+             <div class="col-md-8"></div>
+            </div>
+          </div>
+       </div>
+      </form>
+       </div>
+ </div>
+ <div class="modal-footer">
+    <div class="col-md-2"></div>
+    <div class="col-md-10 justify-content-end">
+       <button id="btnSave" type="submit" class="btn btn-primary button1"  [disabled]="disabledUnisci" (click)="unisci()">
+       Unisci
+       </button>
+      </div>
+ </div>

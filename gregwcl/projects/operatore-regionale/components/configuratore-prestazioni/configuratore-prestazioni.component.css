@@ -1,0 +1,118 @@
+.greg {
+	background: #F0F3F8 !important;
+	color: #000000 !important;
+	font-family: 'Open Sans', sans-serif;
+}
+
+.gregFilter {
+	padding-top: 10px;
+	padding-bottom: 10px;
+	margin-top: 20px;
+	margin-bottom: 20px;
+	background: white;
+	border-width: 1px;
+	border-style: solid;
+	border-color: rgb(213, 213, 213);
+	margin-top: 20px;
+}
+
+.greg-riga-header{
+	background: #EEEEEE 0% 0% no-repeat padding-box;
+	border: 1px solid #EAEAEA;
+	opacity: 1;
+}
+
+.notavailable {
+	color: red;
+}
+
+.testo {
+	text-align: left;
+	font: normal normal normal 14px/19px 'Open Sans', sans-serif;
+	letter-spacing: -0.07px;
+	color: #212529;
+	opacity: 1;
+}
+
+.testoBoldElenco {
+	text-align: left;
+	font: normal normal bold 14px/19px 'Open Sans', sans-serif;
+	letter-spacing: -0.07px;
+	color: #212529;
+	opacity: 1;
+}
+
+
+.testoTable {
+	text-align: left;
+	font: normal normal normal 16px/22px 'Open Sans', sans-serif;
+	letter-spacing: -0.07px;
+	color: #212529;
+	opacity: 1;
+}
+
+.spazioTitolo{
+	padding-top: 10px;
+    padding-bottom: 20px;
+}
+
+.testoBold {
+	text-align: left;
+	font: normal normal bold 20px/27px 'Open Sans', sans-serif;
+	letter-spacing: 0px;
+	color: #000000;
+	opacity: 1;
+}
+
+.testoBoldHeader {
+	text-align: left;
+	font: normal normal bold 16px/22px 'Open Sans', sans-serif;
+	letter-spacing: 0px;
+	color: #000000;
+	opacity: 1;
+}
+
+.testoBoldDettaglio {
+	text-align: left;
+	font: normal normal bold 18px/24px 'Open Sans', sans-serif;
+	letter-spacing: 0px;
+	color: #000000;
+	opacity: 1;
+}
+
+.fnpsImage {
+	height: 50px;
+	padding-bottom: 20px;
+	padding-left: 0px;
+}
+
+.greg-table{
+	padding-top: 10px;
+	padding-bottom: 10px;
+	background: white;
+	margin: 20px;
+	box-shadow: 1px 2px 8px #c4c4c4;
+	border-radius: 5px;
+}
+
+.gregTableInterno{
+	padding-top: 10px;
+	padding-bottom: 10px;
+	background: #F7F7F7 0% 0% no-repeat padding-box;
+	margin: 20px;
+	box-shadow: 1px 2px 8px #c4c4c4;
+	border-radius: 5px;
+}
+
+::ng-deep .my-class .modal-dialog { 
+	max-width: 80%;
+	width: 80%;
+}
+
+.divtext {
+    border: ridge 2px;
+    padding: 5px;
+    width: 20em;
+    min-height: 5em;
+    overflow: auto;
+}

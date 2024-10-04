@@ -1,0 +1,420 @@
+<div class="row" style="background: white; padding-top: 15px; padding-bottom: 15px; box-shadow: 1px 2px 8px #C4C4C4;">
+    <div class="col-md-9 fontbold" style="padding-bottom:10px;padding-top:10px;">
+        <div class="bold" style="padding-bottom:20px;">
+            {{datiEnte?.denominazione}} - Anno di esercizio: {{infoOperatore?.annoEsercizio}}
+        </div>
+        <div>{{titolo}}
+            <ng-template #popContent>
+                {{tooltip}}
+            </ng-template>
+            <label style="white-space: nowrap; padding-left: 10px;" [placement]="['right', 'left', 'auto']"
+                [ngbPopover]="popContent" triggers="hover">
+                <img src="assets/img/ui-modelli/help.png" class="greg-icon-help">
+            </label>
+        </div>
+    </div>
+    <div class="col-md-3 fontbold" style="padding-bottom:30px;padding-top:10px;"
+        *ngIf="client.azioni.get('EsportaModelloA')[1]">
+        <div style="text-align: right;padding-right: 30px;">
+            <button type="button" class="btn" data-toggle="tooltip" title="Esporta in Excel" (click)="esportaexcel()">
+                <i class="fa fa-file-excel" style="cursor: pointer;color:green;width: 40px;height: 40px;"></i>
+            </button>
+        </div>
+    </div>
+    <div class="row col-md-12 fontbold" style="padding-bottom:10px;padding-top:10px;">
+        Totali
+    </div>
+
+    <div class="row greg-mod-a-section-totale">
+        <div class="col-md-4">
+            TOTALE ENTRATE TUTTI TITOLI COMPETENZA
+        </div>
+        <div class="col-md-2 right-delimiter-totali" style="font-size: 22px;">
+            <b> {{totaleTitoli }} </b>
+        </div>
+        <div class="col-md-4">
+            TOTALE ENTRATE TITOLO 2 E TITOLO 3 (ESCLUSO Trasferimenti correnti indicati in TITOLO 2 - ALTRO - Tipologia
+            ALTRO)
+        </div>
+        <div class="col-md-2" style="font-size: 22px;">
+            <b> {{totaleTitoliSelezionati}} </b>
+        </div>
+    </div>
+
+</div>
+
+<div class="row" style="background: white; padding-top: 15px; padding-bottom: 15px;">
+    <div class="row col-md-12 " style="padding-top:10px;">
+        Totali parziali
+    </div>
+
+    <table id="tableTotaliModelloA" *ngIf="modelAData?.listaTitoli?.length > 0"
+        class="table table-responsive-xl greg-modelloa-table" style="width: 100% !important;">
+        <thead class="greg-modelloa-tbl-riga-header">
+            <tr>
+                <ng-container *ngFor="let element of modelAData.listaTitoli; let i=index">
+                    <th class="col-auto fontnormale"><b>{{element.descTitolo}}</b></th>
+                </ng-container>
+            </tr>
+        </thead>
+        <tbody *ngIf="modelAData?.listaTitoli?.length > 0">
+            <ng-container *ngFor="let element of modelAData.listaTitoli; let i=index">
+                <td class="smarttable">{{element.totale }}</td>
+            </ng-container>
+        </tbody>
+        <tbody *ngIf="modelAData?.listaTitoli?.length == 0">
+            <tr>
+                <td colspan="12" class="no-data-available">Non sono presenti totali parziali.
+                </td>
+            </tr>
+        <tbody>
+    </table>
+</div>
+
+
+<div class="row" style="background: white; padding-top: 15px; padding-bottom: 15px;">
+    <table id="tableFondi" *ngIf="rendicontazioneModAPart3?.length > 0"
+        class="table table-responsive-xl greg-modelloa-table" style="width: 100% !important;">
+        <thead class="greg-modelloa-tbl-riga-header">
+            <tr>
+                <ng-container *ngFor="let element of rendicontazioneModAPart3; let i=index">
+                    <th class="col-auto fontnormale"><b>{{element.descVoce}}</b></th>
+                </ng-container>
+            </tr>
+        </thead>
+        <tbody *ngIf="rendicontazioneModAPart3?.length > 0">
+            <ng-container *ngFor="let element of rendicontazioneModAPart3; let i=index">
+                <td class="smarttable">
+                    <input class="form-control importosomma inputnumber" type="text" appTwoDigitDecimalNumber
+                        [(ngModel)]="rendicontazioneModAPart3[i].valore"
+                        [class.campovuoto]="rendicontazioneModAPart3[i].valore === null || rendicontazioneModAPart3[i].valore === ''"
+                        [class.campovalorizzato]="rendicontazioneModAPart3[i].valore !== null && rendicontazioneModAPart3[i].valore !== ''"
+                        (blur)="changeKeyPart3(element, $event.target.value)" [disabled]="client.readOnly || client.azioni.get('ModelloA')[0]">
+                </td>
+            </ng-container>
+        </tbody>
+        <tbody *ngIf="rendicontazioneModAPart3?.length == 0">
+            <tr>
+                <td colspan="12" class="no-data-available">Non sono presenti dati.
+                </td>
+            </tr>
+        <tbody>
+    </table>
+</div>
+
+<div *ngIf="modelAData?.listaTitoli?.length > 0">
+
+    <ng-container *ngFor="let titolo of modelAData.listaTitoli; let i=index">
+
+        <ng-container *ngFor="let tipologia of titolo.listaTipologie; let t=index">
+
+            <div class="row" style="background: white; padding-top: 15px; padding-bottom: 15px;">
+                <table id="tableTitoli" class="table table-responsive-xl greg-modelloa-table"
+                    style="width: 100% !important;">
+                    <thead class="greg-modelloa-tbl-riga-header">
+                        <tr>
+                            <th class="col-auto fontnormale" colspan="8"><b>{{titolo.descTitolo}} </b> -
+                                <b>{{tipologia.descCodTipologia}}</b> - <span>{{tipologia.descTipologia}}</span></th>
+                        </tr>
+                    </thead>
+                    <tbody *ngIf="tipologia.listaVoci.length == 0">
+                        <td>
+                            <div class="tbl-descrizione">
+                                <div>{{tipologia.descTipologia}}</div>
+                                <div *ngIf="tipologia.msgInformativo != null">
+                                    <ng-template #popContent1>
+                                        {{tipologia.msgInformativo}}
+                                    </ng-template>
+                                    <label style="white-space: nowrap; padding-left: 10px;"
+                                        [placement]="['right', 'left', 'auto']" [ngbPopover]="popContent1"
+                                        triggers="hover">
+                                        <img src="assets/img/ui-modelli/help.png" class="greg-icon-help">
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="tbl-valore">
+                                <input class="form-control importosomma inputnumber greg-mod-a-small-input" type="text"
+                                    appTwoDigitDecimalNumber style="max-width: 280px; margin: 10px 0;"
+                                    [(ngModel)]="tipologia.valore"
+                                    [class.campovuoto]="tipologia.valore === null || tipologia.valore === ''"
+                                    [class.campovalorizzato]="tipologia.valore !== null && tipologia.valore !== ''"
+                                    (ngModelChange)="calcolaSubtotale(titolo)"
+                                    (blur)="changeKeyTipologia(tipologia, $event.target.value)"
+                                    [disabled]="client.readOnly || client.azioni.get('ModelloA')[0]">
+                            </div>
+                        </td>
+                    </tbody>
+                    <tbody *ngIf="tipologia.listaVoci?.length >= 1">
+                        <tr>
+                            <ng-container *ngFor="let voce of tipologia.listaVoci; let v=index">
+                                <td class="voci-dim">
+                                    <div class="tbl-descrizione">
+                                        <div>{{voce.descVoce}}</div>
+                                        <div *ngIf="voce.msgInformativo != null">
+                                            <ng-template #popContent2>
+                                                {{voce.msgInformativo}}
+                                            </ng-template>
+                                            <label style="white-space: nowrap; padding-left: 10px;"
+                                                [placement]="['right', 'left', 'auto']" [ngbPopover]="popContent2"
+                                                triggers="hover">
+                                                <img src="assets/img/ui-modelli/help.png" class="greg-icon-help">
+                                            </label>
+                                        </div>
+                                    </div>
+                                </td>
+
+
+                            </ng-container>
+                        </tr>
+
+                        <tr>
+                            <ng-container *ngFor="let voce of tipologia.listaVoci; let v=index">
+                                <td class="voci-dim">
+                                    <div class="tbl-valore"
+                                        *ngIf="voce.prestazioni != null && (voce.prestazioni.prestazioniRS.length > 0 || voce.prestazioni.prestazioniCD.length > 0)">
+                                        <input class="form-control importosomma inputnumber" style="max-width: 280px;"
+                                        type="text" appTwoDigitDecimalNumber
+                                        [(ngModel)]="voce.valoreNumb"
+                                        [class.campovuoto]="voce.valoreNumb === null || voce.valoreNumb === ''"
+                                        [class.campovalorizzato]="voce.valoreNumb !== null && voce.valoreNumb !== ''"
+                                        disabled>
+                                        <!-- <label class="form-control importosomma inputnumber"
+                                            [class.campovuoto]="voce.valoreNumb === null || voce.valoreNumb === '' || voce.valoreNumb === undefined"
+                                            [class.campovalorizzato]="voce.valoreNumb !== null && voce.valoreNumb !== '' && voce.valoreNumb !== undefined"
+                                            style="max-width: 280px;">{{voce.valoreNumb}}</label> -->
+                                    </div>
+                                    <div class="tbl-valore"
+                                        *ngIf="voce.prestazioni != null && (voce.prestazioni.prestazioniRS.length == 0 && voce.prestazioni.prestazioniCD.length == 0)">
+                                        <input class="form-control importosomma inputnumber" disabled
+                                            style="max-width: 280px;">
+                                    </div>
+                                    <div class="tbl-valore" *ngIf="voce.prestazioni == null">
+                                        <!-- campo numerico -->
+                                        <input *ngIf="voce.codVoce !== '32'"
+                                            class="form-control importosomma inputnumber" type="text"
+                                            appTwoDigitDecimalNumber [(ngModel)]="voce.valoreNumb"
+                                            (ngModelChange)="calcolaSubtotale(titolo)"
+                                            [class.campovuoto]="!checkShowVoceInput(titolo,tipologia,voce) && (voce.valoreNumb === null || voce.valoreNumb === '')"
+                                            [class.campovalorizzato]="!checkShowVoceInput(titolo,tipologia,voce) && (voce.valoreNumb !== null && voce.valoreNumb !== '' && voce.valoreNumb !== undefined)"
+                                            (blur)="changeKeyVoce(voce, $event.target.value)"
+                                            [disabled]="checkShowVoceInput(titolo,tipologia,voce) || (client.readOnly) || client.azioni.get('ModelloA')[0]"
+                                            style="max-width: 280px;">
+
+                                        <!-- campo testuale -->
+                                        <textarea *ngIf="voce.codVoce === '32'"
+                                            class="form-control importosomma inputnumber" type="text"
+                                            [(ngModel)]="voce.valoreText" (click)="openDialogMotivazione(voce)"
+                                            data-bs-toggle="tooltip" data-bs-placement="right"
+                                            title="{{voce.valoreText}}"
+                                            [class.campovuoto]="!checkShowVoceInput(titolo,tipologia,voce) && (voce.valoreText === null || voce.valoreText === '')"
+                                            [class.campovalorizzato]="!checkShowVoceInput(titolo,tipologia,voce) && (voce.valoreText !== null && voce.valoreText !== '' && voce.valoreText !== undefined)"
+                                            [disabled]="checkShowVoceInput(titolo,tipologia,voce) || (client.readOnly) || !importoavvalorato || client.azioni.get('ModelloA')[0]"
+                                            style="max-width: 280px; text-align: left !important;"> </textarea>
+                                    </div>
+                                </td>
+                            </ng-container>
+                        </tr>
+
+                        <tr>
+                            <ng-container *ngFor="let voce of tipologia.listaVoci; let v=index">
+                                <td>
+                                    <!--  PART 2 -->
+                                    <div class="fontbold"
+                                        *ngIf="voce.prestazioni != null && (voce.prestazioni.prestazioniRS.length > 0 || voce.prestazioni.prestazioniCD.length > 0)"
+                                        (click)="espandiPart2(voce)">
+                                        <span style="color:#006CB4; cursor: pointer;">Compila</span>* &nbsp;<img
+                                            [@rotatedState]='voce.rotate' src="assets/img/user/frecciagiu.png"
+                                            style="cursor: pointer;">
+                                    </div>
+                                </td>
+                            </ng-container>
+                        </tr>
+
+                    </tbody>
+                    <tbody *ngIf="titolo.listaTipologie?.length == 0">
+                        <tr>
+                            <td colspan="12" class="no-data-available">Non sono presenti dati.
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <!--  PART 2 -->
+                        <ng-container *ngFor="let voce of tipologia.listaVoci; let v=index">
+                            <tr *ngIf="voce.prestazioni != null && voce.showPrestazioni">
+                                <td colspan="8">
+                                    <div class="row">
+                                        <div class="greg-mod-a-section-totale"
+                                            style="padding-right: 20px; padding-left: 20px;">
+                                            <div class="col-md-12 fontbold"
+                                                *ngIf="voce.prestazioni.prestazioniRS.length > 0">Strutture residenziali
+                                                a gestione diretta (SR)</div>
+                                            <ng-container
+                                                *ngFor="let prestazione of voce.prestazioni.prestazioniRS; let p=index">
+                                                <div class="col-md-12">{{prestazione.codPrestazione | slice:0:7}} -
+                                                    {{prestazione.descPrestazione}}</div>
+                                                <table id="tablePrestazioni"
+                                                    class="table table-responsive-xl greg-modelloa-table"
+                                                    style="width: 97% !important;">
+                                                    <thead class="greg-modelloa-tbl-riga-header">
+                                                        <tr>
+                                                            <ng-container
+                                                                *ngFor="let utenza of prestazione.listaTargetUtenza; let u=index">
+                                                                <th class="col-auto fontbold">
+                                                                    {{utenza.descTargetUtenza}}</th>
+                                                            </ng-container>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <ng-container
+                                                            *ngFor="let utenza of prestazione.listaTargetUtenza; let u=index">
+                                                            <td style="width: 12.5%;">
+                                                                <div class="tbl-valore" *ngIf="utenza.entry">
+                                                                    <input class="form-control importosomma inputnumber"
+                                                                        type="text" appTwoDigitDecimalNumber
+                                                                        [(ngModel)]="utenza.valore"
+                                                                        [class.campovuoto]="utenza.valore === null || utenza.valore === ''"
+                                                                        [class.campovalorizzato]="utenza.valore !== null && utenza.valore !== ''"
+                                                                        (ngModelChange)="calcolaSubtotalePrest(voce, p, 'sr', titolo)"
+                                                                        (blur)="changeKeyPrest(utenza, $event.target.value)"
+                                                                        [disabled]="client.readOnly || client.azioni.get('ModelloA')[0]">
+                                                                </div>
+                                                            </td>
+                                                        </ng-container>
+                                                    </tbody>
+                                                </table>
+                                            </ng-container>
+                                            <div class="col-md-12 fontbold"
+                                                *ngIf="voce.prestazioni.prestazioniRS.length > 0 && voce.prestazioni.prestazioniCD.length > 0"
+                                                style="font-size: 22px;">SUBTOTALI SR</div>
+                                            <table
+                                                *ngIf="voce.prestazioni.prestazioniRS.length > 0 && voce.prestazioni.prestazioniCD.length > 0"
+                                                id="tableSubtotaleRS" class="table table-responsive-xl subtotale"
+                                                style="width: 97% !important;">
+                                                <ng-container
+                                                    *ngFor="let subtotale of voce.prestazioni.subtotaliRS; let s1=index">
+                                                    <td style="width: 12.5%; padding-top: 15px;">
+                                                        <div class="tbl-valore">
+                                                            <input class="form-control importosomma inputnumber"
+                                                                        type="text" appTwoDigitDecimalNumber
+                                                                        [(ngModel)]="subtotale.valore"
+                                                                        [class.campovuoto]="subtotale.valore === null || subtotale.valore === ''"
+                                                                        [class.campovalorizzato]="subtotale.valore !== null && subtotale.valore !== ''"
+                                                                        [disabled]="client.readOnly || client.azioni.get('ModelloA')[0]">
+                                                            <!-- <label [ngClass]="{'form-control importosomma inputnumber': !client.readOnly, 'form-control-disable importosomma inputnumber': client.readOnly}"
+                                                                type="text">{{subtotale.valore }}</label> -->
+                                                        </div>
+                                                    </td>
+                                                </ng-container>
+                                            </table>
+                                            <br>
+                                            <div class="col-md-12 fontbold"
+                                                *ngIf="voce.prestazioni.prestazioniCD.length > 0">Strutture
+                                                semiresidenziali o diurne a gestione diretta (CD)</div>
+                                            <ng-container
+                                                *ngFor="let prestazione of voce.prestazioni.prestazioniCD; let p=index">
+                                                <div class="col-md-12">{{prestazione.codPrestazione | slice:0:7}} -
+                                                    {{prestazione.descPrestazione}}</div>
+                                                <table id="tablePrestazioni"
+                                                    class="table table-responsive-xl greg-modelloa-table"
+                                                    style="width: 97% !important;">
+                                                    <thead class="greg-modelloa-tbl-riga-header">
+                                                        <tr>
+                                                            <ng-container
+                                                                *ngFor="let utenza of prestazione.listaTargetUtenza; let u=index">
+                                                                <th class="col-auto fontbold">
+                                                                    {{utenza.descTargetUtenza}}</th>
+                                                            </ng-container>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <ng-container
+                                                            *ngFor="let utenza of prestazione.listaTargetUtenza; let u=index">
+                                                            <td style="width: 12.5%;">
+                                                                <div class="tbl-valore" *ngIf="utenza.entry">
+                                                                    <input class="form-control importosomma inputnumber"
+                                                                        type="text" appTwoDigitDecimalNumber
+                                                                        [(ngModel)]="utenza.valore"
+                                                                        [class.campovuoto]="utenza.valore === null || utenza.valore === ''"
+                                                                        [class.campovalorizzato]="utenza.valore !== null && utenza.valore !== ''"
+                                                                        (ngModelChange)="calcolaSubtotalePrest(voce, p, 'cd', titolo)"
+                                                                        (blur)="changeKeyPrest(utenza, $event.target.value)"
+                                                                        [disabled]="client.readOnly || client.azioni.get('ModelloA')[0]">
+                                                                </div>
+                                                            </td>
+                                                        </ng-container>
+                                                    </tbody>
+                                                </table>
+                                            </ng-container>
+                                            <div class="col-md-12 fontbold"
+                                                *ngIf="voce.prestazioni.prestazioniRS.length > 0 && voce.prestazioni.prestazioniCD.length > 0"
+                                                style="font-size: 22px;">SUBTOTALI CD</div>
+                                            <table
+                                                *ngIf="voce.prestazioni.prestazioniRS.length > 0 && voce.prestazioni.prestazioniCD.length > 0"
+                                                id="tableSubtotaleCD" class="table table-responsive-xl subtotale"
+                                                style="width: 97% !important;">
+                                                <ng-container
+                                                    *ngFor="let subtotale of voce.prestazioni.subtotaliCD; let s2=index">
+                                                    <td style="width: 12.5%; padding-top: 17px;">
+                                                        <div class="tbl-valore">
+                                                            <input class="form-control importosomma inputnumber"
+                                                            type="text" appTwoDigitDecimalNumber
+                                                            [(ngModel)]="subtotale.valore"
+                                                            [class.campovuoto]="subtotale.valore === null || subtotale.valore === ''"
+                                                            [class.campovalorizzato]="subtotale.valore !== null && subtotale.valore !== ''"
+                                                            [disabled]="client.readOnly || client.azioni.get('ModelloA')[0]">
+                                                            <!-- <label [ngClass]="{'form-control importosomma inputnumber': !client.readOnly, 'form-control-disable importosomma inputnumber': client.readOnly}"
+                                                                type="text">{{subtotale.valore }}</label> -->
+                                                        </div>
+                                                    </td>
+                                                </ng-container>
+                                            </table>
+
+                                            <div class="col-md-12 fontbold" style="font-size: 22px;">TOTALE SR+CD</div>
+                                            <table id="tableSubtotaleCD" class="table table-responsive-xl totale-sr-cd"
+                                                style="width: 97% !important;">
+                                                <ng-container
+                                                    *ngFor="let totale of voce.prestazioni.totaliSRCD; let s2=index">
+                                                    <td style="width: 12.5%; padding-top: 17px;">
+                                                        <div class="tbl-valore">
+                                                            <input class="form-control importosomma inputnumber"
+                                                            type="text" appTwoDigitDecimalNumber
+                                                            [(ngModel)]="totale.valore"
+                                                            [class.campovuoto]="totale.valore === null || totale.valore === ''"
+                                                            [class.campovalorizzato]="totale.valore !== null && totale.valore !== ''"
+                                                            [disabled]="client.readOnly || client.azioni.get('ModelloA')[0]">
+                                                            <!-- <label [ngClass]="{'form-control importosomma inputnumber': !client.readOnly, 'form-control-disable importosomma inputnumber': client.readOnly}"
+                                                                type="text">{{totale.valore }}</label> -->
+                                                        </div>
+                                                    </td>
+                                                </ng-container>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </ng-container>
+                    </tfoot>
+                </table>
+                <ng-container *ngFor="let voce of tipologia.listaVoci; let v=index">
+                    <div *ngIf="voce.prestazioni != null && (voce.prestazioni.prestazioniRS.length > 0 && voce.prestazioni.prestazioniCD.length > 0)"
+                        class="col-md-12" style="font-size: 13px;">* Compilazione obbligatoria</div>
+                </ng-container>
+
+            </div>
+        </ng-container>
+    </ng-container>
+
+</div>
+
+<div class="row" style="padding-top: 15px; padding-bottom: 20px;">
+</div>
+
+<!-- CRONOLOGIA -->
+<app-cronologia-modelli></app-cronologia-modelli>
+
+<br>
+
+<!-- BOTTONI -->
+<app-pulsanti-funzioni [mostrasalva]="mostrasalva" [idRendicontazioneEnte]="idRendicontazioneEnte" [modello]="'Mod. A'"
+    (salvaEvent)="salvaModifiche($event)"></app-pulsanti-funzioni>

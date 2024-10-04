@@ -1,0 +1,94 @@
+<div class="row" style="background: white; padding-top: 15px; padding-bottom: 20px; box-shadow: 1px 2px 8px #C4C4C4;">
+    <div class="col-md-9 fontbold" style="padding-bottom:30px;padding-top:10px;">
+        <div class="fontbold" style="padding-bottom:20px;">
+            {{datiEnte?.denominazione}} - Anno di esercizio: {{infoOperatore?.annoEsercizio}}
+        </div>  
+        <div>{{intestazione}}</div>
+
+   </div>
+    <div class="col-md-3 fontbold" style="padding-bottom:30px;padding-top:10px;" *ngIf="client.azioni.get('EsportaModelloA1')[1]"> 
+        <div  style="text-align: right;padding-right: 30px;">
+            <button type="button" class="btn" data-toggle="tooltip" title="Esporta in Excel" (click)="esportaexcel()">
+                <i class="fa fa-file-excel" style="cursor: pointer;color:green;width: 40px;height: 40px;"></i>
+            </button>
+        </div>
+    </div>
+ <div class="tab-row" style="padding-left: 15px;padding-right: 15px;">
+<table id="tabenticomuni"
+               class="table table-hover table-sm tbl-ente-comuni">
+            <thead class="rigaheader">
+                <tr>
+                    <th style="padding-right: 69px; width: 0%;">CODICE<br>ISTAT</th>
+                    <th style="padding-right: 69px; width: 0%;">COMUNE</th>
+                    <ng-container *ngFor="let voci of listavoci;let k=index">
+                    <th class=" fontnormale modWidth" style='padding-right: 69px;' *ngIf="voci.codvoce.indexOf('T') != 0"><b>{{voci.descVoceModA1}}</b><br>{{voci.msgInformativo}}</th>
+                    </ng-container>
+                </tr>
+            </thead>
+           <tbody *ngIf="listadati?.length > 0">
+           <ng-container *ngFor="let element of listadati; let i=index">
+            <tr (dblclick)="null" *ngIf="element.codcomune != null && element.codcomune != 'Somma'">
+                <td class="smarttable">{{element.codcomune}}</td>
+                <td class="smarttable">{{element.desccomune}}</td>
+                <ng-container *ngFor="let val of listadati[i].valore | keyvalue; trackBy: trackByFn">
+                <td class="smarttable" *ngIf="val.key === 'I2'"><input style = "max-width: 280px;" id=impversato{{i}}{{val.key}} class="form-control importosomma inputnumber" [class.campovuoto]="val.value === null" [class.campovalorizzato]="val.value !== null" type="text" appTwoDigitDecimalNumber [(ngModel)]="val.value" (blur)="changeKey(val.key, $event.target.value,i)" (ngModelChange)="aggiornatotale(val.key,$event,i)" [disabled]="client.readOnly || controlloCompilazione(val.key, element) || client.azioni.get('ModelloA1')[0]"></td>
+                <td class="smarttable" *ngIf="val.key != 'I2'"><input style = "max-width: 280px;" id=impversato{{i}}{{val.key}} class="form-control importosomma inputnumber" [class.campovuoto]="val.value === null" [class.campovalorizzato]="val.value !== null" type="text" appTwoDigitDecimalNumber [(ngModel)]="val.value" (blur)="changeKey(val.key, $event.target.value,i)" [disabled]="client.readOnly || controlloCompilazione(val.key, element) || client.azioni.get('ModelloA1')[0]"></td>
+                </ng-container>
+            </tr>
+			<tr class="total-row" *ngIf="element.codcomune === 'Somma' && listadati?.length > 0">
+			  <td class="smarttable"></td>
+              <td class="smarttable"></td>
+              <td class="smarttable fontbold" style="text-align: right; ">TOTALE</td>
+               <ng-container *ngFor="let val of listadati[i].valore | keyvalue">
+                
+                <td class="smarttable text-wrap totaleCol "> <div style = "max-width: 280px;" id=imptotale class="total-box" data-toggle="tooltip" title={{messaggioinf}}>{{val.value }}</div></td>
+              <!-- <td class="smarttable fontbold">
+                  <div class="row">
+                  <div class="col-md-4" style="padding: 5px;">TOTALE</div> 
+                  <div id=imptotale class="col-md-7 total-box" data-toggle="tooltip" title={{messaggioinf}}>{{ val.value }}</div>
+                </div>
+            </td> -->
+              </ng-container>
+			</tr>
+			</ng-container>
+			 <ng-container *ngFor="let element of listadati; let i=index">
+			 <ng-container *ngFor="let voci of listavoci">
+			 
+
+			  <tr class="total-row" *ngIf="voci.codvoce.indexOf('T') === 0 && element.codcomune === null">
+			   <td class="smarttable">&nbsp;</td>
+              <td  colspan="2" class="smarttablecell fontbold" style="border-left: 4px solid lightgray;">{{voci.descVoceModA1}}<br>{{voci.msgInformativo}}</td>
+              <td class="smarttablecell fontbold" style="border-right: 4px solid lightgray;" *ngFor="let val of listadati[i].valore | keyvalue">  
+                <input [class.campovuoto]="val.value === null" [class.campovalorizzato]="val.value !== null" id=impversatotot 
+                        class="form-control importosomma inputnumber" type="text" appTwoDigitDecimalNumber [(ngModel)]="val.value" 
+                        (blur)="changeKey(val.key, $event.target.value,i)" [disabled]="client.readOnly || client.azioni.get('ModelloA1')[0]" style = "max-width: 280px;">
+            </td>
+			</tr>
+			
+			
+			 <tr class="total-row" *ngIf="voci.codvoce.indexOf('T') === 0 && element.codcomune === null">
+			  <td class="smarttable">&nbsp;</td>
+			 </tr>
+			 </ng-container>
+			  </ng-container>
+            </tbody>
+            <tbody *ngIf="listadati?.length == 0">
+            <tr>
+                <td colspan="12" class="no-data-available">Non sono presenti comuni.
+                </td>
+            </tr>
+            <tbody>
+        </table> 
+   </div>
+    </div>
+    <div class="row" style="padding-top: 15px; padding-bottom: 20px;">
+    </div>
+<!-- cronologia -->
+<app-cronologia-modelli></app-cronologia-modelli>
+            
+<br>
+
+<!-- BOTTONI --> 
+<app-pulsanti-funzioni [mostrasalva]="mostrasalva" [idRendicontazioneEnte]="idRendicontazioneEnte" [modello]="'Mod. A1'" (salvaEvent)="salvaModifiche($event)"></app-pulsanti-funzioni>
+
+

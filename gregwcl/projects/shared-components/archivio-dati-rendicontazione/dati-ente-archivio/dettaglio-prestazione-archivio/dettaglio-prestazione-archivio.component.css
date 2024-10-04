@@ -1,0 +1,103 @@
+.tableCronologia {
+	position: relative;
+  	max-height: 500px;
+  	overflow: auto;
+}
+
+.spazioTitolo{
+	padding-bottom: 40px;
+}
+
+.spazio{
+	padding-bottom: 10px;
+}
+
+.greg {
+	background: #F0F3F8 !important;
+	color: #000000 !important;
+	font-family: 'Open Sans', sans-serif;
+}
+
+.latoSinistro{
+	border: #000000;
+	border-width: 1px;
+	border-top-style: solid;
+	border-left-style: solid;
+	border-bottom-style: solid;
+}
+.latoDestro{
+	border: #000000;
+	border-width: 1px;
+	border-top-style: solid;
+	border-right-style: solid;
+	border-bottom-style: solid;
+}
+
+.titolo{
+	text-align: left;
+	font: normal normal bold 16px/22px 'Open Sans', sans-serif;
+	letter-spacing: 0px;
+	color: #000000;
+	opacity: 1;
+}
+
+.gregFilter {
+	padding-top: 10px;
+	padding-bottom: 10px;
+	margin-top: 5px;
+	background: white;
+	margin-top: 20px;
+	box-shadow: 1px 2px 8px #c4c4c4;
+    border-radius: 5px;
+}
+
+.gregBoxTitle {
+	background: #EEEEEE !important;
+	color: #000000 !important;
+	font-family: 'Open Sans', sans-serif;
+	border: 1px solid #EAEAEA;
+}
+
+.gregBox {
+	background: #F7F7F7 !important;
+	color: #000000 !important;
+	font-family: 'Open Sans', sans-serif;
+	border: 1px solid #EAEAEA;
+}
+
+.titleSection {
+	letter-spacing: 0px;
+	color: #000000;
+	opacity: 1;
+	text-align: left;
+	font-family: 'Open Sans', sans-serif;
+	font-size: 18px;
+	line-height: 24px;
+	font-weight: bold;
+	height: 19px;
+}
+
+.gregUtenze {
+	padding-top: 10px;
+	padding-bottom: 10px;
+	background: white;
+    border-radius: 5px;
+}
+
+.button {
+	padding-top: 10px;
+	padding-bottom: 10px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+.space_b {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.buttonSpace {
+	width: 100px;
+	float: right;
+}

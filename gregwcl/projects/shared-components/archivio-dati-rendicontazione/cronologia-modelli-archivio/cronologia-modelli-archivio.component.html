@@ -1,0 +1,96 @@
+   <!-- CRONOLOGIA -->
+<div class="row" style="background: white; padding-top: 20px; padding-bottom: 20px; box-shadow: 1px 2px 8px #C4C4C4;" *ngIf="client.azioni.get('CronologiaRegionale')[1] || client.azioni.get('CronologiaEnte')[1]">
+    <div class="col-md-12">
+        <div class="cronologia" style="padding-bottom:10px;">Cronologia &nbsp; &nbsp;<img [@rotatedState]='state' src="assets/img/user/frecciagiu.png" (click)="apricronologia()" style="cursor: pointer;"></div>
+                   <!-- TABELLA -->
+        <!-- <div class="col-md-2"></div> -->
+        <table mat-table [dataSource]="listaCronologiaAssociata"
+        class="col-12 mt-3 mb-3 table table-striped table-hover table-responsive-xl tabellagreg" *ngIf="espansa">
+        <ng-container matColumnDef="dataEora">
+            <th class="columns_header" mat-header-cell *matHeaderCellDef> Data e Ora </th>
+            <td class="smarttable" mat-cell *matCellDef="let cronologia"> {{cronologia.dataOra | date:'dd/MM/yyyy HH:mm'}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="utente">
+            <th class="columns_header" mat-header-cell *matHeaderCellDef> Utente </th>
+            <td class="smarttable" class="smarttable" mat-cell *matCellDef="let cronologia"> {{cronologia.utente}}
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="modello">
+            <th class="columns_header" mat-header-cell *matHeaderCellDef> Modello </th>
+            <td class="smarttable" class="smarttable" mat-cell *matCellDef="let cronologia"> {{cronologia.modello}}
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="statoRendicontazione">
+            <th class="columns_header" mat-header-cell *matHeaderCellDef> Stato Rendicontazione </th>
+            <td class="smarttable" class="smarttable" mat-cell *matCellDef="let cronologia">
+                {{cronologia.statoRendicontazione.descStatoRendicontazione}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="notaEnte" *ngIf="visibileSection">
+            <th class="columns_header" mat-header-cell *matHeaderCellDef> Nota per Ente </th>
+            <td class="smarttable" class="smarttable" mat-cell *matCellDef="let cronologia"> {{cronologia.notaEnte}}
+            </td>
+        </ng-container>
+        
+          <ng-container matColumnDef="nota">
+            <th class="columns_header" mat-header-cell *matHeaderCellDef> Nota </th>
+            <td class="smarttable" class="smarttable" mat-cell *matCellDef="let cronologia"> {{cronologia.notaEnte}}
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="notaInterna" *ngIf="visibileSection">
+            <th class="columns_header" mat-header-cell *matHeaderCellDef> Nota Interna </th>
+            <td class="smarttable" class="smarttable" mat-cell *matCellDef="let cronologia">
+                {{cronologia.notaInterna}} </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="columnsCronologia"></tr>
+        <tr mat-row *matRowDef="let row; columns: columnsCronologia;"></tr>
+    </table>
+
+        <div class="col-12 fontnormale">
+            <div class="col-12" *ngIf="listaCronologiaAssociata.data?.length == 0" style="text-align: center;">
+                <label class="no-data-available">Non risultano cronologie collegate all'Ente</label>
+            </div>
+        </div>
+   </div>
+</div>
+
+        <!-- <div class="row" style="display: flex;padding-top:10px;" *ngIf="client.componinote"> -->
+        <!-- <div class="row" style="display: flex;padding-top:10px;"  [ngClass]="{'disabledDiv': (client.azioni.get('CronologiaRegionale')[0] && client.azioni.get('CronologiaEnte')[0])}" *ngIf="client.azioni.get('CronologiaRegionale')[1] || client.azioni.get('CronologiaEnte')[1]">
+            <div class="col-2 cronologia">
+               Nota
+            </div>
+            <div class="col-10 fontnormale">
+                <div class="mt-2" style="display: flex;">
+                    <div class="pr-2 w-15" *ngIf="visibileSection">
+                        <label class="inputLabel">Per Ente</label>
+                    </div>
+
+                    <div class="w-100">
+                        <div class="form-floating">
+                            <textarea id="notaPerEnte" [(ngModel)]="cronologia.notaEnte" (ngModelChange)="updateCronologia()"
+                            class="form-control" placeholder="{{somePlaceholder}}"
+                            [ngClass]="{'campovuoto': client.azioni.get('CronologiaRegionale')[1]}">
+                          </textarea>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="mt-2" style="display: flex;" *ngIf="visibileSection">
+                    <div class="pr-2 w-15">
+                        <label class="inputLabel">Interna</label>
+                    </div>
+                    <div class="w-100">
+                        <div class="form-floating">
+                            <textarea id="notaInterna" [(ngModel)]="cronologia.notaInterna" (ngModelChange)="updateCronologia()"
+                                class="form-control" placeholder="Inserisci qui la nota Interna">
+                          </textarea>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div> -->
+ 

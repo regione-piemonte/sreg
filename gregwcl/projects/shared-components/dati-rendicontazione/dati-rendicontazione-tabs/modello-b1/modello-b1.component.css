@@ -1,0 +1,88 @@
+.greg-modellob1-tbl-riga-header {
+	background: #EEEEEE 0% 0% no-repeat padding-box;
+    border: 1px solid #EAEAEA;
+    opacity: 1;
+}
+
+.greg-modellob1-bg-r {
+	background-color: #BEBEBE;
+}
+
+.greg-modellob1-bg-istat {
+	background-color: #DBEEF7;
+}
+
+.greg-modellob1-table{
+	padding-top: 10px;
+	padding-bottom: 10px;
+	background: white;
+	margin-top: 20px;
+	margin-bottom: 20px;
+	box-shadow: 1px 2px 8px #c4c4c4;
+	border-radius: 5px;
+}
+
+.greg-modellob1-box-prestazioni {
+	padding-bottom:10px;
+	padding-top:10px;
+}
+
+.greg-modellob1-macroaggregati-icon {
+	width: 22px;
+    height: 15px;
+    opacity: 1;
+}
+
+.greg-modellob1-icon-help{
+	cursor: pointer;
+	width: 20px;
+	height: 20px;
+	margin-left: 10px;
+}
+
+.greg-modellob1-h-lh-50 {
+	height: 50px;
+    line-height: 50px;
+}
+
+.greg-modellob1-fn {
+	font-weight: normal;
+}
+
+.greg-modellob1-ma {
+    border-left: 3px solid #FFCF07;
+    opacity: 1;
+}
+
+.greg-modellob1-td-ma-spacing-row > td {
+    margin-bottom: 10px;
+}
+
+.greg-modellob1-text-red{
+	color: red;
+}
+
+.greg-modellob1-bg-yellow{
+	background-color: yellow;
+}
+
+::-webkit-scrollbar {
+	width: 9px;
+	background: #FFFFFF 0% 0% no-repeat padding-box;
+	border: 1px solid #D9D9D9;
+	border-radius: 5px;
+	opacity: 1;
+}
+
+::-webkit-scrollbar-thumb {
+	background: #707070 0% 0% no-repeat padding-box;
+	box-shadow: 0px 3px 6px #00000029;
+	border-radius: 5px;
+	opacity: 1;
+}
+
+::ng-deep .popover {
+ width: 50% !important;
+}
+
+

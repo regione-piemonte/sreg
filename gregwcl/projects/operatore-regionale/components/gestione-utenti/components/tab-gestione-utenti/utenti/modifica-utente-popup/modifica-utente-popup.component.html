@@ -1,0 +1,73 @@
+<div class="modal-header" style="border-bottom: 0px; padding-left: 0px;">
+  <h4 id="titolo" style="color: black; font-family: Roboto;" class="modal-title">
+    {{data?.titolo}}
+  </h4>
+  <button style="outline: none;" type="button" class="close" aria-label="Close" (click)="annulla()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<!-- <h1 mat-dialog-title class="titolo">{{data?.titolo}}</h1> -->
+
+<div mat-dialog-content style="border-bottom: 1px solid #dee2e6;
+border-top: 1px solid #dee2e6;">
+  <form [formGroup]="utenteForm" class="w-100">
+    <div class="row" style="padding-top:10px; padding-bottom:10px;">
+      <div class="col-md-6 testo">
+        <div class="form-group">
+          <label class="inputLabel">Cognome *</label>
+          <input id="cognome" class="form-control" maxlength="40" formControlName="cognome" type="text">
+        </div>
+        <span class="spanDanger" *ngIf="utenteForm.get('cognome').value && !utenteForm.get('cognome').valid">
+          Il campo deve essere di massimo 40 caratteri testuali
+        </span>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <label class="inputLabel">Nome *</label>
+          <input id="nome" class="form-control" maxlength="40" formControlName="nome" type="text">
+        </div>
+        <span class="spanDanger" *ngIf="utenteForm.get('nome').value && !utenteForm.get('nome').valid">
+          Il campo deve essere di massimo 40 caratteri testuali
+        </span>
+      </div>
+    </div>
+    <div class="row" style="padding-top:10px; padding-bottom:10px;">
+      <div class="col-md-6 testo">
+        <div class="form-group">
+          <label style="white-space: nowrap;" class="inputLabel">Codice Fiscale *</label>
+          <input id="codiceFiscale" class="form-control" maxlength="16" formControlName="codiceFiscale" type="text">
+        </div>
+        <span class="spanDanger"
+          *ngIf="utenteForm.get('codiceFiscale').value && !utenteForm.get('codiceFiscale').valid">
+          Il campo deve essere di massimo 16 numeri
+        </span>
+      </div>
+      <div class="col-md-6 testo">
+        <label class="inputLabel">Email *</label>
+        <input id="email" class="form-control" formControlName="email" type="text">
+
+        <span class="spanDanger" *ngIf="utenteForm.get('email').value && !utenteForm.get('email').valid">
+          Il formato dei dati inseriti non e' corretto
+        </span>
+      </div>
+
+    </div>
+  </form>
+</div>
+
+<div mat-dialog-actions style="padding-bottom: 20px;
+padding-top: 20px;">
+  <div class="col-md-4">
+    <button class="btn btn-link" (click)="annulla()">
+      ANNULLA
+    </button>
+  </div>
+  <div class="col-md-4">
+  </div>
+  <div class="col-md-4">
+    <button class="btn btn-primary" mat-stroked-button (click)="conferma()" cdkFocusInitial [disabled]="VerificaValidita()">
+      SALVA
+    </button>
+  </div>
+  <div class="col-md-4"></div>
+</div>

@@ -1,0 +1,41 @@
+<div id="barraTop1" class="row" style="padding-bottom:10px;">
+    <div class="col-md-1"></div>
+    <div class="col-md-10 nomeWelfareBarra">
+        <div class="row">
+            <mat-toolbar class="w-100 nomeWelfareBarra">
+                <mat-toolbar-row class="pl-0">
+                    <div class="col-md-2">
+                        <a id="salute1">
+                            <img class="immaginetitolo" src="assets/img/user/Raggruppa 708.png">
+                            <span class="scrittatitolo">{{ titlePage }}</span>
+                        </a>
+                    </div>
+                    <div class="col-md-9"></div>
+                        <!-- <a style="width:0px;">
+                            <img class="immaginetitolo" src="assets/img/user/baseline-notifications-24px.png">
+                        </a> -->
+                    <div class="circle" *ngIf="client.utenteloggato != undefined">
+						<button mat-button [matMenuTriggerFor]="beforeMenu" class="text">
+							{{client.utenteloggato?.nome.substring(0,1)}} {{client.utenteloggato?.cognome.substring(0,1)}}
+						</button>
+						<mat-menu #beforeMenu="matMenu" xPosition="before">
+						  	<div mat-menu-item class="row dropdown-item" (click)="goToPaginaPersonale()">
+						  	<i class="fas fa-user" style="padding-left: 0px; padding-right: 0px; right: 6px; top: 3px;"></i>
+								<a class="fontbold" style="padding-left: 10px; padding-right: 0px; cursor: pointer;">
+									{{client.utenteloggato?.nome}} {{client.utenteloggato?.cognome}}
+								</a>
+							</div>
+							<div mat-menu-item class="row dropdown-item" (click)="goLogout()">
+							<i class="fas fa-sign-out-alt" aria-hidden="true" style="padding-left:0px; padding-right: 0px; right: 6px; top: 3px;"></i>
+								<a class="fontbold" style="padding-left: 10px; padding-right: 0px; cursor: pointer;">
+									Esci
+								</a>
+							</div>
+						</mat-menu>
+					</div>
+                </mat-toolbar-row>
+            </mat-toolbar>
+        </div>
+    </div>
+    <div class="col-md-1"></div>
+</div>

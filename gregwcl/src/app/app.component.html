@@ -1,0 +1,20 @@
+<app-backoffice-toolbar></app-backoffice-toolbar>
+
+<app-project-toolbar></app-project-toolbar>
+
+<!-- SPINNER -->
+<div id="overlay" style="display:none;">
+	<div class="spinner-grow text-primary" role="status">
+		<span class="sr-only">
+			{{ loading }}
+		</span>
+	</div>
+	<br/>
+    {{ loadingText }}
+</div>
+
+<router-outlet></router-outlet>
+
+<app-toasts aria-live="polite" aria-atomic="true"></app-toasts>
+
+<app-footer></app-footer>

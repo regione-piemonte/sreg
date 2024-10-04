@@ -1,0 +1,62 @@
+<div class="modal-header" style="display: block !important;">
+	<div class="row">
+		<div class="col-md-10">
+			<h4 id="titolo" style="color: black; font-family: Roboto;" class="modal-title">
+				Storico dati anagrafici
+			</h4>
+		</div>
+		<div class="col-md-2">
+			<button style="outline: none;" type="button" class="close" aria-label="Close"
+				(click)="activeModal.dismiss('Cross click')">
+				<span aria-hidden="true">&times;</span>
+			</button>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<h4 style="color: black; font-family: Roboto"> {{denominazione}}
+			</h4>
+		</div>
+	</div>
+</div>
+
+<div class="tableCronologia modal-body" style="overflow-x: auto; position: relative;">
+	<div *ngIf="!listaStorico" style="text-align: center;">
+		<div class="spinner-grow text-primary" role="status">
+			<span class="sr-only">Loading...</span>
+		</div>
+	</div>
+	<div *ngIf="listaStorico?.data?.length > 0">
+		<table mat-table matSort [dataSource]="listaStorico" class="table table-sm table-striped table-hover">
+			<ng-container matColumnDef="Dal">
+				<th class="columns_header" mat-header-cell *matHeaderCellDef>Dal</th>
+				<td class="celleTab" mat-cell *matCellDef="let element"> {{element.dal | date:'dd/MM/yyyy HH:mm'}}
+				</td>
+			</ng-container>
+			<ng-container matColumnDef="Al">
+				<th class="columns_header" mat-header-cell *matHeaderCellDef>Al</th>
+				<td class="celleTab" mat-cell *matCellDef="let element"> {{element.al | date:'dd/MM/yyyy HH:mm'}} </td>
+			</ng-container>
+			<ng-container matColumnDef="Operatore">
+				<th class="columns_header" mat-header-cell *matHeaderCellDef>Operatore</th>
+				<td class="celleTab" mat-cell *matCellDef="let element">
+					{{element.operatore}} </td>
+			</ng-container>
+			<ng-container matColumnDef="Dettaglio">
+				<th class="columns_header" mat-header-cell *matHeaderCellDef>Dettaglio</th>
+				<td class="celleTab" mat-cell *matCellDef="let element"> 
+					<button *ngIf="client.azioni.get('PulsanteStoricoContatti')[1]" type = "button" (click)="openStorico(element, '/dati-anagrafici')" class="btn" data-toggle="tooltip" title="Storico">
+					<span class="fas fa-server" style="color: #006CB4;"></span>
+				</button> </td>
+			</ng-container>
+
+			<tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+			<tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+		</table>
+	</div>
+		 <div class="col-12 fontnormale">
+            <div class="col-12" *ngIf="listaStorico?.data?.length == 0" style="text-align: center;">
+                <label class="no-data-available">Non risulta storico anagrafico all'Ente</label>
+            </div>
+        </div>
+</div>

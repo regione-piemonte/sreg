@@ -1,0 +1,160 @@
+<div style="background: white;" class="pb-3">
+    <div class="row" style="background: white; padding-top: 5px; padding-bottom: 5px; box-shadow: 1px 2px 8px #C4C4C4;">
+        <div class="col-md-9 fontbold" style="padding-bottom:30px;padding-top:10px;">
+            <div class="fontbold" style="padding-bottom:20px;">
+                {{datiEnte?.denominazione}} - Anno di esercizio: {{infoOperatore?.annoEsercizio}}
+            </div>  
+            <div>{{titolo}}</div>
+        </div>
+        <div class="col-md-3 fontbold" style="padding-bottom:30px;padding-top:10px;" *ngIf="client.azioni.get('EsportaModelloD')[1]"> 
+            <div  style="text-align: right;padding-right: 30px;">
+                <button type="button" class="btn" data-toggle="tooltip" title="Esporta in Excel" (click)="esportaexcel()">
+                    <i class="fa fa-file-excel" style="cursor: pointer;color:green;width: 40px;height: 40px;"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-12" style="background: white;">
+        <table mat-table matSort [dataSource]="rowTable" class="mb-3 table table-hover table-responsive-xl">
+            
+            <ng-container *ngFor="let col of columnsDmodel; let i = index" matColumnDef="{{col}}">
+              <th class="columns_header" style="padding-left: 20px;" [ngClass]="{'noBack': i == 0 || i == 1}" mat-header-cell *matHeaderCellDef>{{i == 0 || i == 1 ? '' : col}}</th>
+              <td [ngSwitch]="i" class="smarttable" [ngClass]="{'operator': i == 1}" *matCellDef="let element; let rowI = index" mat-cell>
+                <div style="white-space: break-spaces;" *ngSwitchCase="0" [ngClass]="{'bold':rowI==0 || element.operatoreMatematico == '(=)' }">
+                    {{element.descVoce}}
+                    <div *ngIf="element.msgInformativo" class="msgInf">{{element.msgInformativo}}</div>
+                </div>
+                <div class="pl-1 pr-1" *ngSwitchCase="1">
+                    {{element.operatoreMatematico}}
+                </div>    
+                <div *ngSwitchCase="2" class="pl-3">
+                    <input *ngIf="TData[rowI].campi[0].show" type="text" class="form-control inputnumber w-100" appTwoDigitDecimalNumber [(ngModel)]="TData[rowI]?.campi[0].value" (blur)="changeKey(rowI, $event.target.value,0,'TData')" (ngModelChange)="calcTableValue()" [disabled]="client.readOnly || client.azioni.get('ModelloD')[0]"
+                    [class.campovuoto]="TData[rowI]?.campi[0].value === null || TData[rowI]?.campi[0].value === ''" [class.campovalorizzato]="TData[rowI]?.campi[0].value !== null && TData[rowI]?.campi[0].value !== ''">
+                    <label class="label-importo" style="margin-top: 10px;" *ngIf="!TData[rowI].campi[0].show">{{TData[rowI]?.campi[0].value}}</label>
+                </div>    
+                <div *ngSwitchCase="3" class="pl-3">
+                    <input *ngIf="TData[rowI].campi[1].show" type="text" class="form-control inputnumber w-100" appTwoDigitDecimalNumber [(ngModel)]="TData[rowI]?.campi[1].value" (blur)="changeKey(rowI, $event.target.value,1,'TData')" (ngModelChange)="calcTableValue()" [disabled]="client.readOnly || client.azioni.get('ModelloD')[0]"
+                    [class.campovuoto]="TData[rowI]?.campi[1].value === null || TData[rowI]?.campi[1].value === ''" [class.campovalorizzato]="TData[rowI]?.campi[1].value !== null && TData[rowI]?.campi[1].value !== ''">
+                    <label class="label-importo" style="margin-top: 10px;" *ngIf="!TData[rowI].campi[1].show">{{TData[rowI]?.campi[1].value}}</label>
+                </div>  
+                <div *ngSwitchCase="4" class="pl-3" [ngClass]="{'bold': rowI == rowTable.length -1 , 'redText' : rowI == rowTable.length -1 && flagNegativeT }">
+                    <input *ngIf="TData[rowI].campi[2].show" type="text" class="form-control inputnumber w-100" appTwoDigitDecimalNumber [customregex]="customRegexp" [usecustomregex]="rowI==0 && i==4" [(ngModel)]="TData[rowI]?.campi[2].value" (blur)="changeKey(rowI, $event.target.value,2,'TData')" (ngModelChange)="calcTableValue()" [disabled]="client.readOnly || client.azioni.get('ModelloD')[0]"
+                    [class.campovuoto]="TData[rowI]?.campi[2].value === null || TData[rowI]?.campi[2].value === ''" [class.campovalorizzato]="TData[rowI]?.campi[2].value !== null && TData[rowI]?.campi[2].value !== ''">
+                    <label class="label-importo" style="float: right; margin-top: 10px; padding-right: 13px;" *ngIf="!TData[rowI].campi[2].show">{{TData[rowI]?.campi[2].value}}</label>
+                </div>       
+              </td>
+            </ng-container>
+    
+            <tr mat-header-row *matHeaderRowDef="columnsDmodel"></tr>
+            <tr mat-row *matRowDef="let row; columns: columnsDmodel; let i = index" [ngClass]="{'finalRow': i == rowTable.length -1}"></tr>
+        </table>
+    </div>
+    
+    <div class="row" style="background: white; padding-top: 5px; padding-bottom: 5px;">
+        <div class="row col-md-12 bold" style="padding-bottom:5px;padding-top:30px;">
+            Composizione del risultato di amministrazione al 31 dicembre
+        </div>
+    </div>
+    
+    <div class="col-md-12">
+        <div class="shadow mb-3">
+            
+            <!--PARTE ACCANTONATA-->
+            <div class="w-100" style="background: white;">
+                <table mat-table matSort [dataSource]="rowParteAccantonata" class="mb-0 table table-hover table-responsive-xl">
+                    <ng-container *ngFor="let col of columnsParteAccantonata; let i= index"  matColumnDef="{{col}}">
+                        <th class="columns_header" mat-header-cell *matHeaderCellDef>
+                          <div *ngIf="i==0 && thParteAccantonata">
+                              {{thParteAccantonata.descVoce}}
+                              <span *ngIf="thParteAccantonata.msgInformativo" style="font-weight: normal;"> ({{thParteAccantonata.msgInformativo}})</span>
+                            </div>
+                        </th>
+                      <td class="smarttable" [ngSwitch]="i" mat-cell *matCellDef="let element; let rowI = index" [ngClass]="{'textFinalRow': rowI == rowParteAccantonata.length -1, 'w-85': i == 0}">
+                        <div *ngSwitchCase="0">
+                            {{element.descVoce}}
+                            <div class="msgInf" *ngIf="element.msgInformativo">{{element.msgInformativo}}</div>
+                        </div>
+                        <div *ngSwitchCase="1">
+                            <input *ngIf="PAData[rowI].campi[0].show" class="form-control inputnumber" style="float: right; width: 236px;" type="text" appTwoDigitDecimalNumber [(ngModel)]="PAData[rowI]?.campi[0].value" (blur)="changeKey(rowI, $event.target.value,0,'PAData')" (ngModelChange)="calcTotParteAccantonata()" [disabled]="client.readOnly || client.azioni.get('ModelloD')[0]"
+                            [class.campovuoto]="PAData[rowI]?.campi[0].value === null || PAData[rowI]?.campi[0].value === ''" [class.campovalorizzato]="PAData[rowI]?.campi[0].value !== null && PAData[rowI]?.campi[0].value !== ''">
+                            <label *ngIf="!PAData[rowI].campi[0].show" class="mb-0 label-importo2" style="float: right; padding-right: 13px;">{{PAData[rowI]?.campi[0].value}}</label>
+                        </div>
+                        </td>
+                    </ng-container>
+            
+                    <tr mat-header-row *matHeaderRowDef="columnsParteAccantonata"></tr>
+                    <tr mat-row *matRowDef="let row; columns: columnsParteAccantonata; let i = index" [ngClass]="{'finalRow': i == rowParteAccantonata.length -1}"></tr>
+                </table>
+            </div>
+
+            <!--PARTE VINCOLATA-->
+            <div class="w-100" style="background: white;">
+                <table mat-table matSort [dataSource]="rowParteVincolata" class="mb-0 table table-hover table-responsive-xl">
+                    <ng-container *ngFor="let col of columnsParteVincolata; let i= index"  matColumnDef="{{col}}">
+                        <th class="columns_header" mat-header-cell *matHeaderCellDef>
+                          <div *ngIf="i==0 && thParteVincolata">
+                              {{thParteVincolata.descVoce}}
+                              <span *ngIf="thParteVincolata.msgInformativo">{{thParteVincolata.msgInformativo}}</span>
+                            </div>
+                        </th>
+                      <td class="smarttable" [ngSwitch]="i" mat-cell *matCellDef="let element; let rowI = index" [ngClass]="{'textFinalRow': rowI == rowParteVincolata.length -1, 'w-85': i == 0}">
+                        <div *ngSwitchCase="0">
+                            {{element.descVoce}}
+                            <div class="msgInf" *ngIf="element.msgInformativo">{{element.msgInformativo}}</div>
+                        </div>
+                        <div *ngSwitchCase="1">
+                            <input *ngIf="PVData[rowI].campi[0].show" class="form-control inputnumber" style="float: right; width: 236px;" type="text" appTwoDigitDecimalNumber [(ngModel)]="PVData[rowI]?.campi[0].value" (blur)="changeKey(rowI, $event.target.value,0,'PVData')" (ngModelChange)="calcTotParteVincolata()" [disabled]="client.readOnly || client.azioni.get('ModelloD')[0]"
+                            [class.campovuoto]="PVData[rowI]?.campi[0].value === null || PVData[rowI]?.campi[0].value === ''" [class.campovalorizzato]="PVData[rowI]?.campi[0].value !== null && PVData[rowI]?.campi[0].value !== ''">
+                            <label *ngIf="!PVData[rowI].campi[0].show" class="mb-0 label-importo2" style="float: right; padding-right: 13px;">{{PVData[rowI]?.campi[0].value}}</label>
+                        </div>
+                        </td>
+                    </ng-container>
+            
+                    <tr mat-header-row *matHeaderRowDef="columnsParteVincolata"></tr>
+                    <tr mat-row *matRowDef="let row; columns: columnsParteVincolata; let i = index" [ngClass]="{'finalRow': i == rowParteVincolata.length -1}"></tr>
+                </table>
+            </div>
+
+            <!--PARTE INVESTIMENTI-->
+            <div class="w-100" style="background: white;">
+                <table mat-table matSort [dataSource]="rowParteInvestimenti" class="mb-0 table table-hover table-responsive-xl">
+                    <ng-container *ngFor="let col of columnsParteInvestimenti; let i= index" matColumnDef="{{col}}">
+                        <th class="columns_header" mat-header-cell *matHeaderCellDef>
+                            <div *ngIf="i==0 && thParteInvestimenti">
+                              {{thParteInvestimenti.descVoce}}
+                              <span *ngIf="thParteInvestimenti.msgInformativo">{{thParteInvestimenti.msgInformativo}}</span>
+                            </div>
+                        </th>
+                        <td class="smarttable" [ngSwitch]="i" mat-cell *matCellDef="let element; let rowI = index" [ngClass]="{'textFinalRow': rowI == 0, 'w-85': i == 0, 'totalRowText': rowI == rowParteInvestimenti.length -1, 'mt-2': rowI == rowParteInvestimenti.length -1}">
+                            <div *ngSwitchCase="0">
+                                {{element.descVoce}}
+                                <div class="msgInf" *ngIf="element.msgInformativo">{{element.msgInformativo}}</div>
+                            </div>
+                            <div *ngSwitchCase="1" [ngClass]="{'redText' : rowI == rowParteInvestimenti.length -1 && flagNegativeP }">
+                                <input *ngIf="PIData[rowI].campi[0].show" class="form-control inputnumber" style="float: right; width: 236px;" type="text" appTwoDigitDecimalNumber [(ngModel)]="PIData[rowI]?.campi[0].value" (blur)="changeKey(rowI, $event.target.value,0,'PIData')" (ngModelChange)="calcTotFinal()" [disabled]="client.readOnly || client.azioni.get('ModelloD')[0]"
+                                [class.campovuoto]="PIData[rowI]?.campi[0].value === null || PIData[rowI]?.campi[0].value === ''" [class.campovalorizzato]="PIData[rowI]?.campi[0].value !== null && PIData[rowI]?.campi[0].value !== ''">
+                                <label *ngIf="!PIData[rowI].campi[0].show" class="mb-0 label-importo2" style="float: right; padding-right: 13px;">{{PIData[rowI]?.campi[0].value}}</label>
+                            </div>
+                        </td>
+                    </ng-container>
+            
+                    <tr mat-header-row *matHeaderRowDef="columnsParteInvestimenti"></tr>
+                    <tr mat-row *matRowDef="let row; columns: columnsParteInvestimenti; let i = index" [ngClass]="{'finalRow': i == 0 || i == rowParteInvestimenti.length -1}"></tr>
+                </table>
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+<div class="row" style="padding-top: 15px; padding-bottom: 20px;">
+</div>
+
+<!-- CRONOLOGIA -->
+<app-cronologia-modelli></app-cronologia-modelli>
+
+<br>
+
+<!-- BOTTONI --> 
+<app-pulsanti-funzioni [mostrasalva]="mostrasalva" [idRendicontazioneEnte]="idRendicontazioneEnte" [modello]="'Mod. D'" (salvaEvent)="salvaModifiche($event)"></app-pulsanti-funzioni>

@@ -1,0 +1,27 @@
+.footer {
+    position: relative;
+    bottom: 0;
+    width: 100%;
+    margin-top: auto;
+    margin-bottom: 0;
+}
+
+.assistenza {
+	background-color: #005095;
+}
+
+.sistpiemonte {
+	background-color: #213366;
+}
+
+.space_b {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.align_center {
+    display: flex;
+    align-items: center;
+}
+

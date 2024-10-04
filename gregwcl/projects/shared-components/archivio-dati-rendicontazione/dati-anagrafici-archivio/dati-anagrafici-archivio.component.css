@@ -1,0 +1,277 @@
+
+/* Gestione MEDIA  */
+@media screen and (max-width: 1470px){
+	.millequattro{
+		display: none;
+	}
+}
+@media screen and (max-width: 1340px){
+	.milletre{
+		display: none;
+	}
+}
+@media screen and (max-width: 1250px){
+	.milledue{
+		display: none;
+	}
+}
+@media screen and (max-width: 1000px){
+	.mille{
+		display: none;
+	}
+}
+
+.greg {
+	background: #F0F3F8 !important;
+	color: #000000 !important;
+	font-family: 'Open Sans', sans-serif;
+}
+
+.gregTabs {
+	font-size: 16px;
+}
+
+#miatabComuni, #miatabPrestazioni, #miatabDocumenti, #miatabCronologia{
+	font-size: 14px;
+	background: white;
+	text-align: center;
+	margin-top: 20px;
+}
+
+.gregFilter {
+	padding-top: 10px;
+	padding-bottom: 10px;
+	margin-top: 5px;
+	background: white;
+	margin-top: 20px;
+	box-shadow: 1px 2px 8px #c4c4c4;
+    border-radius: 5px;
+}
+
+/* .statoCombo {
+	height: calc(2.25rem + 2px) !important;
+} */
+
+.theme-exprivia-healthcare .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active
+	{
+	/* color: #1154a2; */
+	border-bottom: 3px solid #1154a2 !important;
+	border-top: #d5d5d5;
+	border-left: none;
+	border-right: none;
+	background-color: transparent;
+}
+
+a {
+	color: #0E8EAB;
+}
+
+.verticalCentered {
+	display: -ms-flexbox;
+	display: -webkit-flex;
+	display: flex;
+	-ms-flex-align: center;
+	-webkit-align-items: center;
+	-webkit-box-align: center;
+	align-items: center;
+}
+
+::ng-deep .odd {
+	display: none
+}
+
+table.dataTable tbody th,
+table.dataTable tbody td {
+  /* padding: 1px 1px !important; */
+  vertical-align: middle !important;
+}
+
+.input-group {
+    flex-wrap: initial !important;
+}
+
+.button {
+	padding-top: 10px;
+	padding-bottom: 10px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+.button1 {
+	float: right;
+}
+
+.block {
+	display: block;
+	width: 100%;
+	border: none;
+	cursor: pointer;
+	text-align: center;
+}
+
+.inputLabel{
+	letter-spacing: -0.07px;
+	color: #212529;
+	opacity: 1;
+	white-space: nowrap;
+	text-align: left;
+	font-family: 'Open Sans', sans-serif;
+	font-size: 14px;
+	line-height: 19px;
+	font-weight: normal;
+	height: 19px;
+}
+
+.titlePage {
+	letter-spacing: 0px;
+	color: #000000;
+	opacity: 1;
+	text-align: left;
+	font-family: 'Open Sans', sans-serif;
+	font-size: 20px;
+	line-height: 27px;
+	font-weight: bold;
+	height: 19px;
+	height: 34px;
+	top: 30px;
+	width: 365px;
+}
+
+.titleSection {
+	letter-spacing: 0px;
+	color: #000000;
+	opacity: 1;
+	text-align: left;
+	font-family: 'Open Sans', sans-serif;
+	font-size: 18px;
+	line-height: 24px;
+	font-weight: bold;
+	height: 19px;
+}
+
+::ng-deep.dataTables_wrapper {
+	width: 100%;
+}
+
+::ng-deeptable.dataTable.no-footer {
+	border: none;
+}
+
+::ng-deep.mat-table tbody {
+	box-shadow: 1px 5px 8px #C4C4C4;
+}
+
+.table_head {
+	background: #EEEEEE 0% 0% no-repeat padding-box;
+    opacity: 1;
+}
+
+.column_header {
+	border: 0px !important;
+	text-align: left;
+	vertical-align: middle;
+	background: #EEEEEE 0% 0% no-repeat padding-box;
+}
+
+.shade {
+	box-shadow: 1px 5px 8px #C4C4C4;
+}
+
+.space_b {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.btn {
+	box-shadow: none;
+}
+
+.allega {
+	position: relative;
+}
+
+.fileinputs {
+	position: relative;
+}
+
+.fakefile {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	z-index: 1;
+	width: 650px;
+}
+
+.file {
+	position: relative;
+	text-align: right;
+	-moz-opacity:0 ;
+	opacity: 0;
+	z-index: 2;
+}
+
+::-webkit-file-upload-button { cursor:pointer; }
+
+.errUpload {
+	color: red;
+    font-size: 11px;
+	margin-top: -8px;
+}
+
+.msgUpload {
+    font-size: 11px;
+	margin-top: -8px;
+}
+
+.mat-column-prestazione {
+	max-width: 200px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+option {
+	width: 200px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.tableAssociati {
+	position: relative;
+  	max-height: 313px;
+  	overflow: auto;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+.spanDanger {
+	margin-top: 0px;
+	font-size: 12px;
+	color: #dc3545 !important;
+}
+
+.required {
+	border: 1px solid #dc3545 !important;
+}
+
+.section-denominazione input , .section-denominazione select{
+	font-size: 12.8px !important;
+}
+
+.disabledDiv {
+    pointer-events: none;
+}
+
+.disabilita{
+	background: #e9ecef;
+}

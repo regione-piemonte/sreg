@@ -1,0 +1,147 @@
+<div class="row greg" style="padding-top: 5px; padding-bottom: 5px;">
+
+	<div class="col-md-1"></div>
+
+	<div class="col-md-10 gregFilter">
+		<div class="row">
+			<div class="col-md-8 align-self-center fontbold pl-0">Vincoli percentuali ministeriali e regionali per
+				Modulo FNPS</div>
+			<div class="col-md-2 align-self-center">
+				Anno da Visualizzare</div>
+			<div class="col-md-2 fontnormale px-0">
+				<ng-container>
+					<select (change)="onSelectionAnnoChanged($event.target.value)" id="annoEsercizio"
+						class="form-control form-control-sm campiricerca">
+						<option [value]="null">Tutti</option>
+						<option *ngFor="let anno of anniEsercizio" [value]="anno">{{anno}}</option>
+					</select>
+				</ng-container>
+			</div>
+		</div>
+		<div class="row pt-4 pb-1">
+			<div class="col-md-3 text-nowrap columns_header">
+				Utenza
+			</div>
+			<div class="col-md-1 text-nowrap columns_header text-center">
+				%
+			</div>
+			<div class="col-md-2 text-nowrap columns_header text-center">
+				Utilizzato per calcolo
+			</div>
+			<div class="col-md-2 text-nowrap columns_header text-center">
+				Da anno di Esercizio
+			</div>
+			<div class="col-md-2 text-nowrap columns_header text-center">
+				A anno di Esercizio
+			</div>
+			<div class="col-md-1 text-nowrap columns_header text-center">
+			</div>
+			<div class="col-md-1 text-nowrap columns_header text-center">
+			</div>
+		</div>
+		<div class="row py-4 border-bottom">
+			<div class="col-md-3 text-nowrap smarttable pl-0">
+				<ng-container>
+					<select (change)="onSelectionUtenzaChanged($event.target.value)" id="annoEsercizio"
+						class="form-control form-control-sm campiricerca" [(ngModel)]="idSelected">
+						<option *ngFor="let utenza of utenzeSelezionabiliFnps" [value]="utenza.idUtenza">
+							{{utenza.descUtenza}}</option>
+					</select>
+				</ng-container>
+			</div>
+			<div class="col-md-1 text-nowrap smarttable">
+				<input type="text" class="form-control inputnumber w-100" appTwoDigitDecimalNumberFnps
+					(blur)="changeKey($event.target.value)" [(ngModel)]="utenzaSelezionata.valorePercentuale">
+			</div>
+			<div class="col-md-2 text-nowrap smarttable align-self-center text-center">
+				<input type="checkbox" class="checkboxClass" [(ngModel)]="utenzaSelezionata.utilizzatoPerCalcolo">
+			</div>
+			<div class="col-md-2 text-nowrap smarttable">
+				<input type="text" class="form-control inputnumber" [(ngModel)]="utenzaSelezionata.annoInizioValidita"
+					(blur)="changeKeyIntNewAnnoInizio($event.target.value)" (keypress)="numberOnly($event)">
+			</div>
+			<div class="col-md-2 text-nowrap smarttable">
+				<input type="text" class="form-control inputnumber" [(ngModel)]="utenzaSelezionata.annoFineValidita"
+					(blur)="changeKeyIntNewAnnoFine($event.target.value)" (keypress)="numberOnly($event)">
+			</div>
+			<div class="col-md-1 text-nowrap smarttable">
+			</div>
+			<div class="col-md-1 text-nowrap smarttable pl-0">
+				<button id="btnSave" type="submit" class="btn btn-primary button1" [disabled]="disableUtenza()"
+					(click)="aggiungiUtenza()">
+					AGGIUNGI
+				</button>
+			</div>
+		</div>
+		<ng-container *ngFor="let utenza of filtriUtenzeFnps; let i=index">
+			<div class="row py-3">
+				<div class="col-md-3 text-nowrap smarttable align-self-center">
+					{{utenza.descUtenza}}
+				</div>
+				<div class="col-md-1 text-nowrap smarttable text-center align-self-center ">
+					{{utenza.valorePercentuale}}
+				</div>
+				<div class="col-md-2 text-nowrap smarttable align-self-center text-center">
+					<input type="checkbox" id="check" class="checkboxClass"  [(ngModel)]="utenza.utilizzatoPerCalcolo" disabled>
+				</div>
+				<div class="col-md-2 text-nowrap smarttable">
+					<input type="text" class="form-control inputnumber" [(ngModel)]="utenza.annoInizioValidita" disabled
+						(blur)="changeKeyIntAnnoInizio($event.target.value, i)" (keypress)="numberOnly($event)">
+				</div>
+				<div class="col-md-2 text-nowrap smarttable">
+					<input type="text" class="form-control inputnumber" [(ngModel)]="utenza.annoFineValidita"
+						(blur)="changeKeyIntAnnoFine($event.target.value, i)" (keypress)="numberOnly($event)">
+				</div>
+				<div class="col-md-1 text-nowrap smarttable">
+					<button type="button" class="btn pt-0" data-toggle="tooltip"
+						[title]="utenza.modificabile ? 'L\'utenza non e\' eliminabile poiche\' esiste almeno un data entry valorizzato' : ''"
+						[disabled]="utenza.modificabile" (click)="eliminaUtenza(utenza, i)">
+						<img src="assets/img/ui-modelli/cestino.svg" class="greg-icon-help fnpsImage"
+							style="cursor: pointer;">
+					</button>
+				</div>
+				<div class="col-md-1 text-nowrap smarttable">
+				</div>
+			</div>
+		</ng-container>
+		<div class="row py-3" *ngIf="annoSelezionato">
+			<div class="col-md-3 text-nowrap smarttable align-self-center">
+				TOTALE
+			</div>
+			<div class="col-md-1 text-nowrap smarttable text-center align-self-center ">
+				{{totaleString}}
+			</div>
+			<div class="col-md-2 text-nowrap smarttable align-self-center text-center">
+			</div>
+			<div class="col-md-2 text-nowrap smarttable">
+			</div>
+			<div class="col-md-2 text-nowrap smarttable">
+			</div>
+			<div class="col-md-1 text-nowrap smarttable">
+			</div>
+			<div class="col-md-1 text-nowrap smarttable">
+			</div>
+		</div>
+		<div class="row pt-4 pb-1">
+			<div class="col-md-2 text-nowrap smarttable">
+			</div>
+			<div class="col-md-2 text-nowrap smarttable">
+			</div>
+			<div class="col-md-2 text-nowrap smarttable">
+			</div>
+			<div class="col-md-2 text-nowrap smarttable">
+			</div>
+			<div class="col-md-2 text-nowrap smarttable">
+			</div>
+			<div class="col-md-1 text-nowrap smarttable">
+			</div>
+			<div class="col-md-1 text-nowrap smarttable">
+				<button id="btnSave" type="submit" class="btn btn-primary button1" (click)="salvaUtenze()">
+					SALVA
+				</button>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-1"></div>
+
+</div>

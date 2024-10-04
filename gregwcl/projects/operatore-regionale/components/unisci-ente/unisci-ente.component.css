@@ -1,0 +1,111 @@
+.greg {
+	background: #F0F3F8 !important;
+	color: #000000 !important;
+	font-family: 'Open Sans', sans-serif;
+}
+
+.gregFilter {
+	padding-top: 10px;
+	padding-bottom: 10px;
+	margin-top: 20px;
+	margin-bottom: 20px;
+	background: white;
+	border-width: 1px;
+	border-style: solid;
+	border-color: rgb(213, 213, 213);
+	margin-top: 20px;
+}
+
+.statoCombo {
+	height: calc(2.25rem + 2px) !important;
+}
+
+.notavailable {
+    color: red;
+}
+
+.button1 {
+	float: right;
+}
+
+.destinazioneLaterale{
+	background-color: #e2efdb;
+	border: #000000;
+	border-width: 1px;
+	border-left-style: solid;
+	border-right-style: solid;
+}
+.destinazioneTop{
+	background-color: #e2efdb;
+	border: #000000;
+	border-width: 1px;
+	border-left-style: solid;
+	border-right-style: solid;
+	border-top-style: solid;
+	padding-top: 5px;
+}
+.destinazioneBot{
+	background-color: #e2efdb;
+	border: #000000;
+	border-width: 1px;
+	border-left-style: solid;
+	border-right-style: solid;
+	border-bottom-style: solid;
+	padding-bottom: 5px;
+}
+
+.daUnirelaterale{
+	background-color: #fff1cc;
+	border: #000000;
+	border-width: 1px;
+	border-left-style: solid;
+	border-right-style: solid;
+}
+
+.daUnireTop{
+	background-color: #fff1cc;
+	border: #000000;
+	border-width: 1px;
+	border-left-style: solid;
+	border-right-style: solid;
+	border-top-style: solid;
+	padding-top: 5px;
+}
+.daUnireBot{
+	background-color: #fff1cc;
+	border: #000000;
+	border-width: 1px;
+	border-left-style: solid;
+	border-right-style: solid;
+	border-bottom-style: solid;
+	padding-bottom: 5px;
+}
+
+.inputLabel{
+	font-family: 'Open Sans', sans-serif;
+	font-size: 14px;
+	font-weight: normal;
+	padding-bottom:10px;
+}
+.titlePage {
+	letter-spacing: 0px;
+	color: #000000;
+	opacity: 1;
+	text-align: left;
+	font-family: 'Open Sans', sans-serif;
+	font-size: 20px;
+	line-height: 27px;
+	font-weight: bold;
+	height: 19px;
+	height: 34px;
+	top: 30px;
+	width: 365px;
+}
+
+.cdk-overlay-container .cdk-overlay-pane .panelNostro{
+	max-width: fit-content !important;
+}
+
+.statoCombo {
+	height: calc(2.25rem + 2px) !important;
+}

@@ -1,0 +1,59 @@
+.nomeWelfareBarra {
+	top: 0px;
+	left: 0px;
+	width: 1600px;
+	height: 50px;
+	background: #006CB4 0% 0% no-repeat padding-box;
+	opacity: 1;
+}
+
+.align {
+	display: flex;
+	align-items: center;
+}
+
+::ng-deep.mat-toolbar-multiple-rows {
+	min-height: 60px !important;
+}
+
+::ng-deep.mat-toolbar-row {
+	height: 60px !important;
+}
+
+.immaginetitolo{
+	top: 19px;
+	left: 82px;
+	opacity: 1;
+	padding-right:20px;
+}
+   
+ .circle {
+  position: relative;
+  background-color: #ffffff;
+  margin: 20px auto;
+  width: 40px;
+  height: 40px;
+  border-radius: 50px;
+}
+.text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #006CB4;
+}
+
+.color-tendina-esci {
+	color: #c0c0c0!important;
+	font-weight: bold !important;
+}
+
+.fontbold {
+		font-family: 'Open Sans', sans-serif;
+		font-size: 16px;
+		line-height: 22px;
+		font-weight: bold;
+		letter-spacing: 0px;
+		color: #000000;
+		opacity: 1;
+		}

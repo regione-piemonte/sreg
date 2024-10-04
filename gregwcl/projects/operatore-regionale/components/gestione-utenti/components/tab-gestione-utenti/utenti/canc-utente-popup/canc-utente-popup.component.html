@@ -1,0 +1,56 @@
+<div class="modal-header" style="border-bottom: 0px; padding-left: 0px;">
+  <h4 id="titolo" style="color: black; font-family: Roboto;" class="modal-title">
+    {{data?.titolo}}
+  </h4>
+  <button style="outline: none;" type="button" class="close" aria-label="Close" (click)="annulla()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<!-- <h1 mat-dialog-title class="titolo">{{data?.titolo}}</h1> -->
+
+<div mat-dialog-content style="border-bottom: 1px solid #dee2e6;
+border-top: 1px solid #dee2e6;">
+  <div class="row" style="padding-top:10px; padding-bottom:10px;">
+    <p class="messaggio" [innerHTML]="data.messaggio">
+      <!-- {{data.messaggio}} -->
+    </p>
+  </div>
+  <div class="row" style="padding-top:10px; padding-bottom:10px;">
+    <div class="col-md-12 px-0">
+      <div class="row" *ngIf="checkMaxData()">
+        <div class="col-md-6 px-0 py-4">
+          <p>Data cancellazione utente: </p>
+        </div>
+        <div class="col-md-6">
+          <mat-form-field class="w-100">
+            <input class="testo" matInput [matDatepicker]="pickerDataAl" userInputFormat="DD/MM/YYYY"
+              [(ngModel)]="data.utente.dataFineValidita" [min]="data.utente.maxData">
+            <mat-datepicker-toggle matSuffix [for]="pickerDataAl">
+            </mat-datepicker-toggle>
+            <mat-datepicker #pickerDataAl></mat-datepicker>
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-12 px-0">
+      <p class="messaggio">Vuoi procedere?</p>
+    </div>
+  </div>
+</div>
+
+<div mat-dialog-actions style="padding-bottom: 20px;
+padding-top: 20px;">
+  <div class="col-md-4">
+    <button class="btn btn-link" (click)="annulla()">
+      ANNULLA
+    </button>
+  </div>
+  <div class="col-md-4">
+  </div>
+  <div class="col-md-4">
+    <button class="btn btn-primary" mat-stroked-button (click)="conferma()" cdkFocusInitial [disabled]="controlData()">
+      CONFERMA
+    </button>
+  </div>
+  <div class="col-md-4"></div>
+</div>

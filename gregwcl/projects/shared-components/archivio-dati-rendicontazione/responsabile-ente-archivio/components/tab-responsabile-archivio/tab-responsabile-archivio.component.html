@@ -1,0 +1,15 @@
+<div class="row greg" style="padding-top: 5px; padding-bottom: 5px;">
+	<div class="col-md-1"></div>
+	<div class="col">
+		<ul ngbNav [activeId]="route.fragment | async" class="nav-tabs">
+			<li [ngbNavItem]="link.link" *ngFor="let link of links" [disabled]="!link.active" 
+				data-toggle="tooltip" [title]="show? '' : tooltip">
+				<a ngbNavLink *ngIf="visibilitaTab(link.link)" [routerLink]="link.link" [fragment]="link.fragment" routerLinkActive="active" skipLocationChange (click)="disattivaDettaglioPrestazione()" >
+					{{ link.title }}
+				</a>
+			</li>
+		</ul>
+	</div>
+	<div class="col-md-1"></div>
+
+</div>

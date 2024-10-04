@@ -1,0 +1,386 @@
+<div *ngIf="!is_module_enabled" class="row" style="background: white; padding-top: 15px; padding-bottom: 15px; box-shadow: 1px 2px 8px #C4C4C4;">
+    <h3 class="p-3">{{ modello_b1_elenco_lbl.msgInformativi && modello_b1_elenco_lbl.msgInformativi[1].descrizione }}</h3>
+</div>
+
+<div *ngIf="is_module_enabled" class="row" style="background: white; padding-top: 15px; padding-bottom: 15px; box-shadow: 1px 2px 8px #C4C4C4;">
+    <div class="col-md-9 fontbold" style="padding-bottom:10px;padding-top:10px;">
+        <div class="bold" style="padding-bottom:20px;">
+            {{datiEnte?.denominazione}} - Anno di esercizio: {{infoOperatore?.annoEsercizio}}
+        </div>
+        <div>{{titolo}} 
+          <ng-template #popContent>
+		{{ modello_b1_elenco_lbl.msgInformativi && modello_b1_elenco_lbl.msgInformativi[0].descrizione }}
+		</ng-template>
+		<label style="white-space: nowrap; padding-left: 10px;" [placement]="['right', 'left', 'auto']" 
+		[ngbPopover]="popContent"  triggers="hover">
+         <img src="assets/img/ui-modelli/help.png" class="greg-modellob1-icon-help">
+        </label>
+        </div>
+    </div>
+    <div class="col-md-3 fontbold" style="padding-bottom:30px;padding-top:10px;" *ngIf="client.azioni.get('EsportaModelloB1')[1]"> 
+        <div  style="text-align: right;padding-right: 30px;">
+        <button type="button" class="btn" data-toggle="tooltip" title="Esporta in Excel" (click)="esportaexcel()">
+            <i class="fa fa-file-excel" style="cursor: pointer;color:green;width: 40px;height: 40px;"></i>
+        </button>
+        </div>
+    </div>
+   
+    <div class="row col-md-12 fontbold" style="padding-bottom:10px;padding-top:10px;">
+        Totali Macroaggregati <img src="assets/img/ui-modelli/macroaggregati-icon.svg" class="greg-modellob1-macroaggregati-icon" style="margin-left: 10px;" data-bs-toggle="tooltip" data-bs-placement="right" title="Macroaggregati">
+    </div>
+    <div class="row col-md-12 fontbold" style="padding-bottom:10px;padding-top:10px;">
+        <table class="w-100 table table-hover table-responsive-xl greg-modellob1-table">
+            <thead class="w-100 greg-modellob1-tbl-riga-header">
+                <tr>
+                    <th *ngFor="let column of modello_b1_elenco_lbl.macroaggregati" class="align-top">
+                        {{ column.descrizione }}
+                    </th>
+                    <th class="align-top">
+                        TOTALE
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="greg-modellob1-td-ma-spacing-row">
+                    <ng-container *ngFor="let column of modello_b1_elenco_lbl.macroaggregati; let i = index">
+                        <td>
+                            <ng-container *ngFor="let value of modello_b1_data.macroaggregati?.valoriMacroaggregati">
+                                <div *ngIf="column.codice == value.codMacroaggregati" class="greg-modellob1-h-lh-50 greg-modellob1-ma" >
+                                    <span class="ml-1">{{ value.totale }}</span>
+                                </div>
+                            </ng-container>
+                        </td>
+                    </ng-container>
+                    <td>
+                        <div class="greg-modellob1-h-lh-50">
+                            <span class="ml-1">{{ modello_b1_data.macroaggregati?.valoriMacroaggregati[modello_b1_data.macroaggregati?.valoriMacroaggregati.length - 1].totale }}</span>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <ng-container *ngFor="let column of modello_b1_elenco_lbl.macroaggregati">
+                        <td>
+                            <ng-container *ngFor="let value of totali_macroaggregati">
+                                <div *ngIf="column.codice == value.codice" class="greg-modellob1-h-lh-50 greg-modellob1-ma" >
+                                    <span class="ml-1 greg-modellob1-fn">{{ value.totale }}</span>
+                                </div>
+                            </ng-container>
+                        </td>
+                    </ng-container>
+                    <td>
+                        &nbsp;
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="row col-md-12 fontbold" style="padding-bottom:10px;padding-top:10px;">
+        Totali Missioni-programma
+    </div>
+    <div class="row col-md-12 fontbold" style="padding-bottom:10px;padding-top:10px;">
+        <table class="w-100 table table-hover table-responsive-xl greg-modellob1-table">
+            <thead class="w-100">
+                <tr>
+                    <th *ngFor="let column of modello_b1_elenco_lbl.missione_programma" [style.color]="column.colore">
+                       <ng-template #popContent1>
+						{{ column.msgInformativo }}
+						</ng-template>
+                        <span *ngIf="column.msgInformativo!=null" style="white-space: nowrap; padding-left: 10px;" [placement]="['right', 'left', 'auto']" 
+						[ngbPopover]="popContent1"  triggers="hover"> {{ column.descrizione }} </span>
+						<span *ngIf="column.msgInformativo==null"> {{ column.descrizione }} </span>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="greg-modellob1-td-ma-spacing-row">
+                    <ng-container *ngFor="let column of modello_b1_elenco_lbl.missione_programma">
+                        <td>
+                            <ng-container *ngFor="let value of totali_programma_missione">
+                                <span *ngIf="column.codice == value.codice" class="ml-1">{{ value.totale }}</span>
+                            </ng-container>
+                        </td>
+                    </ng-container>
+                </tr>
+                
+            </tbody>
+        </table>
+    </div>
+
+    <br>
+    <hr width="97%" align="center" style="border-top: 3px solid rgba(0,0,0,.1);"/>
+    <br>
+
+    <!-- ELENCO PRESTAZIONI -->
+    <div class="row col-md-12 fontbold greg-modellob1-bg-r greg-modellob1-box-prestazioni" style="overflow-y: scroll; height:1000px;">
+        <ng-container *ngFor="let prestazione of modello_b1_data.elencoPrestazioni; let i = index">
+            <table class="mt-5">
+                <tr>
+                    <td>
+                        {{ prestazione.codPrestazione }} {{ prestazione.descPrestazione }}
+                    </td>
+                    <ng-template #popContent2>
+                     {{ prestazione.msgInformativo }}
+					</ng-template>
+					<td>
+					<label style="white-space: nowrap; padding-left: 10px;" [placement]="['right', 'left', 'auto']" 
+		             [ngbPopover]="popContent2"  triggers="hover" container="body">
+                        <img src="assets/img/ui-modelli/help.png" class="greg-modellob1-icon-help">
+                        </label>
+                    </td>
+                </tr>
+            </table>
+            <table class="w-100">
+                <tr>
+                    <td class="w-100" style="text-align: right;">
+                        Macroaggregati a livello regionale
+                    </td>
+                </tr>
+            </table>
+            <table class="w-100 table table-hover table-responsive-xl greg-modellob1-table">
+                <thead class="w-100 greg-modellob1-tbl-riga-header">
+                    <tr>
+                        <th *ngFor="let column of modello_b1_elenco_lbl.macroaggregati" class="align-top">
+                            {{ column.descrizione }}
+                        </th>
+                        <th class="align-top">
+                            TOTALE
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="greg-modellob1-td-ma-spacing-row">
+                        <td *ngFor="let column of modello_b1_elenco_lbl.macroaggregati">
+                            <ng-container *ngFor="let value of prestazione.macroaggregati">
+                                <input *ngIf="column.codice == value.codice" 
+                                    class="form-control inputnumber" 
+                                    [class.campovuoto]="value.valore === null || value.valore === ''"
+                                    [class.campovalorizzato]="value.valore !== null && value.valore !== ''"
+                                    type="text" 
+                                    appTwoDigitDecimalNumber 
+                                    [disabled]="value.disabled || (client.readOnlyII) || client.azioni.get('ModelloB1')[0]"
+                                    [(ngModel)]="value.valore" 
+                                    (ngModelChange)="calcola_totali_macroaggregati(value.codice, i)"
+                                    (blur)="changeKey(value, $event.target.value)">
+                            </ng-container>
+                        </td>
+                        <td>
+                            <span *ngIf="prestazione.tipoPrestazione != 'MA03'" [class.greg-modellob1-text-red]="totali_macroaggregati_prest_reg1[i]!=totali_utenze_prest_reg1[i]">{{ totali_macroaggregati_prest_reg1[i] }}</span>
+                            <span *ngIf="prestazione.tipoPrestazione == 'MA03'" [class.greg-modellob1-text-red]="totali_macroaggregati_prest_reg1[i]!=totali_costo_totale_prest_reg1[i]">{{ totali_macroaggregati_prest_reg1[i] }}</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <ng-container *ngIf="prestazione.tipoPrestazione != 'MA03'">
+                <table class="pt-2 w-100 table table-hover table-responsive-xl greg-modellob1-table">
+                    <thead class="w-100 greg-modellob1-tbl-riga-header">
+                        <tr>
+                            <th *ngFor="let utenza of modello_b1_elenco_lbl.utenze" class="align-top">
+                                {{ utenza.descrizione }}
+                            </th>
+                            <th class="align-top">TOTALE</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="greg-modellob1-td-ma-spacing-row">
+                            <td *ngFor="let column of modello_b1_elenco_lbl.utenze">
+                                <ng-container *ngFor="let value of prestazione.utenze">
+                                    <input *ngIf="column.codice == value.codice" 
+                                        class="form-control inputnumber" 
+                                        [class.campovuoto]="value.valore === null || value.valore === ''"
+                                        [class.campovalorizzato]="value.valore !== null && value.valore !== ''"
+                                        [class.greg-modellob1-text-red]="value.error"
+                                        type="text" 
+                                        appTwoDigitDecimalNumber 
+                                        [(ngModel)]="value.valore" 
+                                        (ngModelChange)="calcola_totali_utenze_prest_reg1(value.codiceProgrammaMissione, i)"
+                                        (blur)="changeKey(value, $event.target.value)"
+                                        [ngStyle]="value.colore && {'border-top': '5px solid '+value.colore}"
+                                        [disabled]="client.readOnlyII || client.azioni.get('ModelloB1')[0]">
+                                </ng-container>
+                            </td>
+                            <td>
+                                <span [class.greg-modellob1-text-red]="totali_macroaggregati_prest_reg1[i]!=totali_utenze_prest_reg1[i]">{{ totali_utenze_prest_reg1[i] }}</span>
+                            </td>
+                        </tr>
+                        
+                    </tbody>
+                </table>
+                
+            </ng-container>
+            <ng-container *ngIf="prestazione.tipoPrestazione == 'MA03'">
+                <!-- COSTO TOTALE  -->
+                <div class="col-md-12 fontbold greg-modellob1-bg-r pl-0">
+                    <table>
+                        <tr>
+                            <td>
+                                Costo totale
+                            </td>
+                               <ng-template #popContent3>
+							{{ info_costo_totale }}
+							</ng-template>
+                            <td>
+							<label style="white-space: nowrap; padding-left: 10px;" [placement]="['right', 'left', 'auto']" 
+		             			[ngbPopover]="popContent3"  triggers="hover" container="body">
+                                <img src="assets/img/ui-modelli/help.png" class="greg-modellob1-icon-help">
+                                </label>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="col-md-12 fontbold greg-modellob1-bg-r pl-0">
+                    <table class="pt-2 w-100 table table-hover table-responsive-xl greg-modellob1-table">
+                        <thead class="w-100 greg-modellob1-tbl-riga-header">
+                            <tr>
+                                <th *ngFor="let lbl_pr1 of modello_b1_elenco_lbl.utenze" class="align-top">
+                                    {{ lbl_pr1.descrizione }}
+                                </th>
+                                <th class="align-top">TOTALE</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="greg-modellob1-td-ma-spacing-row">
+                                <td *ngFor="let column of modello_b1_elenco_lbl.utenze">
+                                    <ng-container *ngFor="let value of prestazione.utenzeCostoTotale">
+                                        <input *ngIf="column.codice == value.codice" 
+                                            class="form-control inputnumber" 
+                                            [class.campovuoto]="value.valore === null || value.valore === ''"
+                                            [class.campovalorizzato]="value.valore !== null && value.valore !== ''"
+                                            [class.greg-modellob1-bg-yellow]="value.mandatory"
+                                            [class.greg-modellob1-text-red]="value.error"
+                                            type="text" 
+                                            appTwoDigitDecimalNumber 
+                                            [(ngModel)]="value.valore" 
+                                            (ngModelChange)="calcola_totali_costo_totale(value.codiceProgrammaMissione, i)"
+                                            (blur)="changeKey(value, $event.target.value)"
+                                            [ngStyle]="value.colore && {'border-top': '5px solid '+value.colore}"
+                                            [disabled]="client.readOnlyII || client.azioni.get('ModelloB1')[0]">
+                                    </ng-container>
+                                </td>
+                                <td>
+                                    <span [class.greg-modellob1-text-red]="totali_macroaggregati_prest_reg1[i]!=totali_costo_totale_prest_reg1[i]">{{ totali_costo_totale_prest_reg1[i] }}</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <!-- QUOTA SOCIO ASSISTENZIALE  -->
+                <ng-template [ngIf]="prestazione.utenzeQuotaSocioAssistenziale.length>0">
+                <div class="col-md-12 fontbold greg-modellob1-bg-r pl-0">
+                    <table>
+                        <tr>
+                            <td>
+                                Quota socio assistenziale
+                            </td>
+                               <ng-template #popContent4>
+							{{ prestazione.msgInformativoQSA }}
+							</ng-template>
+                            <td>
+							<label style="white-space: nowrap; padding-left: 10px;" [placement]="['right', 'left', 'auto']" 
+		           			  [ngbPopover]="popContent4"  triggers="hover" container="body">
+                                <img src="assets/img/ui-modelli/help.png" class="greg-modellob1-icon-help">
+                                </label>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="col-md-12 fontbold greg-modellob1-bg-r pl-0">
+                    <table class="pt-2 w-100 table table-hover table-responsive-xl greg-modellob1-table">
+                        <thead class="w-100 greg-modellob1-tbl-riga-header">
+                            <tr>
+                                <th *ngFor="let lbl_pr1 of modello_b1_elenco_lbl.utenze" class="align-top">
+                                    {{ lbl_pr1.descrizione }}
+                                </th>
+                                <th class="align-top">TOTALE</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="greg-modellob1-td-ma-spacing-row">
+                                <td *ngFor="let column of modello_b1_elenco_lbl.utenze">
+                                    <ng-container *ngFor="let value of prestazione.utenzeQuotaSocioAssistenziale">
+                                        <input *ngIf="column.codice == value.codice" 
+                                            class="form-control inputnumber" 
+                                            [class.campovuoto]="value.valore === null || value.valore === ''"
+                                            [class.campovalorizzato]="value.valore !== null && value.valore !== ''"
+                                            [class.greg-modellob1-text-red]="value.error || value.limiteMassimo==null"
+                                            [class.greg-modellob1-bg-yellow]="value.mandatory"
+                                            [disabled]="value.disabled || (client.readOnlyII) || client.azioni.get('ModelloB1')[0]"
+                                            type="text" 
+                                            appTwoDigitDecimalNumber 
+                                            [(ngModel)]="value.valore"  
+                                            (ngModelChange)="calcola_totali_quota_socio_assistenziale(value.codiceProgrammaMissione, i)"
+                                            (blur)="changeKey(value, $event.target.value)"
+                                            [ngStyle]="value.colore && {'border-top': '5px solid '+value.colore}"
+                                            data-bs-toggle="tooltip" 
+                                            data-bs-placement="top" 
+                                            title="{{ value.limiteMassimo && 'Massimo stimato: '+value.limiteMassimo }}">
+                                    </ng-container>
+                                </td>
+                                <td>
+                                    <span>{{ totali_quota_socio_assistenziale_prest_reg1[i] }}</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </ng-template>
+            </ng-container>
+            <!-- RENDICONTAZIONE ISTAT -->
+            <div class="row col-md-12 fontbold greg-modellob1-bg-r pl-0 mb-2">
+                <div>
+                    <span style="color: #006cb4;">Rendicontazione ISTAT &nbsp; &nbsp;</span>
+                    <img [@rotatedState]='state[i]' src="assets/img/user/frecciagiu.png" (click)="apriISTAT(i)" style="cursor: pointer;">
+                </div>
+            </div>
+            <div class="row col-md-12 fontbold greg-modellob1-bg-istat" style="padding-bottom:10px;padding-top:10px;" *ngIf="state[i] == 'rotated'">
+                <ng-container *ngFor="let prestazione_regionale_2 of prestazione.prestazioniRegionali2; let i2 = index">
+                    {{prestazione_regionale_2.codPrestazione}} {{ prestazione_regionale_2.descPrestazione }}
+                    <table class="pt-2 w-100 table table-hover table-responsive-xl greg-modellob1-table">
+                        <thead class="w-100 greg-modellob1-tbl-riga-header">
+                            <tr>
+                                <th *ngFor="let utenza of modello_b1_elenco_lbl.utenze" class="align-top">
+                                    {{ utenza.descrizione }}
+                                </th>
+                                <th class="align-top">TOTALE</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="greg-modellob1-td-ma-spacing-row">
+                                <td *ngFor="let column of modello_b1_elenco_lbl.utenze">
+                                    <ng-container *ngFor="let value of prestazione_regionale_2.utenze">
+                                        <input *ngIf="column.codice == value.codice" 
+                                            class="form-control inputnumber" 
+                                            [class.campovuoto]="value.valore === null || value.valore === ''"
+                                            [class.campovalorizzato]="value.valore !== null && value.valore !== ''"
+                                            [class.greg-modellob1-text-red]="value.error"
+                                            type="text" 
+                                            appTwoDigitDecimalNumber 
+                                            [(ngModel)]="value.valore" 
+                                            (ngModelChange)="calcola_totali_utenze_prest_reg2(i, i2)"
+                                            (blur)="changeKey(value, $event.target.value)"
+                                            [disabled]="client.readOnlyII || client.azioni.get('ModelloB1')[0]">
+                                    </ng-container>
+                                </td>
+                                <td>
+                                    <span>{{ totali_utenze_prest_reg2[i][i2] }}</span>
+                                </td>
+                            </tr>
+                            
+                        </tbody>
+                    </table>
+                </ng-container>
+            </div>
+        </ng-container>
+    </div>
+</div>
+
+<div class="row" style="padding-top: 15px; padding-bottom: 20px;">
+</div>
+  
+<!-- CRONOLOGIA -->
+<app-cronologia-modelli></app-cronologia-modelli>
+
+<br>
+
+<!-- BOTTONI -->
+<app-pulsanti-funzioni [mostrasalva]="mostrasalva" [idRendicontazioneEnte]="idRendicontazioneEnte" [modello]="'Mod. B1'" (salvaEvent)="salvaModifiche($event)"></app-pulsanti-funzioni>

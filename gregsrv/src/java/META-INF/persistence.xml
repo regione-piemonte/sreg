@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+	<persistence-unit name="gregsrv" transaction-type="RESOURCE_LOCAL">
+		<provider>org.hibernate.ejb.HibernatePersistence</provider>
+		<class>it.csi.greg.gregsrv.business.entity.GregCMessaggioApplicativo</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregCParametri</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregCRegola</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregDAree</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregDAsl</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregDAssistenzaSanitaria</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregDAttivita</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregDAttivitaSocioAssist</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregDAzione</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregDCategoriaIstat</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregDCausaleComuneEnteModA2</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregDClassificazionePresidio</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregDColori</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregDComuni</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregDDettaglioDisabilita</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregDDettaglioUtenze</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregDDisabilita</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregDDistretti</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregDFondi</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregDFunzione</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregDFunzionePresidio</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregDMacroaree</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregDMacroattivita</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregDMail</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregDMissione</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregDMotivazione</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregDMsgInformativo</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregDObbligo</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregDOperazioneAudit</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregDPersonaleEnte</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregDProfilo</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregDProfiloProfessionale</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregDProgrammaMissione</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregDProvince</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregDSottoaree</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregDSottoareeDet</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregDSottotitolo</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregDSottovoci</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregDSpesaMissioneProgramma</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregDStatoEnte</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregDStatoRendicontazione</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregDTab</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregDTargetUtenza</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregDTipoEnte</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregDTipologiaFondi</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregDTipoFlusso</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregDTipoMotivazione</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregDTipoPresidio</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregDTipoResidenza</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregDTipoStruttura</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregDTipoVoce</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregDTipologia</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregDTipologiaModA</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregDTipologiaQuota</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregDTipologiaSpesa</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregDTitolo</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregDTitoloModA</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregDTranche</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregDVoceIstat</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregDVoceModA</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregDVoceModA1</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregDVoceModD</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregDVoci</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregRAlgoritmoTargetUtenza</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregRAttivitaProgrammaMissioneTitSottotit</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregRAzioneMail</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregRCartaServiziPreg1</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregRCatUteVocePrestReg2Istat</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregRCategVoceIstat</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregRConteggioMonteOreSett</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregRConteggioPersonale</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregRDisabilitaTargetUtenza</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregREnteGestoreContatti</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregREnteGestoreStatoEnte</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregREnteTab</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregRFnpsUtenzaCalcolo</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregRListaEntiGestori</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregRMacroareeSottoaree</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregRMergeEnti</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregRNomencNazPrestReg2</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregRParametroRendicontazioneEnte</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregRPreg1DisabTargetUtenzaDettDisab</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregRPreg1DisabilitaTargetUtenza</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregRPrestMinistUtenzeMinist</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregRPrestReg1MacroaggregatiBilancio</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregRPrestReg1PrestMinist</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregRPrestReg1PrestReg2</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregRPrestReg1UtenzeModc</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregRPrestReg1UtenzeModcDettUtenze</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregRPrestReg1UtenzeRegionali1</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregRPrestReg1UtenzeRegionali1ProgrammaMissione</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregRPrestReg1UtenzeRegionali1ProgrammaMissioneTitSott</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregRPrestReg2UtenzeRegionali2</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregRPrestazioniRegionali1TipoStruttura</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregRProfiloAzione</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregRProgrammaMissioneTitSottotit</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregRRendMiProTitEnteGestoreModB</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregRRendicontazioneComuneEnteModA2</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregRRendicontazioneEnteComuneModA2</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregRRendicontazioneFondi</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregRRendicontazioneGiustificazioneFnps</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregRRendicontazioneModA1</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregRRendicontazioneModAPart1</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregRRendicontazioneModAPart2</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregRRendicontazioneModAPart3</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregRRendicontazioneModCParte1</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregRRendicontazioneModCParte2</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregRRendicontazioneModCParte3</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregRRendicontazioneModCParte4</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregRRendicontazioneModD</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregRRendicontazioneModE</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregRRendicontazioneModFParte1</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregRRendicontazioneModFParte2</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregRRendicontazioneModuloFnps</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregRRendicontazioneNonConformitaModB</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregRRendicontazionePreg1Macro</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregRRendicontazionePreg1Utereg1</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregRRendicontazionePreg2Utereg2</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregRRendicontazioneReportReg1</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregRRendicontazioneSpesaMissioneProgrammaMacro</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregRResponsabileContatti</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregRSchedeEntiGestoriComuni</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregRSchedeEntiGestoriDistretti</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregRSottoareeSottoareeDet</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregRSpesaMissioneProgrammaMacro</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregRSpeseFnps</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregRTabTranche</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregRTargetUtenzaAree</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregRTargetUtenzaVoceIstatProgrammaMissioneTitSottotit</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregRTipoVoceModD</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregRTipologiaSpesaPrestReg1</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregRTipologiaSpesaProgrammaMissioneTitSottotit</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregRTitoloTipologiaVoceModA</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregRUserProfilo</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregRVociSottovoci</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregTAllegatiRendicontazione</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregTAudit</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregTCausaleEnteComuneModA2</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregTCronologia</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregTLista</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregTMacroaggregatiBilancio</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregTNomenclatoreNazionale</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregTPrestazioniMinisteriali</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregTPrestazioniRegionali1</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregTPrestazioniRegionali2</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregTRendicontazioneEnte</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregTResponsabileEnteGestore</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregTSchedeEntiGestori</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregTUser</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregDAmbitiTerritoriali</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregDRegione</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregTPresidenteEnteGestore</class>
+		<class>it.csi.greg.gregsrv.business.entity.GregRCheck</class>
+		<properties>
+			<property name="hibernate.show_sql" value="false" />
+			<property name="hibernate.format_sql" value="true" />
+			<property name="eclipselink.logging.parameters" value="true"/>
+			<property name="openjpa.Log" value="DefaultLevel=WARN, Runtime=INFO, Tool=INFO, SQL=TRACE"/>
+			<property name="openjpa.ConnectionFactoryProperties" value="PrintParameters=true" />
+			<property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect" />
+			<property name="hibernate.cache.provider_class" value="org.hibernate.cache.NoCacheProvider" />
+			<!--  <property name="hibernate.default_schema" value="greg" /> -->
+			<property name="jboss.as.jpa.managed" value="false" />
+			<property name="hibernate.connection.driver_class" value="org.postgresql.Driver"/>
+			<!-- <property name="hibernate.ejb.interceptor" value="it.csi.scerev.scerevboweb.filter.CifraturaInterceptor" /> -->
+			<property name="hibernate.id.new_generator_mappings" value="false" />
+		</properties>
+	</persistence-unit>
+</persistence>

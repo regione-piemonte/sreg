@@ -1,0 +1,51 @@
+<div class="modal-header">
+	<h4 id="titolo" style="color: black; font-family: Roboto;" class="modal-title">
+		CRONOLOGIA
+	</h4>
+	<button style="outline: none;" type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+		<span aria-hidden="true">&times;</span>
+	</button>
+</div>
+<div class="tableCronologia modal-body" style="overflow-x: auto; position: relative;">
+	<div *ngIf="!listaCronologia" style="text-align: center;">
+		<div class="spinner-grow text-primary" role="status">
+			<span class="sr-only">Loading...</span>
+		</div>
+	</div>
+	<div *ngIf="listaCronologia?.data?.length > 0">
+		<table mat-table matSort [dataSource]="listaCronologia" class="table table-sm table-striped table-hover">
+			<ng-container matColumnDef="dataOra">
+				<th class="columns_header" mat-header-cell *matHeaderCellDef>Data e Ora</th>
+				<td class="celleTab" mat-cell *matCellDef="let element"> {{element.dataOra | date:'dd/MM/yyyy HH:mm'}} </td>
+			</ng-container>
+			<ng-container matColumnDef="utente">
+				<th class="columns_header" mat-header-cell *matHeaderCellDef>Utente</th>
+				<td class="celleTab" mat-cell *matCellDef="let element"> {{element.utente}} </td>
+			</ng-container>
+			<ng-container matColumnDef="modello">
+				<th class="columns_header" mat-header-cell *matHeaderCellDef>Modello</th>
+				<td class="celleTab" mat-cell *matCellDef="let element"> {{element.modello}} </td>
+			</ng-container>
+			<ng-container matColumnDef="statoRendicontazione">
+				<th class="columns_header" mat-header-cell *matHeaderCellDef>Stato Rendicontazione</th>
+				<td class="celleTab" mat-cell *matCellDef="let element"> {{element.statoRendicontazione.descStatoRendicontazione}} </td>
+			</ng-container>
+			<ng-container matColumnDef="notaEnte">
+				<th class="columns_header" mat-header-cell *matHeaderCellDef>Nota per Ente</th>
+				<td class="celleTab" mat-cell *matCellDef="let element"> {{element.notaEnte}} </td>
+			</ng-container>
+			<ng-container matColumnDef="notaInterna">
+				<th class="columns_header" mat-header-cell *matHeaderCellDef>Nota Interna</th>
+				<td class="celleTab" mat-cell *matCellDef="let element"> {{element.notaInterna}} </td>
+			</ng-container>	
+		  
+			<tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+			<tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+		</table>
+	</div>
+	 <div class="col-12 fontnormale">
+            <div class="col-12" *ngIf="listaCronologia?.data?.length == 0" style="text-align: center;">
+                <label class="no-data-available">Non risultano cronologie collegate all'Ente</label>
+            </div>
+        </div>
+</div>

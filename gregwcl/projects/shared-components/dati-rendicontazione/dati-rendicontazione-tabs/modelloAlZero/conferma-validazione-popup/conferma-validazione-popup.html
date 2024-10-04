@@ -1,0 +1,34 @@
+<div class="modal-header" style="border-bottom: 0px; padding-left: 0px;">
+  <h2 id="titolo" class="modal-title">
+    Conferma Responsabile
+  </h2>
+  <button style="outline: none;" type="button" class="close" aria-label="Close" (click)="chiudiMotivazione(false)">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<!-- <h1 mat-dialog-title class="testo">{{data?.titolo}}</h1> -->
+<div mat-dialog-content style="border-bottom: 1px solid #dee2e6;
+border-top: 1px solid #dee2e6;">
+  <p>
+    <ngb-alert [dismissible]="false">
+      <strong>ATTENZIONE!</strong> Stai effettuando una conferma con residuo, controlla la nota giustificativa
+    </ngb-alert>
+  </p>
+  <div class="row" style="background:#F0F3F8;">
+    <textarea id="giustificativo" [(ngModel)]="giustificativo" class="form-control" disabled
+    style="min-height: 10rem;">
+    </textarea>
+  </div>
+  <br>
+  Vuoi confermare?
+</div>
+
+<div mat-dialog-actions>
+  <div class="row w-100">
+    <div class="col-md-12 w-100 d-flex justify-content-end">
+      <button class="btn btn-primary" mat-stroked-button (click)="chiudiMotivazione(true)">
+        CONFERMA
+      </button>
+    </div>
+  </div>
+</div>

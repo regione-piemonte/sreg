@@ -1,0 +1,24 @@
+<ng-container *ngFor="let toast of toastService.toasts">
+    <ng-template [ngIf]="toast.className=='custom-snackbar-container-info'">
+        <ngb-toast [class]="toast.className" header=" " [autohide]="true" [delay]="toast.delay || 3000"
+            (hide)="toastService.remove(toast)">
+
+            <span class="info-snackbar">
+                <div style="text-align: center; vertical-align: middle;"><i [class]="toast.icon" aria-hidden="true"></i>
+                    <a [innerHTML]="'&nbsp;&nbsp;'+toast.text"></a></div>
+            </span>
+
+        </ngb-toast>
+    </ng-template>
+    <ng-template [ngIf]="toast.className!='custom-snackbar-container-info'">
+        <ngb-toast [class]="toast.className" header=" " [autohide]="false" [delay]="toast.delay || 3000"
+            (hide)="toastService.remove(toast)">
+
+            <span class="info-snackbar">
+                <div style="text-align: center; vertical-align: middle;"><i [class]="toast.icon" aria-hidden="true"></i>
+                    &nbsp;&nbsp;{{ toast.text }}</div>
+            </span>
+
+        </ngb-toast>
+    </ng-template>
+</ng-container>

@@ -1,0 +1,29 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "baseUrl": "./",
+    "outDir": "./dist/out-tsc",
+    "sourceMap": true,
+    "declaration": false,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "target": "es5",
+	"downlevelIteration": true,
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+    "lib": [
+      "es2017",
+      "dom"
+    ],
+    "paths": {
+      "@greg-app/*" : ["src/*"],
+      "@greg-operatore/*" : ["projects/operatore-regionale/*"],
+      "@greg-responsabile/*" : ["projects/responsabile-ente/*"],
+      "@greg-gestione/*" : ["projects/gestione-utenti/*"],
+      "@greg-shared/*" : ["projects/shared-components/*"]
+    }
+  }
+}

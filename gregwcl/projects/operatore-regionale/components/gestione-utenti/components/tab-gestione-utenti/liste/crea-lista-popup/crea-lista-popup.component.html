@@ -1,0 +1,100 @@
+<div class="modal-header" style="border-bottom: 0px; ">
+  <h4 id="titolo" style="color: black; font-family: Roboto;" class="modal-title">
+    {{data?.titolo}}
+  </h4>
+  <button style="outline: none;" type="button" class="close" aria-label="Close" (click)="annulla()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<!-- <h1 mat-dialog-title class="titolo">{{data?.titolo}}</h1> -->
+
+<div mat-dialog-content style="border-bottom: 1px solid #dee2e6;
+border-top: 1px solid #dee2e6;">
+  <form [formGroup]="listaForm" class="w-100">
+    <div class="row" style="padding-top:10px; padding-bottom:10px;">
+      <div class="col-md-6">
+        <div class="form-group">
+          <label class="inputLabel">Codice *</label>
+          <input id="codLista" class="form-control" maxlength="40" formControlName="codLista" type="text">
+        </div>
+      </div>
+      <div class="col-md-6 testo">
+        <div class="form-group">
+          <label class="inputLabel">Descrizione *</label>
+          <input id="descLista" class="form-control" formControlName="descLista" type="text">
+        </div>
+      </div>
+    </div>
+    <div class="col-md-12" style="padding-bottom: 10px;">
+      <label class="filterLabel">Copia da: </label>
+      <ng-container>
+        <select (change)="onSelectionChangedListe($event.target.value)" [disabled]="verificaZeroEnti()"
+          class="form-control form-control-sm statoCombo campiricerca">
+          <option [value]="0">Nessun Lista</option>
+          <option *ngFor="let lista of data.liste" [value]="lista.idLista">{{lista.codLista}} -
+            {{lista.descLista}}</option>
+        </select>
+      </ng-container>
+    </div>
+    <div class="col-md-12" style="padding-top: 10px; "><b>Enti</b></div>
+    <div class="col-md-8" style="padding-top: 10px; ">
+      <ng-container>
+        <select [(value)]="ente.idEnte" (change)="onSelectionChangedEnte($event.target.value)"
+          class="form-control form-control-sm statoCombo campiricerca">
+          <option [value]="0">Nessun Ente</option>
+          <option *ngFor="let ente of data.entiDaAssegnare" [value]="ente.idEnte">
+            {{ente.codEnte}} - {{ente.descEnte}}</option>
+        </select>
+      </ng-container>
+    </div>
+    <div class="col-md-4" style="padding-top: 10px;  padding-right: 10px;">
+      <button type="button" class="btn btn-primary bottonifunzione buttonSpace" data-toggle="tooltip"
+        [disabled]="disabilitaAggiungiEnti()" title="Salva azioni" (click)="aggiungiEnte()">
+        Aggiungi
+      </button>
+    </div>
+    <div class="col-md-12 tableAssociati" style="padding-top: 10px;  padding-bottom: 20px;">
+      <table mat-table [dataSource]="dataEnti" class="col-12 mb-3 table table-hover table-responsive-xl tabellagreg">
+        <ng-container matColumnDef="ente">
+          <th class="columns_header" mat-header-cell *matHeaderCellDef> Ente </th>
+          <td class="smarttable" mat-cell *matCellDef="let ente"> {{ente.codEnte}} - {{ente.descEnte}}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="cestino">
+          <th class="columns_header pl-2" mat-header-cell *matHeaderCellDef> </th>
+          <td class="smarttable pl-2" mat-cell *matCellDef="let ente">
+
+            <button type="button" class="btn" data-toggle="tooltip" title="Elimina" (click)="eliminaEnte(ente)"
+              style="margin-left: 10px;">
+              <span class="fas fa-trash" style="color: #B8191A;"></span>
+            </button>
+
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="enteRow;" class="riga-totale-azzurra"></tr>
+        <tr mat-row *matRowDef="let row; columns:  enteRow; let ente; let i=index" class="riga-totale-azzurra"></tr>
+
+
+      </table>
+    </div>
+</form>
+</div>
+
+<div mat-dialog-actions style="padding-bottom: 20px;
+padding-top: 20px;">
+  <div class="col-md-4">
+    <button class="btn btn-link" (click)="annulla()">
+      ANNULLA
+    </button>
+  </div>
+  <div class="col-md-4">
+  </div>
+  <div class="col-md-4">
+    <button class="btn btn-primary" style="float: right;" mat-stroked-button (click)="conferma()" cdkFocusInitial
+      [disabled]="VerificaValidita()">
+      SALVA
+    </button>
+  </div>
+  <div class="col-md-4"></div>
+</div>

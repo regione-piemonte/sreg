@@ -1,0 +1,261 @@
+<div *ngIf="client.azioni.get('RicercaEnte')[1]" class="row greg" style="padding-top: 5px; padding-bottom: 5px;">
+	
+    <div class="col-md-1"></div>
+
+	<div class="col" style="max-width: 3000px;">
+		<form [formGroup]="searchForm">
+			<div class="row gregFilter" (keyup.enter)="searchForm.valid? avviaRicerca() : null">
+				
+				<div class="row col-md-12" style="padding-top:30px;">
+					<div class="col-md-3 ricEs">
+						<label class="filterLabel">Stato Ente</label>
+						<ng-container> 
+							<select formControlName="statoEnteArc" id="statoEnteArc" class="form-control form-control-sm campiricerca">			
+							<option value="">Tutti</option>
+							<option *ngFor="let stato of client.statiEnteSalvatoArchivio" [value]="stato.codStatoEnte">{{stato.descStatoEnte}}</option>
+							</select> 
+						</ng-container>
+					</div>
+					
+					<div class="col-md-3 ricEs">
+						<div class="form-group">
+							<label class="filterLabel">Denominazione Ente</label> 
+							<input formControlName="denominazioneEnteArc" maxlength="300" id="denominazioneEnteArc" class="form-control campiricerca" type="text"
+							[matAutocomplete]="autoDenEnteArc">
+							<mat-autocomplete #autoDenEnteArc="matAutocomplete">
+								<mat-option *ngFor="let option of denomEnteFilteredArc" [value]="option.denominazione" data-bs-toggle="tooltip" [title]="option.denominazione">
+								  {{option.denominazione}}
+								</mat-option>
+							</mat-autocomplete>
+						</div>
+						<span class="spanDanger" *ngIf="searchForm.get('denominazioneEnteArc').value && !searchForm.get('denominazioneEnteArc').valid">
+							Il campo deve essere lungo al massimo 300 caratteri
+						</span>
+					</div>
+
+					<div class="col-md-3 ricEs">
+						<label class="filterLabel">Stato Rendicontazione</label>
+						<input formControlName="statoRendicontazioneArc" id="statoRendicontazioneArc" class="form-control campiricerca riga-totale-azzurra" type="text" disabled 
+						value="{{this.client.statoRendicontazioneConslusaArchivio?.descStatoRendicontazione}}">
+					</div>
+
+				</div>
+				<div class="row col-md-12" style="padding-top:30px;padding-bottom:30px;">
+					<div class="col-md-3 ricEs">
+						<label class="filterLabel">Tipo Ente</label>
+						<ng-container> 
+							<select formControlName="tipoEnteArc" id="tipoEnteArc" class="form-control form-control-sm statoCombo campiricerca">
+							<option value="">Tutti</option>
+							<option *ngFor="let tipoEnte of client.listaTipoEntiSalvatoArchivio" [value]="tipoEnte.codTipoEnte">{{tipoEnte.desTipoEnte}}</option>
+							</select> 
+						</ng-container>
+					</div>
+					
+					<div class="col-md-3 ricEs">
+						<label class="filterLabel">Comune</label>
+						<ng-container> 
+							<select formControlName="comuneArc" id="comuneArc" class="form-control form-control-sm statoCombo campiricerca">
+							<option value="">Tutti</option>
+							<option *ngFor="let comune of client.listaComuniSalvatoArchivio" [value]="comune.codIstatComune">{{comune.desComune}}</option>
+							</select> 
+						</ng-container>
+					</div>
+
+					<div class="col-md-3 ricEs">
+						<label class="filterLabel">Anno Esercizio</label>
+						<ng-container> 
+							<select (change)="onSelectionAnnoChanged($event.target.value)" formControlName="annoEsercizioArc" id="annoEsercizioArc" class="form-control form-control-sm campiricerca riga-totale-azzurra" >			
+							<option value="">Tutti</option>
+							<option *ngFor="let anno of client.anniEsercizioSalvatoArchivio" [value]="anno">{{anno}}</option>
+							</select> 
+						</ng-container>
+					</div>
+
+					<div class="col-md-3 verticalCentered ricEs">
+						<button id="btnSearch" type="submit" class="btn btn-primary block bottonifunzione" [disabled]="!searchForm.valid" (click)="avviaRicerca()">
+							Cerca
+						</button>
+						<button id="btnLoading" class="btn btn-primary block" type="button" disabled style="display: none;">
+							<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> 
+							Loading...
+						</button>
+					</div>
+
+				</div>
+
+			</div>
+		</form>
+	</div>
+
+	<div class="col-md-1"></div>
+
+</div>
+<div class="row greg" style="padding-top: 5px; padding-bottom: 5px;">
+	<div class="col-md-1"></div>
+	<div class="col-md-5" style="margin-bottom: 10px;" *ngIf="client.azioni.get('RicercaEnte')[1]" >
+		<span class="results" style="margin-bottom: 10px;">Risultati: {{ dataListaRichiesteArchivio.data.length }}</span>
+	</div>
+
+	<div class="col-md-5 align-self-end" style="margin-bottom: 10px;" *ngIf="client.azioni.get('RicercaEnte')[1]" ></div>
+	<div class="col-md-1"></div>
+	<div class="col-md-1"></div>
+
+	<div class="col-md-5" style="margin-bottom: 15px;"  *ngIf="client.azioni.get('RicercaEnte')[1]">		
+
+		<button type="button" class="btn btn-link pl-0" (click)="annullaRicerca()" style="color: #006CB4;">
+			<span style="margin-bottom: 10px;"></span>
+			<b>Annulla Ricerca</b>
+		</button>
+	</div>
+	<div class="col-md-5 align-self-end" style="margin-bottom: 15px;" *ngIf="controlloRiapriSelezione()">
+		<span class="d-inline-block" data-bs-toggle="tooltip" title="Seleziona tutti gli Enti" style="float: right;" *ngIf="client.azioni.get('RiapriFNPS')[1]">
+			<button id="btnApplica" type="submit" class="btn btn-primary bottonifunzione" (click)="ripristinaRendicontazione()">
+				RIAPRI FNPS
+			</button>
+		</span>
+	</div>
+</div>
+
+<div *ngIf="!client.azioni.get('RicercaEnte')[1]" class="row greg" style="padding-top: 65px; padding-bottom: 5px;"></div>
+
+
+<div class="row greg" style="padding-top: 5px; padding-bottom: 5px; ">
+	<div class="col-md-1"></div>
+	
+	<div class="col-md-10"  style="max-width: 3000px;">
+		<table mat-table matSort [dataSource]="dataListaRichiesteArchivio" multiTemplateDataRows class="mb-3 table table-hover table-responsive-xl tabellagreg">
+		
+			<ng-container matColumnDef="checkArc">
+				<th class=" text-nowrap columns_header" mat-header-cell *matHeaderCellDef style="padding-right:20px;padding-left:24px; width: 0px;">
+					<input *ngIf="client.azioni.get('RicercaEnte')[1]" type="checkbox" (click)="checkUncheckAll()" [(ngModel)]="selezionaTutto" id="tutti" style="outline: 1px solid #006CB4"> 
+					<label *ngIf="client.azioni.get('RicercaEnte')[1]" for="tutti" style="padding-right:20px;padding-left:20px;">Tutti</label><br>
+				</th>
+				<td class="smarttable" mat-cell *matCellDef="let element">
+					<input *ngIf="client.azioni.get('RicercaEnte')[1]" type="checkbox" [(ngModel)]="element.checked" (ngModelChange)="checkSelezione()">
+				</td>
+			</ng-container>
+			
+			<ng-container matColumnDef="codiceRegionaleArchivio">
+			  <th class="columns_header" style="width: 0px;" mat-header-cell *matHeaderCellDef mat-sort-header> Codice Regionale </th>
+			  <td class="smarttable" mat-cell *matCellDef="let elementArc"> {{elementArc.codiceRegionale}} </td>
+			</ng-container>
+		  
+			<ng-container matColumnDef="denominazioneArchivio">
+			  <th class="columns_header" mat-header-cell *matHeaderCellDef> Denominazione Ente </th>
+			  <td class="smarttable text-wrap"  mat-cell *matCellDef="let elementArc"> {{elementArc.denominazione}} </td>
+			</ng-container>
+		  
+			<ng-container matColumnDef="comuneSedeLegaleArchivio">
+			  <th class="columns_header" mat-header-cell *matHeaderCellDef mat-sort-header> Comune Sede Legale </th>
+			  <td class="smarttable" mat-cell *matCellDef="let elementArc"> {{elementArc.comuneSedeLegale}} </td>
+			</ng-container>
+
+			<ng-container matColumnDef="tipoEnteArchivio">
+				<th class="columns_header" mat-header-cell *matHeaderCellDef> Tipo Ente </th>
+				<td class="smarttable" class="smarttable" mat-cell *matCellDef="let elementArc"> {{elementArc.tipoEnte && elementArc.tipoEnte.desTipoEnte}} </td>
+			</ng-container>
+			
+			<ng-container matColumnDef="dettaglioArchivio">
+				<th class="columns_header" mat-header-cell *matHeaderCellDef>
+				<label *ngIf="client.azioni.get('DatiEnte')[1] || client.azioni.get('DatiRendicontazione')[1]">Dettaglio</label>
+				 </th>
+				<td class="smarttable" mat-cell *matCellDef="let elementArc">
+					<button *ngIf="client.azioni.get('DatiEnte')[1]" type = "button" (click)="routeTo(elementArc, '/dati-anagrafici-archivio')" class="btn" data-toggle="tooltip" title="Dati Ente">
+						<span class="fas fa-server" style="color: #006CB4;"></span>
+					</button>
+				</td>
+			</ng-container>
+
+			<ng-container matColumnDef="statoEnteArchivio">
+				<th class="columns_header" mat-header-cell *matHeaderCellDef> Stato Ente </th>
+				<td class="smarttable" class="smarttable" mat-cell *matCellDef="let elementArc"> {{elementArc.statoEnte.descStatoEnte}} </td>
+			</ng-container>
+
+			<ng-container matColumnDef="storicoArchivio">
+				<th class=" columns_header" mat-header-cell *matHeaderCellDef>
+				<label *ngIf="client.azioni.get('PulsanteStoricoContatti')[1]">Storico</label>
+				</th>
+				<td class="smarttable" mat-cell *matCellDef="let elementArc">
+					<button *ngIf="client.azioni.get('PulsanteStoricoContatti')[1]" type = "button" (click)="openStorico(elementArc)" class="btn" data-toggle="tooltip" title="Storico">
+						<img style="height: 20px; width: 20px;" src="assets/img/user/storico.svg" class="greg-icon-help">
+					</button>
+				</td>
+			</ng-container>
+			
+			<ng-container matColumnDef="rendicontazioneArchivio">
+				<td class="smarttable testo-bold" mat-cell *matCellDef="let elementArc;" colspan="2" style="padding-left: 40px; vertical-align: top"> 
+					<ng-container *ngFor="let rendicontazione of elementArc.rendicontazioni; let i=index">
+						<div class="row">
+							<div class="col-md-12" *ngIf="i==0">
+								Rendicontazione
+							</div>
+							<div class="col-md-12" style="padding: 20px" *ngIf="i!=0">
+								
+							</div>
+						</div>
+					</ng-container>
+				</td>
+			</ng-container>
+			
+			<ng-container matColumnDef="statoRendicontazioneArchivio.descStatoRendicontazione">
+				<td class="smarttable" mat-cell *matCellDef="let elementArc" style="width: 67%;">
+					<ng-container *ngFor="let rendicontazione of elementArc.rendicontazioni; let i=index">
+						<div class="row">
+							<div class="col-md-8" style="padding-top: 10px;">
+								{{rendicontazione.statoRendicontazione && rendicontazione.statoRendicontazione.descStatoRendicontazione}}
+							</div>
+							<div class="col-md-2" style="padding-top: 10px;">
+								{{rendicontazione.annoEsercizio}}
+							</div>
+							<div class="col-md-2" >
+								<button type = "button" *ngIf="client.azioni.get('Cronologia')[1]" (click)="openCronologia(rendicontazione)" class="btn" data-toggle="tooltip" title="Cronologia">
+									<span class="fas fa-history" style="color: #006CB4;"></span>
+								</button>
+							</div>
+						</div>
+					</ng-container>
+				</td>
+			</ng-container>
+			
+			<ng-container matColumnDef="vuotoArchivio">
+					<td class="smarttable" class="smarttable" mat-cell *matCellDef="let element" colspan="2"></td>
+			</ng-container>
+			
+			<ng-container matColumnDef="datiEnteArchivio">
+					<td class="smarttable" mat-cell *matCellDef="let elementArc">
+						<ng-container *ngFor="let rendicontazione of elementArc.rendicontazioni; let i=index">
+							<div class="row">
+								<div class="col-md-12" style="padding: 0px;">
+								<button *ngIf="client.azioni.get('DatiRendicontazione')[1]" type = "button" (click)="routeToDatiEnte(rendicontazione,'/responsabile-ente-archivio')" class="btn"
+									[disabled]="rendicontazione.statoRendicontazione?.descStatoRendicontazione === null? true : false">
+									<span class="fas fa-file-alt" style="color: #006CB4;" data-toggle="tooltip" 
+									[title]="rendicontazione.statoRendicontazione?.descStatoRendicontazione === null? tooltipRendicontazioneArchivio : 'Dati Rendicontazione'"></span>
+								</button>
+								</div>
+							</div>
+						</ng-container>
+					</td>
+				</ng-container>
+				
+				<ng-container matColumnDef="vuoto2Archivio">
+					<td class="smarttable" class="smarttable" mat-cell *matCellDef="let element" colspan="2"></td>
+				</ng-container>
+				
+			<tr mat-header-row *matHeaderRowDef="columnsListaRichieste"></tr>
+			<tr mat-row *matRowDef="let row; columns: columnsListaRichieste"></tr>
+			<tr mat-row *matRowDef="let row; columns: secondRowArchivio; let elementArc" class="riga-totale-azzurra" [hidden]="elementArc.rendicontazioni?.length==0" ></tr> 
+		</table> 
+		
+		<div class="col-12" *ngIf="dataListaRichiesteArchivio.data?.length == 0" style="text-align: center;padding-top:30px;">
+            <label class="no-data-available">Nessuna scheda soddisfa i criteri di ricerca selezionati</label>
+        </div>
+
+		<mat-paginator class="paginator" 
+			[length]="dataListaRichiesteArchivio.data.length" [pageSize]="10"
+			[pageSizeOptions]="[5, 10, 20]" [showFirstLastButtons]=true style="padding-top:30px;">
+		</mat-paginator>
+	</div>
+
+	<div class="col-md-1"></div>
+
+</div>

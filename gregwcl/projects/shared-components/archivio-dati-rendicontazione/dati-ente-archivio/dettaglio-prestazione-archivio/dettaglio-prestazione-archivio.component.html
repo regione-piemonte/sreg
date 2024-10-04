@@ -1,0 +1,392 @@
+<br>
+<div class="row greg">
+
+	<div class="col-md-1"></div>
+
+	<div class="col-md-10 spazioTitolo">
+		<h4 id="titolo" style="color: black; font-family: Roboto;" class="modal-title">
+			Dettaglio Prestazione
+		</h4>
+	</div>
+	<!-- <div class="col-md-5" style="text-align: right; color: red;">{{msgTab}}</div> -->
+	<div class="col-md-1"></div>
+	<!-- <div class="col-md-2" *ngIf="client.azioni.get('BackToHome')[1]">
+					  <button type = "button" (click)="routeTo('../dati-rendicontazione')" class="btn btn-link" data-toggle="tooltip" title="Dati Rendicontazione">
+						  <span class="fas fa-file-alt" style="color: #006CB4;"></span> &nbsp; &nbsp;Vai ai dati di rendicontazione
+					  </button>
+				  </div>-->
+</div>
+<div class="row">
+	<div class="col-md-1"></div>
+	<div class="col-md-11 spazio">
+		<h4 style="color: black; font-family: Roboto"> Prestazione Regionale 1
+		</h4>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-1"></div>
+	<div class="col-md-2 spazio">
+		<h4 style="color: black; font-family: Roboto"> {{dettaglioPrestazione?.desTipologia}}
+		</h4>
+	</div>
+	<div class="col-md-2">
+		<h4 style="color: black; font-family: Roboto"> {{dettaglioPrestazione?.tipo}}
+		</h4>
+	</div>
+	<div class="col-md-2">
+		<!-- <h4 style="color: black; font-family: Roboto"> N. ordine {{dettaglioPrestazione?.ordinamento}}
+		</h4> -->
+	</div>
+</div>
+
+<div class="row greg">
+	<div class="col-md-1"></div>
+
+	<div class="col-md-10">
+		<div class="row gregFilter" style="padding-bottom: 25px;">
+
+			<div class="col-md-11" style="left: 13px; padding-top: 30px;">
+				<h4 class="titleSection">{{dettaglioPrestazione?.codPrestRegionale}} -
+					{{dettaglioPrestazione?.desPrestRegionale}}</h4>
+			</div>
+			<div class="col-md-1" style="padding-top: 30px;" *ngIf="!prestazione">
+				<img style="height: 20px; width: 20px; cursor: pointer;" src="assets/img/ui-modelli/visualizza.svg"
+					class="greg-icon-help" (click)="changePrestazione()">
+			</div>
+			<div class="col-md-1" style="padding-top: 30px;" *ngIf="prestazione">
+				<img style="height: 20px; width: 20px; cursor: pointer;" src="assets/img/ui-modelli/closedEye.svg"
+					class="greg-icon-help" (click)="changePrestazione()">
+			</div>
+			<div *ngIf="prestazione" class="col-md-12">
+				<div class="col-md-12" style="left: 13px; padding-top: 30px;"
+					*ngIf="dettaglioPrestazione?.macroaggregati.length>0">
+					<div class="row gregBoxTitle">
+						<div class="col-md-12" style="padding-bottom: 15px; padding-top: 15px;">
+							<h4 class="titleSection">Macroaggregati di Bilancio</h4>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-12" style="left: 13px;" *ngIf="dettaglioPrestazione?.macroaggregati.length>0">
+					<div class="row gregBox" style="padding-bottom: 30px;">
+						<div class="col-md-12">
+							<div class="row gregFilter">
+								<div class="col-md-12" style="padding: 10px;"
+									*ngFor="let macroaggregato of dettaglioPrestazione?.macroaggregati">
+									{{macroaggregato?.descMacroaggregati}}
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-12" style="left: 13px"
+					[ngStyle]="{'padding-top: 30px;': dettaglioPrestazione?.macroaggregati.length<=0}">
+					<div class="row gregBoxTitle">
+						<div class="col-md-4" style="padding-bottom: 15px; padding-top: 15px;">
+							<h4 class="titleSection">Utenza Regionale</h4>
+						</div>
+						<div class="col-md-8" style="padding-bottom: 15px; padding-top: 15px;">
+							<h4 class="titleSection">Missioni/programmi</h4>
+						</div>
+						<!-- <div class="col-md-4" style="padding-bottom: 15px; padding-top: 15px;">
+							<h4 class="titleSection">Tip. spesa</h4>
+						</div> -->
+					</div>
+				</div>
+				<div class="col-md-12" style="left: 13px;">
+					<div class="row gregBox" style="padding-bottom: 30px;">
+						<div class="col-md-12">
+							<div class="row gregFilter ">
+								<div class="col-md-12"
+									*ngFor="let utenza of dettaglioPrestazione?.targetUtenzaPrestReg1; let i=index">
+									<div class="row">
+										<div class="col-md-4" style="padding: 10px; ">
+											{{utenza?.descUtenza}}
+										</div>
+										<div class="col-md-8" style="padding: 10px;"
+											[ngStyle]="getColoreMissioneProgramma(utenza, i)">
+											{{utenza?.codMissioneProgramma}} - {{utenza?.descMissioneProgramma}}
+										</div>
+										<!-- <div class="col-md-4" style="padding: 10px;">
+											{{utenza?.codTipologiaSpesa}} - {{utenza?.descTipologiaSpesa}}
+										</div> -->
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-1"></div>
+</div>
+
+<div class="row greg">
+</div>
+<div class="row greg" *ngIf="controlloNota(dettaglioPrestazione?.notaPrestazione)">
+	<div class="col-md-1"></div>
+	<div class="col-md-10">
+		<div class="row gregFilter" style="padding-bottom: 25px;">
+
+			<div class="col-md-11" style="left: 13px; padding-top: 30px;">
+				<h4 class="titleSection">Note per la compilazione</h4>
+			</div>
+			<div class="col-md-1" style="padding-top: 30px;" *ngIf="!notaPrestazione">
+				<img style="height: 20px; width: 20px; cursor: pointer;" src="assets/img/ui-modelli/visualizza.svg"
+					class="greg-icon-help" (click)="changeNotaPrestazione()">
+			</div>
+			<div class="col-md-1" style="padding-top: 30px;" *ngIf="notaPrestazione">
+				<img style="height: 20px; width: 20px; cursor: pointer;" src="assets/img/ui-modelli/closedEye.svg"
+					class="greg-icon-help" (click)="changeNotaPrestazione()">
+			</div>
+			<div *ngIf="notaPrestazione" class="col-md-12">
+				<div class="col-md-12" style="left: 13px; padding-top: 30px;">
+					<div class="row gregBox" style="padding-bottom: 30px;">
+						<div class="col-md-12">
+							<div class="row gregFilter">
+								<div class="col-md-12" style="padding: 10px;">
+									{{dettaglioPrestazione?.notaPrestazione}}
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="row greg" style="padding: 10px;">
+</div>
+
+<div class="row">
+	<div class="col-md-1"></div>
+	<div class="col-md-11 spazio" style="padding-top: 10px;">
+		<h4 style="color: black; font-family: Roboto"> Prestazione Regionale 2 e ISTAT
+		</h4>
+	</div>
+</div>
+
+<div *ngFor="let prestazione2 of dettaglioPrestazione?.prest1Prest2; let j=index">
+	<div class="row greg">
+		<div class="col-md-1"></div>
+
+		<div class="col-md-10">
+			<div class="row gregFilter" style="padding-bottom: 25px;">
+
+				<div class="col-md-11" style="left: 13px; padding-top: 30px;">
+					<h4 class="titleSection">{{prestazione2?.codPrest2}} -
+						{{prestazione2?.descPrest2}}</h4>
+				</div>
+				<div class="col-md-1" style="padding-top: 30px;" *ngIf="!prestazione2?.prest2">
+					<img style="height: 20px; width: 20px; cursor: pointer;" src="assets/img/ui-modelli/visualizza.svg"
+						class="greg-icon-help" (click)="changePrestazione2(j)">
+				</div>
+				<div class="col-md-1" style="padding-top: 30px;" *ngIf="prestazione2?.prest2">
+					<img style="height: 20px; width: 20px; cursor: pointer;" src="assets/img/ui-modelli/closedEye.svg"
+						class="greg-icon-help" (click)="changePrestazione2(j)">
+				</div>
+				<div *ngIf="prestazione2?.prest2" class="col-md-12">
+					<div class="col-md-12" style="left: 13px; padding-top: 30px;">
+						<div class="row gregBoxTitle">
+							<div class="col-md-3" style="padding-bottom: 15px; padding-top: 15px;">
+								<h4 class="titleSection">Utenze Regionali 2</h4>
+							</div>
+							<div class="col-md-1">
+							</div>
+							<div class="col-md-8" style="padding-bottom: 15px; padding-top: 15px;">
+								<h4 class="titleSection">Prestazione Istat: {{prestazione2?.codPrestIstat}} -
+									{{prestazione2?.descPrestIstat}}</h4>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-12" style="left: 13px;">
+						<div class="row gregBox" style="padding-bottom: 30px;">
+							<div class="col-md-12">
+								<div class="row" style="padding-top: 20px">
+									<div class="col-md-3 gregUtenze" style="padding: 10px;">
+										<div class="row">
+											<div class="col-md-12"
+												*ngFor="let utenza of prestazione2?.utenze; let k=index">
+												{{utenza}}
+											</div>
+										</div>
+									</div>
+									<div class="col-md-1">
+									</div>
+									<div class="col-md-8 gregUtenze" style="padding: 10px;">
+										<div class="row">
+											<div class="col-md-12">
+												<h4 class="titleSection">Utenze Istat</h4>
+											</div>
+											<div class="col-md-12"
+												*ngFor="let utenza of prestazione2?.utenzeMin; let k=index">
+												{{utenza}}
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- <div class="col-md-12" style="left: 13px">
+						<div class="row gregBoxTitle">
+							<div class="col-md-12" style="padding-bottom: 15px; padding-top: 15px;">
+								<h4 class="titleSection">Nomenclatore 2013</h4>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-12" style="left: 13px;">
+						<div class="row gregBox" style="padding-bottom: 30px;">
+							<div class="col-md-12">
+								<div class="row gregFilter ">
+									<div class="col-md-12">
+										<div class="row">
+											<div class="col-md-12" [ngStyle]="spostamento(prestazione2, 0)"
+												*ngIf="prestazione2?.macroArea!=' '">
+												{{prestazione2?.macroArea}}
+											</div>
+											<div class="col-md-12" [ngStyle]="spostamento(prestazione2, 1)"
+												*ngIf="prestazione2?.sottoArea!=' '">
+												{{prestazione2?.sottoArea}}
+											</div>
+											<div class="col-md-12" [ngStyle]="spostamento(prestazione2, 2)"
+												*ngIf="prestazione2?.sottoAreaDet!=' '">
+												{{prestazione2?.sottoAreaDet}}
+											</div>
+											<div class="col-md-12" [ngStyle]="spostamento(prestazione2, 3)"
+												*ngIf="prestazione2?.presidio!=' '">
+												{{prestazione2?.presidio}}
+											</div>
+											<div class="col-md-12" [ngStyle]="spostamento(prestazione2, 4)"
+												*ngIf="prestazione2?.classificazionePresidio!=' '">
+												{{prestazione2?.classificazionePresidio}}
+											</div>
+											<div class="col-md-12" [ngStyle]="spostamento(prestazione2, 5)"
+												*ngIf="prestazione2?.funzionePresidio!=' '">
+												{{prestazione2?.funzionePresidio}}
+											</div>
+											<div class="col-md-12" [ngStyle]="spostamento(prestazione2, 6)"
+												*ngIf="prestazione2?.voce!=' '">
+												{{prestazione2?.voce}}
+											</div>
+											<div class="col-md-12" [ngStyle]="spostamento(prestazione2, 7)"
+												*ngIf="prestazione2?.sottoVoce!=' '">
+												{{prestazione2?.sottoVoce}}
+											</div>
+											<div class="col-md-12" [ngStyle]="spostamento(prestazione2, 8)"
+												*ngIf="prestazione2?.tipoResidenza!=' '">
+												{{prestazione2?.tipoResidenza}}
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div> -->
+				</div>
+			</div>
+		</div>
+		<div class="col-md-1"></div>
+	</div>
+
+	<div class="row greg">
+	</div>
+
+</div>
+
+<div class="row greg" style="padding: 10px;">
+</div>
+
+<div class="row greg">
+	<div class="col-md-1"></div>
+	<div class="col-md-10">
+		<div class="row gregFilter" style="padding-bottom: 25px;">
+
+			<div class="col-md-11" style="left: 13px; padding-top: 30px;">
+				<h4 class="titleSection">Prestazione Ministeriale</h4>
+			</div>
+			<div class="col-md-1" style="padding-top: 30px;" *ngIf="!prestazioneMinisteriale">
+				<img style="height: 20px; width: 20px; cursor: pointer;" src="assets/img/ui-modelli/visualizza.svg"
+					class="greg-icon-help" (click)="changePrestazioneMinisteriale()">
+			</div>
+			<div class="col-md-1" style="padding-top: 30px;" *ngIf="prestazioneMinisteriale">
+				<img style="height: 20px; width: 20px; cursor: pointer;" src="assets/img/ui-modelli/closedEye.svg"
+					class="greg-icon-help" (click)="changePrestazioneMinisteriale()">
+			</div>
+			<div *ngIf="prestazioneMinisteriale" class="col-md-12">
+				<div class="col-md-12" style="left: 13px; padding-top: 30px;">
+					<div class="row gregBox" style="padding-bottom: 30px;">
+						<div class="col-md-12">
+							<div class="row gregFilter">
+								<div class="col-md-12" style="padding: 10px;">
+									<h4 class="titleSection">Modulo FNPS</h4>
+								</div>
+								<div class="col-md-12" style="padding: 10px;">
+									{{dettaglioPrestazione.prest1PrestMin.codMacro}} -
+									{{dettaglioPrestazione.prest1PrestMin.descMacro}}
+								</div>
+								<div class="col-md-12" style="padding: 10px; padding-left: 20px;">
+									{{dettaglioPrestazione.prest1PrestMin.codPrestMin}} -
+									{{dettaglioPrestazione.prest1PrestMin.descPrestMin}}
+								</div>
+								<div class="col-md-12" style="padding: 10px; padding-left: 30px;">
+									<h4 class="titleSection">Utenze</h4>
+								</div>
+								<div class="col-md-12" style="padding: 10px; padding-left: 30px;"
+									*ngFor="let utenza of dettaglioPrestazione.prest1PrestMin.utenzeMin">
+									{{utenza}}
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="row greg" style="padding: 10px;">
+</div>
+
+<div class="row" *ngIf="dettaglioPrestazione?.prestazioniCollegate.length>0">
+	<div class="col-md-1"></div>
+	<div class="col-md-11 spazio" style="padding-top: 10px;">
+		<h4 style="color: black; font-family: Roboto"> Prestazione Regionale 1 collegate
+		</h4>
+	</div>
+</div>
+<ng-container *ngFor="let prest of dettaglioPrestazione?.prestazioniCollegate">
+	<div class="row">
+		<div class="col-md-1"></div>
+		<div class="col-md-2" style="padding-top: 30px;">
+			<h4 style="color: black; font-family: Roboto"> {{prest?.desTipologia}}
+			</h4>
+		</div>
+		<div class="col-md-2" style="padding-top: 30px;">
+			<h4 style="color: black; font-family: Roboto"> {{prest?.tipo}}
+			</h4>
+		</div>
+	</div>
+
+	<div class="row greg">
+		<div class="col-md-1"></div>
+		<div class="col-md-10">
+			<div class="row gregFilter" style="padding-bottom: 25px;">
+
+				<div class="col-md-10" style="left: 13px; padding-top: 30px;">
+					<h4 class="titleSection">{{prest?.codPrestRegionale}} - {{prest?.desPrestRegionale}}</h4>
+				</div>
+				<div class="col-md-1" style="left: 13px; padding-top: 30px;">
+					<button id="btnVai" type="submit" class="btn btn-primary bottonifunzione buttonSpace"
+						(click)="vai(prest?.codPrestRegionale)">
+						VAI
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</ng-container>
+
+<div class="row greg" style="padding: 50px;">
+</div>

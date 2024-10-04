@@ -1,0 +1,21 @@
+<div class="modal-header" style="border-bottom: 0px; padding-left: 0px;">
+  <h4 id="titolo" style="color: black; font-family: Roboto;" class="modal-title">
+    Dati Modificati
+  </h4>
+  <button style="outline: none;" type="button" class="close" aria-label="Close"
+    [mat-dialog-close]="false">
+      <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<!-- <h1 mat-dialog-title>{{data?.titolo}}</h1> -->
+<div mat-dialog-content style="border-bottom: 1px solid #dee2e6; border-top: 1px solid #dee2e6;">
+  <p>{{data?.messaggio}}</p>
+</div>
+<div class="row" mat-dialog-actions>
+ 
+    <div class="col-md-4"> <button class="btn btn-link" mat-button [mat-dialog-close]="false">NO</button></div>
+    <div class="col-md-4"></div>
+    <div class="col-md-4"><button class="btn btn-primary" style="
+      float: right;" mat-button [mat-dialog-close]="true" cdkFocusInitial >SI</button></div>
+  
+</div>

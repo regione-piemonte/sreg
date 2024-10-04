@@ -1,0 +1,571 @@
+<div *ngIf="client.azioni.get('RicercaEnteCruscotto')[1]" class="row greg"
+    style="padding-top: 5px; padding-bottom: 5px;">
+
+    <div class="col-md-1"></div>
+
+    <div class="col">
+        <form [formGroup]="searchForm">
+            <div class="row gregFilter">
+
+                <div class="row col-md-12" style="padding-top:30px;">
+                    <div class="col-md-3 ricEs">
+                        <label class="filterLabel">Stato Rendicontazione</label>
+                        <ng-container>
+                            <select formControlName="statoRendicontazione" id="statoRendicontazione"
+                                class="form-control form-control-sm campiricerca">
+                                <option value="">Tutti</option>
+                                <option *ngFor="let stato of client.listaStatiSalvatoCruscotto"
+                                    [value]="stato.codStatoRendicontazione">{{stato.descStatoRendicontazione}}</option>
+                            </select>
+                        </ng-container>
+                    </div>
+
+                    <div class="col-md-3 ricEs">
+                        <div class="form-group">
+                            <label class="filterLabel">Denominazione Ente</label>
+                            <input formControlName="denominazioneEnte" maxlength="300" id="denominazioneEnte"
+                                class="form-control campiricerca" type="text" [matAutocomplete]="autoDenEnte">
+                            <mat-autocomplete #autoDenEnte="matAutocomplete">
+                                <mat-option *ngFor="let option of denomEnteFiltered" [value]="option.denominazione"
+                                    data-bs-toggle="tooltip" [title]="option.denominazione">
+                                    {{option.denominazione}}
+                                </mat-option>
+                            </mat-autocomplete>
+                        </div>
+                        <span class="spanDanger"
+                            *ngIf="searchForm.get('denominazioneEnte').value && !searchForm.get('denominazioneEnte').valid">
+                            Il campo deve essere lungo al massimo 300 caratteri
+                        </span>
+                    </div>
+
+                    <div class="col-md-3 ricEs">
+                        <label class="filterLabel">Comune</label>
+                        <ng-container>
+                            <select (change)="onSelectionComuneChanged($event.target.value)" formControlName="comune"
+                                id="comune" class="form-control form-control-sm statoCombo campiricerca">
+                                <option value="">Tutti</option>
+                                <option *ngFor="let comune of client.listaComuniSalvatoCruscotto"
+                                    [value]="comune.codIstatComune">{{comune.desComune}}</option>
+                            </select>
+                        </ng-container>
+                    </div>
+
+                </div>
+                <div class="row col-md-12" style="padding-top:30px;padding-bottom:30px;">
+                    <div class="col-md-3 ricEs">
+                        <label class="filterLabel">Tipo Ente</label>
+                        <ng-container>
+                            <select formControlName="tipoEnte" id="tipoEnte"
+                                class="form-control form-control-sm statoCombo campiricerca">
+                                <option value="">Tutti</option>
+                                <option *ngFor="let tipoEnte of client.listaTipoEntiSalvatoCruscotto"
+                                    [value]="tipoEnte.codTipoEnte">{{tipoEnte.desTipoEnte}}</option>
+                            </select>
+                        </ng-container>
+                    </div>
+
+                    <div class="col-md-3 ricEs">
+                        <div class="form-group">
+                            <label class="filterLabel">Codice Regionale</label>
+                            <input formControlName="codiceRegionale" maxlength="300" id="codiceRegionale"
+                                class="form-control campiricerca" type="text">
+                        </div>
+                        <span class="spanDanger"
+                            *ngIf="searchForm.get('denominazioneEnte').value && !searchForm.get('denominazioneEnte').valid">
+                            Il campo deve essere lungo al massimo 300 caratteri
+                        </span>
+                    </div>
+                    <div class="col-md-3 ricEs">
+                        <label class="filterLabel">Anno Esercizio</label>
+                        <ng-container>
+                            <select (change)="onSelectionAnnoChanged($event.target.value)"
+                                formControlName="annoEsercizio" id="annoEsercizio"
+                                class="form-control form-control-sm campiricerca">
+                                <option *ngFor="let anno of client.anniEsercizioSalvatoCruscotto" [value]="anno">
+                                    {{anno}}
+                                </option>
+                            </select>
+                        </ng-container>
+                    </div>
+
+                    <div class="col-md-3 verticalCentered  ricEs">
+                        <button id="btnSearch" type="submit" class="btn btn-primary block bottonifunzione"
+                            [disabled]="!searchForm.valid" (click)="avviaRicerca()">
+                            Cerca
+                        </button>
+                        <button id="btnLoading" class="btn btn-primary block" type="button" disabled
+                            style="display: none;">
+                            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                            Loading...
+                        </button>
+                    </div>
+
+                </div>
+
+            </div>
+        </form>
+    </div>
+
+    <div class="col-md-1"></div>
+
+</div>
+
+<div *ngIf="client.azioni.get('RicercaEnteCruscotto')[1]" class="row greg"
+    style="padding-top: 5px; padding-bottom: 5px;">
+    <div class="col-md-1"></div>
+
+    <div class="col-md-5" style="margin-bottom: 15px;">
+
+        <button type="button" class="btn btn-link pl-0" (click)="annullaRicerca()" style="color: #006CB4;">
+            <span style="margin-bottom: 10px;"></span>
+            <b>Annulla Ricerca</b>
+        </button>
+
+    </div>
+
+    <div class="col-md-6"></div>
+
+    <div class="col-md-1"></div>
+
+    <div class="col-md-5" style="margin-bottom: 10px;">
+
+        <span class="results" style="margin-bottom: 10px;">Cruscotto anno di esercizio {{annoSelezionato}}</span>
+
+    </div>
+    <div class="col-md-6"></div>
+    <div class="col-md-12">
+        <div *ngIf="!client.azioni.get('RicercaEnte')[1]" class="row greg"
+            style="padding-top: 65px; padding-bottom: 5px;">
+        </div>
+        <div class="row greg" style="padding-top: 5px; padding-bottom: 5px;">
+            <div class="col-md-1"></div>
+
+            <div class="col-md-10">
+                <div class="row gregFilter">
+                    <div class="col-md-12" style="padding: 20px;">
+                        Selezionare i riquadri dei diversi moduli disponibili per visualizare il dettaglio o
+                        informazioni aggiuntive
+                    </div>
+                    <div class="col-md-12 table-responsive">
+                        <table mat-table [dataSource]="dataListaRichieste" multiTemplateDataRows
+                            class="mb-3 table table-hover table-responsive-xl tabellagreg" *ngIf="dataListaRichieste">
+
+                            <ng-container *ngFor="let colonna of displayedColumns; let i=index">
+                                <ng-container matColumnDef="{{colonna}}">
+                                    <th [ngClass]="{'columns_header_grey': controlloColoreHeader(i)=='grey', 'columns_header_white': controlloColoreHeader(i)=='white', 
+                            'columns_header_primaTranche': controlloColoreHeader(i)=='primaTranche', 'columns_header_secondaTranche': controlloColoreHeader(i)=='secondaTranche', 'columns_header_grey_FNPS': controlloColoreHeader(i)=='fnps'}"
+                                        mat-header-cell *matHeaderCellDef> {{intestazioneColumns[i]}}
+                                    </th>
+                                    <td [ngSwitch]="colonna" class="smarttable_cruscotto text-wrap tdRid" mat-cell
+                                        *matCellDef="let element"
+                                        [ngClass]="{'riga-totale-white': controlloColore(i)=='white', 
+                                        'riga-totale-azzurra': controlloColore(i)=='primaTranche', 'riga-totale-viola': controlloColore(i)=='secondaTranche'}">
+                                        <div *ngSwitchCase="'codiceRegionale'" class="dimEs">
+                                            {{element?.codiceRegionale}} </div>
+                                        <div *ngSwitchCase="'denominazione'" class="dimEs">{{element?.denominazione}}
+                                        </div>
+                                        <div *ngSwitchCase="'vuoto1'"></div>
+                                        <ng-container *ngFor="let modello of modelli; let k=index">
+                                            <ng-template [ngIf]="modello?.codTranche=='PT'">
+                                                <div *ngSwitchCase="modello?.codTab"
+                                                    style="text-align: -webkit-center;">
+                                                    <ng-template
+                                                        [ngIf]="element?.modelli[k].statoModello=='NON_DISPONIBILE'">
+                                                        <div class="boxWhiteModelliNonDisponibile"
+                                                            [ngClass]="{'pointer': attivaPointer(modello.azione,  element?.modelli[k].statoModello, element.rendicontazioni.statoRendicontazione.codStatoRendicontazione)}"
+                                                            (click)="routeToModello(element.rendicontazioni,  modello.path)">
+                                                        </div>
+                                                    </ng-template>
+                                                    <ng-template
+                                                        [ngIf]="element?.modelli[k].statoModello!='NON_ASSEGNATO' && element?.modelli[k].statoModello!='NON_DISPONIBILE'">
+                                                        <div [ngClass]="{
+                                                        'boxGreenModelli pointer': attivaPointer(modello.azione,  element?.modelli[k].statoModello, element.rendicontazioni.statoRendicontazione.codStatoRendicontazione), 
+                                                        'boxOrangeModelli pointer': attivaPointer(modello.azione,  element?.modelli[k].statoModello, element.rendicontazioni.statoRendicontazione.codStatoRendicontazione),
+                                                        'boxYellowModelli pointer': attivaPointer(modello.azione,  element?.modelli[k].statoModello, element.rendicontazioni.statoRendicontazione.codStatoRendicontazione),
+                                                        'boxGreenModelli': element?.modelli[k].statoModello=='COMPILATO', 
+                                                        'boxOrangeModelli': element?.modelli[k].statoModello=='NON_COMPILATO',
+                                                        'boxYellowModelli': element?.modelli[k].statoModello=='COMPILATO_PARZIALE'
+                                                        }"
+                                                            (click)="routeToModello(element.rendicontazioni, modello.path)">
+                                                        </div>
+                                                        <div class="boxWhiteModelli">
+                                                            <img src="assets/img/ui-modelli/info.svg"
+                                                                class="greg-icon-help" style="cursor: pointer;"
+                                                                (click)="info(modello.codTab, element.rendicontazioni.idRendicontazioneEnte, modello.desTab, element?.denominazione)">
+                                                        </div>
+                                                    </ng-template>
+                                                    <ng-template
+                                                        [ngIf]="element?.modelli[k].statoModello=='NON_ASSEGNATO'">
+                                                        <div class="divGrey">
+                                                            <img src="assets/img/ui-modelli/CroceCruscotto.svg"
+                                                                class="greg-icon-help fnpsImage greyModelli">
+                                                        </div>
+                                                    </ng-template>
+                                                </div>
+                                            </ng-template>
+                                        </ng-container>
+                                        <div *ngSwitchCase="'vuoto2'"></div>
+                                        <ng-container *ngFor="let modello of modelli; let k=index">
+                                            <ng-template [ngIf]="modello?.codTranche=='ST'">
+                                                <div *ngSwitchCase="modello?.codTab"
+                                                    style="text-align: -webkit-center;">
+                                                    <ng-template
+                                                        [ngIf]="element?.modelli[k].statoModello=='NON_DISPONIBILE'">
+                                                        <div class="boxWhiteModelliNonDisponibile"
+                                                            [ngClass]="{'pointer': attivaPointer(modello.azione,  element?.modelli[k].statoModello, element.rendicontazioni.statoRendicontazione.codStatoRendicontazione)}"
+                                                            (click)="routeToModello(element.rendicontazioni, modello.path)">
+                                                        </div>
+                                                    </ng-template>
+                                                    <ng-template
+                                                        [ngIf]="element?.modelli[k].statoModello!='NON_ASSEGNATO' && element?.modelli[k].statoModello!='NON_DISPONIBILE'">
+                                                        <div [ngClass]="{
+                                                           'boxGreenModelli pointer': attivaPointer(modello.azione,  element?.modelli[k].statoModello, element.rendicontazioni.statoRendicontazione.codStatoRendicontazione), 
+                                                        'boxOrangeModelli pointer': attivaPointer(modello.azione,  element?.modelli[k].statoModello, element.rendicontazioni.statoRendicontazione.codStatoRendicontazione),
+                                                        'boxYellowModelli pointer': attivaPointer(modello.azione,  element?.modelli[k].statoModello, element.rendicontazioni.statoRendicontazione.codStatoRendicontazione),
+                                                        'boxGreenModelli': element?.modelli[k].statoModello=='COMPILATO', 
+                                                        'boxOrangeModelli': element?.modelli[k].statoModello=='NON_COMPILATO',
+                                                        'boxYellowModelli': element?.modelli[k].statoModello=='COMPILATO_PARZIALE'
+                                                            }"
+                                                            (click)="routeToModello(element.rendicontazioni, modello.path)">
+                                                        </div>
+                                                        <div class="boxWhiteModelli">
+                                                            <img src="assets/img/ui-modelli/info.svg"
+                                                                class="greg-icon-help" style="cursor: pointer;"
+                                                                (click)="info(modello.codTab, element.rendicontazioni.idRendicontazioneEnte, modello.desTab, element?.denominazione)">
+                                                        </div>
+                                                    </ng-template>
+                                                    <ng-template
+                                                        [ngIf]="element?.modelli[k].statoModello=='NON_ASSEGNATO'">
+                                                        <div class="divGrey">
+                                                            <img src="assets/img/ui-modelli/CroceCruscotto.svg"
+                                                                class="greg-icon-help fnpsImage greyModelli">
+                                                        </div>
+                                                    </ng-template>
+                                                </div>
+                                            </ng-template>
+                                        </ng-container>
+                                        <div *ngSwitchCase="'vuoto3'"></div>
+                                        <div *ngSwitchCase="'FNPS1'" style="text-align: -webkit-center;">
+                                            <ng-template [ngIf]="element.statoFnpsAttuale=='NON_COMPILATO'">
+                                                <div class="boxWhiteModelliNonDisponibile"
+                                                    (click)="routeToFnps(element.rendicontazioni.idRendicontazioneEnte)"
+                                                    [ngClass]="{'pointer': client.azioni.get('ModelloFNPS')[1]}"></div>
+                                            </ng-template>
+                                            <ng-template [ngIf]="element.statoFnpsAttuale=='NON_CONFORME'">
+                                                <img src="assets/img/ui-modelli/fnpsNonConforme.svg"
+                                                    [ngClass]="{'pointer': client.azioni.get('ModelloFNPS')[1]}"
+                                                    class="greg-icon-help fnpsImageModello"
+                                                    (click)="routeToFnps(element.rendicontazioni.idRendicontazioneEnte)">
+                                            </ng-template>
+                                            <ng-template [ngIf]="element.statoFnpsAttuale=='COMPILATO_PARZIALE'">
+                                                <img src="assets/img/ui-modelli/fnpsParziale.svg"
+                                                    [ngClass]="{'pointer': client.azioni.get('ModelloFNPS')[1]}"
+                                                    class="greg-icon-help fnpsImageModello"
+                                                    (click)="routeToFnps(element.rendicontazioni.idRendicontazioneEnte)">
+                                            </ng-template>
+                                            <ng-template [ngIf]="element.statoFnpsAttuale=='COMPILATO'">
+                                                <img src="assets/img/ui-modelli/fnpsCompleto.svg"
+                                                    [ngClass]="{'pointer': client.azioni.get('ModelloFNPS')[1]}"
+                                                    class="greg-icon-help fnpsImageModello"
+                                                    (click)="routeToFnps(element.rendicontazioni.idRendicontazioneEnte)">
+                                            </ng-template>
+                                        </div>
+                                        <div *ngSwitchCase="'FNPS2'" style="text-align: -webkit-center;">
+                                            <ng-template [ngIf]="element.statoFnpsPrecedente=='NON_COMPILATO'">
+                                                <div class="boxWhiteModelliNonDisponibile"
+                                                    (click)="routeToFnps(element.idRendicontazionePassata)"
+                                                    [ngClass]="{'pointer': client.azioni.get('ModelloFNPS')[1]}"></div>
+                                            </ng-template>
+                                            <ng-template [ngIf]="element.statoFnpsPrecedente=='NON_CONFORME'">
+                                                <img src="assets/img/ui-modelli/fnpsNonConforme.svg"
+                                                    [ngClass]="{'pointer': client.azioni.get('ModelloFNPS')[1]}"
+                                                    class="greg-icon-help fnpsImageModello"
+                                                    (click)="routeToFnps(element.idRendicontazionePassata)">
+                                            </ng-template>
+                                            <ng-template [ngIf]="element.statoFnpsPrecedente=='COMPILATO_PARZIALE'">
+                                                <img src="assets/img/ui-modelli/fnpsParziale.svg"
+                                                    [ngClass]="{'pointer': client.azioni.get('ModelloFNPS')[1]}"
+                                                    class="greg-icon-help fnpsImageModello"
+                                                    (click)="routeToFnps(element.idRendicontazionePassata)">
+                                            </ng-template>
+                                            <ng-template [ngIf]="element.statoFnpsPrecedente=='COMPILATO'">
+                                                <img src="assets/img/ui-modelli/fnpsCompleto.svg"
+                                                    [ngClass]="{'pointer': client.azioni.get('ModelloFNPS')[1]}"
+                                                    class="greg-icon-help fnpsImageModello"
+                                                    (click)="routeToFnps(element.idRendicontazionePassata)">
+                                            </ng-template>
+                                        </div>
+                                        <div *ngSwitchCase="'vuoto4'"></div>
+
+                                        <div *ngSwitchCase="'ALZERO1'" style="text-align: -webkit-center; ">
+                                            <ng-container *ngIf="annoSelezionato >= 2023; else elseTemplate">
+                                                <ng-template [ngIf]="element.statoAlZero==='rosso'">
+                                                    <img src="assets/img/ui-modelli/fnpsNonConforme.svg"
+                                                        [ngClass]="{'pointer': client.azioni.get('ModelloAlZero')[1]}"
+                                                        class="greg-icon-help fnpsImageModello"
+                                                        (click)="routeToAlZeero(element.rendicontazioni.idRendicontazioneEnte)">
+                                                </ng-template>
+                                                <ng-template [ngIf]="element.statoAlZero==='nero'">
+                                                    <img src="assets/img/ui-modelli/AlZeroNero.svg"
+                                                        [ngClass]="{'pointer': client.azioni.get('ModelloAlZero')[1]}"
+                                                        class="greg-icon-help fnpsImageModello"
+                                                        (click)="routeToAlZeero(element.rendicontazioni.idRendicontazioneEnte)">
+                                                </ng-template>
+                                                <ng-template [ngIf]="element.statoAlZero==='giallo'">
+                                                    <img src="assets/img/ui-modelli/fnpsParziale.svg"
+                                                        [ngClass]="{'pointer': client.azioni.get('ModelloAlZero')[1]}"
+                                                        class="greg-icon-help fnpsImageModello"
+                                                        (click)="routeToAlZeero(element.rendicontazioni.idRendicontazioneEnte)">
+                                                </ng-template>
+                                                <ng-template [ngIf]="element.statoAlZero==='verde'">
+                                                    <img src="assets/img/ui-modelli/fnpsCompleto.svg"
+                                                        [ngClass]="{'pointer': client.azioni.get('ModelloAlZero')[1]}"
+                                                        class="greg-icon-help fnpsImageModello"
+                                                        (click)="routeToAlZeero(element.rendicontazioni.idRendicontazioneEnte)">
+                                                </ng-template>
+                                                <ng-template [ngIf]="element.statoAlZero==='bianco'">
+                                                    <div class="boxWhiteModelliNonDisponibile"
+                                                    (click)="routeToAlZeero(element.rendicontazioni.idRendicontazioneEnte)"
+                                                    [ngClass]="{'pointer': client.azioni.get('ModelloAlZero')[1]}"></div>
+                                                </ng-template>
+                                            </ng-container>
+                                            <ng-template #elseTemplate>
+                                                <div class="divGrey">
+                                                    <img src="assets/img/ui-modelli/CroceCruscotto.svg"
+                                                        class="greg-icon-help fnpsImage greyModelli">
+                                                </div>
+                                            </ng-template>
+                                        </div>
+                                    </td>
+                                </ng-container>
+                            </ng-container>
+
+                            <ng-container *ngFor="let colonna of firstRow; let i=index">
+                                <ng-container matColumnDef="{{colonna}}">
+
+                                    <td [ngSwitch]="colonna" class="smarttable_cruscotto text-wrap"
+                                        style="padding: 0px !important;" mat-cell *matCellDef="let element"
+                                        [attr.colspan]="colonna=='primaTranche' ? nTabPrimaTranche : colonna=='secondaTranche' ? nTabSecondaTranche : 1">
+                                        <ng-template
+                                            [ngIf]="controlloRendicontazione(element?.rendicontazioni?.statoRendicontazione.codStatoRendicontazione)">
+                                            <div *ngSwitchCase="'primaTranche'" class="dimEs"
+                                                style="text-align: center; padding-top: 20px;">
+                                                {{element?.rendicontazioni?.statoRendicontazione.descStatoRendicontazione}}
+                                            </div>
+                                        </ng-template>
+                                        <ng-template
+                                            [ngIf]="!controlloRendicontazione(element?.rendicontazioni?.statoRendicontazione.codStatoRendicontazione)">
+                                            <div *ngSwitchCase="'secondaTranche'" class="dimEs"
+                                                style="text-align: center; padding-top: 20px;">
+                                                {{element?.rendicontazioni?.statoRendicontazione.descStatoRendicontazione}}
+                                            </div>
+                                        </ng-template>
+
+                                    </td>
+
+                                </ng-container>
+                            </ng-container>
+
+                            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                            <tr mat-row *matRowDef="let row; columns: firstRow;"></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedColumns; let element"></tr>
+                        </table>
+
+                        <div class="col-12" *ngIf="dataListaRichieste?.data?.length == 0"
+                            style="text-align: center;padding-top:30px;">
+                            <label class="no-data-available">Nessuna scheda soddisfa i criteri di ricerca
+                                selezionati</label>
+                        </div>
+
+                        <mat-paginator class="paginator_cruscotto" [length]="dataListaRichieste?.data.length"
+                            [pageSize]="10" [pageSizeOptions]="[5, 10, 20]" [showFirstLastButtons]=true
+                            style="padding-top:30px;">
+                        </mat-paginator>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="row results" style="height: 40px;">
+                            <div class="col-md-12" style="padding: 5px; text-align: center; font-size: 1vw;">
+                                TOTALI
+                            </div>
+
+                        </div>
+                        <br>
+                        <div class="row greg">
+
+                            <div class="col-md-12 table-responsive" style="padding: 0px; ">
+                                <table>
+                                    <tr>
+                                        <ng-container *ngFor="let stato of stati">
+                                            <th class="totaliWidth">
+                                                <div class="totaliStati">
+                                                    {{stato.desStato}}
+                                                </div>
+                                            </th>
+                                        </ng-container>
+                                    </tr>
+                                    <tr>
+                                        <ng-container *ngFor="let stato of stati">
+                                            <td>
+                                                <div class="totali">
+                                                    {{stato.nEnti}}
+                                                </div>
+                                            </td>
+                                        </ng-container>
+                                    </tr>
+                                </table>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="col-md-12"
+                        style="padding-top: 45px; font: italic normal normal 16px/22px Open Sans; padding-left: 30px;">
+                        Legenda
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="row " style="padding-top: 20px;padding-bottom: 20px;">
+                            <div class="col-md-6 results_legenda" style="padding-bottom: 40px;">
+                                Stato avanzamento modelli
+                            </div>
+                            <div class="col-md-6 results_legenda" style=" padding-bottom: 40px;">
+                                Stato rendicontazione modelli
+                            </div>
+                            <div class="col-md-6" style="padding-left: 0px;">
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <div class="boxOrange"></div>
+                                    </div>
+                                    <div class="col-md-10 legende" style="margin-top: 3px; padding-left: 0px">
+                                        Non compilato / Insufficiente
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="boxYellow"></div>
+                                    </div>
+                                    <div class="col-md-10 legende" style="    padding-left: 0px">
+                                        Parzialmente compilato
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="boxGreen"></div>
+                                    </div>
+                                    <div class="col-md-10 legende" style="    padding-left: 0px">
+                                        Compilato
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="boxWhite"></div>
+                                    </div>
+                                    <div class="col-md-10 legende" style="    padding-left: 0px">
+                                        Non disponibile / non necessario per la disamina
+                                    </div>
+                                    <div class="col-md-2">
+                                        <img src="assets/img/ui-modelli/CroceCruscotto.svg"
+                                            class="greg-icon-help fnpsImage" style="margin-top: 20px;">
+                                    </div>
+                                    <div class="col-md-10 legende" style="    padding-left: 0px">
+                                        Non presente per l’Ente
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6" style="padding-left: 0px;">
+                                <div class="row">
+                                    <ng-container *ngFor="let stato of stati">
+                                        <div class="col-md-12">
+                                            {{stato.desStato}}
+                                        </div>
+                                    </ng-container>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row " style="padding-top: 20px;padding-bottom: 20px;">
+                            <div class="col-md-6 results_legenda" style="padding-bottom: 40px;">
+                                Conformita' FNPS
+                            </div>
+                            <div class="col-md-6 results_legenda" style="padding-bottom: 40px;">
+                                <span>Conformita' ALLONTANAMENTO ZERO</span>
+                            </div>
+                            <div class="col-md-6" style="padding-left: 0px;">
+                                <div class="row">
+                                    <div class="col-md-2" style="padding-top: 20px;">
+                                        <img src="assets/img/ui-modelli/fnpsCompleto.svg"
+                                            class="greg-icon-help fnpsImage">
+                                    </div>
+                                    <div class="col-md-10" style="padding-top: 5px;    padding-left: 0px">
+                                        Completa: 100% <br> (vincoli rispettati e raggiunto il 100% del totale FNPS)
+                                    </div>
+                                    <div class="col-md-2" style="padding-top: 20px;">
+                                        <img src="assets/img/ui-modelli/fnpsParziale.svg"
+                                            class="greg-icon-help fnpsImage">
+                                    </div>
+                                    <div class="col-md-10" style="padding-top: 20px;    padding-left: 0px">
+                                        Parziale: rispettosa del vincoli di soglia minima ma non ancora al 100%
+                                    </div>
+                                    <div class="col-md-2" style="padding-top: 20px;">
+                                        <img src="assets/img/ui-modelli/fnpsNonConforme.svg"
+                                            class="greg-icon-help fnpsImage">
+                                    </div>
+                                    <div class="col-md-10" style="padding-top: 15px;    padding-left: 0px">
+                                        Non conforme: non rispetta i vincoli <br> (es.: vincoli ministeriali)
+                                    </div>
+                                    <div class="col-md-2" style="padding-top: 1px;">
+                                        <div class="boxWhite" style="margin-left: 2px;"></div>
+                                    </div>
+                                    <div class="col-md-10 legende" style="padding-top: 0px; padding-left: 0px">
+                                        Non compilato
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6" style="padding-left: 0px;">
+                                <div class="row">
+                                    <div class="col-md-2" style="padding-top: 20px;">
+                                        <img src="assets/img/ui-modelli/fnpsCompleto.svg"
+                                            class="greg-icon-help fnpsImage">
+                                    </div>
+                                    <div class="col-md-10" style="padding-top: 5px;    padding-left: 0px">
+                                        Completa: 100% <br> (non esiste residuo, Conferma Responsabile avvenuta)
+                                    </div>
+                                    <div class="col-md-2" style="padding-top: 20px;">
+                                        <img src="assets/img/ui-modelli/fnpsParziale.svg"
+                                            class="greg-icon-help fnpsImage">
+                                    </div>
+                                    <div class="col-md-10" style="padding-top: 5px;    padding-left: 0px">
+                                        Completa: 100% <br> (non esiste residuo, manca Conferma Responsabile)
+                                    </div>
+                                    <div class="col-md-2" style="padding-top: 20px;">
+                                        <img src="assets/img/ui-modelli/fnpsNonConforme.svg"
+                                            class="greg-icon-help fnpsImage">
+                                    </div>
+                                    <div class="col-md-10" style="padding-top: 20px; padding-left: 0px">
+                                        Compilazione non completa, esiste residuo (anche nel caso di avvenuta conferma)
+                                    </div>
+                                    <div class="col-md-2" style="padding-top: 1px;">
+                                        <img src="assets/img/ui-modelli/AlZeroNero.svg"
+                                            class="greg-icon-help fnpsImage">
+                                    </div>
+                                    <div class="col-md-10" style="padding-top: 10px; padding-left: 0px">
+                                        Esistono superamenti del massimale su data entry
+                                    </div>
+                                    <div class="col-md-2">
+                                        <img src="assets/img/ui-modelli/CroceCruscotto.svg"
+                                            class="greg-icon-help fnpsImage" style="margin-top: 20px;">
+                                    </div>
+                                    <div class="col-md-10 legende" style="padding-left: 0px">
+                                        Non presente per l'anno selezionato
+                                    </div>
+                                    <div class="col-md-2" style="padding-top: 1px;">
+                                        <div class="boxWhite" style="margin-left: 2px;"></div>
+                                    </div>
+                                    <div class="col-md-10 legende" style="padding-top: 0px; padding-left: 0px">
+                                        Non compilato
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-1"></div>
+
+    </div>
+</div>

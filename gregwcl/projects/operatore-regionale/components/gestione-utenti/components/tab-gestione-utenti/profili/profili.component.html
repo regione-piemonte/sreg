@@ -1,0 +1,278 @@
+<br>
+
+<div class="row greg" style="padding-top: 5px; padding-bottom: 5px;">
+
+  <div class="col-md-1"></div>
+
+  <div class="col" style="max-width: 3000px;">
+    <form [formGroup]="searchForm">
+      <div class="row gregFilter" (keyup.enter)="searchForm.valid? avviaRicerca() : null">
+
+
+        <div class="row col-md-12" style="padding-top:30px;padding-bottom:30px;">
+          <div class="col-md-4 ricEs">
+            <label class="filterLabel">Profilo</label>
+            <ng-container>
+              <select formControlName="profilo" id="profilo"
+                class="form-control form-control-sm statoCombo campiricerca">
+                <option value="">Tutti</option>
+                <option *ngFor="let profilo of profili" [value]="profilo.id">{{profilo.codice}} -
+                  {{profilo.descrizione}}</option>
+              </select>
+            </ng-container>
+          </div>
+
+          <!-- <div class="col-md-3 ricEs">
+            <label class="filterLabel">Lista</label>
+            <ng-container>
+              <select formControlName="lista" id="lista" class="form-control form-control-sm statoCombo campiricerca">
+                <option value="">Tutti</option>
+                <option *ngFor="let lista of liste" [value]="lista.id">{{lista.codice}} - {{lista.descrizione}}</option>
+              </select>
+            </ng-container>
+          </div> -->
+
+          <!-- <div class="col-md-3 ricEs">
+            <label class="filterLabel">Ente</label>
+            <ng-container>
+              <select formControlName="ente" id="ente" class="form-control form-control-sm campiricerca">
+                <option value="">Tutti</option>
+                <option *ngFor="let ente of enti" [value]="ente.id">{{ente.codice}} - {{ente.descrizione}}</option>
+              </select>
+            </ng-container>
+          </div> -->
+          <mat-form-field class="col-md-4" style="padding-left: 0px; margin-top: -10px;">
+            <label class="filterLabel">Azione</label>
+            <input type="text" class="testo" placeholder="" matInput [formControl]="azioneForm" 
+              [matAutocomplete]="autoAzione">
+            <mat-autocomplete autoActiveFirstOption #autoAzione="matAutocomplete" [panelWidth]="'auto'"
+              (optionSelected)="optionAzioneSelected($event.option)" [displayWith]="displayFn">
+
+              <ng-container *ngFor="let azione of azioneFiltered">
+                  <mat-option [value]="azione">
+                    {{ azione.descAzione }}
+                  </mat-option>
+              </ng-container>
+            </mat-autocomplete>
+          </mat-form-field>
+
+          <!-- <div class="col-md-4 ricEs">
+            <label class="filterLabel">Azione</label>
+            <ng-container>
+              <select formControlName="azione" id="AZIONE" class="form-control form-control-sm statoCombo campiricerca">
+                <option value="">Tutti</option>
+                <option *ngFor="let azione of azioni" [value]="azione.idAzione">{{azione.codAzione}} -
+                  {{azione.descAzione}}</option>
+              </select>
+            </ng-container>
+          </div> -->
+
+          <div class="col-md-4 verticalCentered ricEs" style="padding-top: 10px;">
+            <button id="btnSearch" type="submit" class="btn btn-primary block bottonifunzione"
+              [disabled]="!searchForm.valid" (click)="avviaRicerca()">
+              Cerca
+            </button>
+            <button id="btnLoading" class="btn btn-primary block" type="button" disabled style="display: none;">
+              <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+              Loading...
+            </button>
+          </div>
+
+        </div>
+
+      </div>
+    </form>
+  </div>
+
+  <div class="col-md-1"></div>
+
+</div>
+
+<div class="row greg" style="padding-top: 5px; padding-bottom: 5px;">
+  <div class="col-md-1"></div>
+
+  <div class="col-md-5" style="margin-bottom: 10px;">
+
+    <span class="results" style="margin-bottom: 10px;">Risultati: {{ dataListaRichieste.data.length }}</span>
+
+  </div>
+
+  <div class="col-md-5 align-self-end" style="margin-bottom: 10px;">
+  </div>
+
+  <div class="col-md-1"></div>
+  <div class="col-md-1"></div>
+  <div class="col-md-5 align-self-end" style="margin-bottom: 15px;">
+    <button type="button" class="btn btn-link pl-0" (click)="annullaRicerca()" style="color: #006CB4;">
+      <span style="margin-bottom: 10px;"></span>
+      <b style="font-size: 14px;">Annulla Ricerca</b>
+    </button>
+  </div>
+
+  <div class="col-md-5 align-self-end" style="margin-bottom: 15px;">
+    <span class="d-inline-block" data-bs-toggle="tooltip" style="float: right;">
+      <button id="btnApplica" style="font-size: 14px;" type="submit" class="btn btn-primary bottonifunzione"
+        (click)="creaProfilo()">
+        CREA PROFILO
+      </button>
+    </span>
+  </div>
+  <div class="col-md-1"></div>
+</div>
+
+<div class="row greg section-denominazione">
+  <div class="col-md-1"></div>
+
+  <div class="col-10">
+    <div class="row gregFilter">
+      <div class="col-md-12">
+        <table mat-table matSort [dataSource]="dataListaRichieste" multiTemplateDataRows
+          class="mb-3 table table-hover table-responsive-xl tabellagreg">
+
+          <ng-container matColumnDef="profilo">
+            <th class="columns_header" style="width: 25%;" mat-header-cell *matHeaderCellDef> Profilo
+            </th>
+            <td class="smarttable" mat-cell *matCellDef="let element"> {{element.codProfilo}} - {{element.descProfilo}}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="cestino">
+            <th class="columns_header" style="width: 0%;" mat-header-cell *matHeaderCellDef>
+            </th>
+            <td class="smarttable" mat-cell *matCellDef="let element; let i=index">
+              <button type="button" class="btn" data-toggle="tooltip" title="Elimina profilo"
+                (click)="eliminaProfilo(element)">
+                <img src="assets/img/ui-modelli/cestino.svg" class="greg-icon-help fnpsImage" style="cursor: pointer;">
+              </button>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="matita">
+            <th class="columns_header" style="width: 0%;" mat-header-cell *matHeaderCellDef>
+            </th>
+            <td class="smarttable" mat-cell *matCellDef="let element">
+              <button type="button" class="btn" data-toggle="tooltip" title="Modifica dati profilo"
+                (click)="openModificaProfilo(element)">
+                <img src="assets/img/user/editblue.png" class="greg-icon-help fnpsImage" style="cursor: pointer;">
+              </button>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="occhietto">
+            <th class="columns_header" style="width: 0%;" mat-header-cell *matHeaderCellDef> </th>
+            <td class="smarttable" mat-cell *matCellDef="let element">
+              <ng-template [ngIf]="!element.profilo">
+                <img style="height: 20px; width: 20px; cursor: pointer;" src="assets/img/ui-modelli/visualizza.svg"
+                  class="greg-icon-help" (click)="changeProfilo(element)">
+              </ng-template>
+              <ng-template [ngIf]="element.profilo">
+                <img style="height: 20px; width: 20px; cursor: pointer;" src="assets/img/ui-modelli/closedEye.svg"
+                  class="greg-icon-help" (click)="changeProfilo(element)">
+              </ng-template>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="azione">
+            <td class="smarttable" mat-cell *matCellDef="let element">
+              <div class="row">
+                <div class="col-md-12" style="padding-top: 10px; padding-left: 0px;"><b>Azioni</b></div>
+                <div class="col-md-8" style="padding-top: 10px; padding-left: 0px;">
+                  <ng-container>
+                    <select [(value)]="element.azione.idAzione" (change)="onSelectionChangedAzione(element, $event.target.value)" class="form-control form-control-sm statoCombo campiricerca">
+                      <option [value]="0">Nessun Azione</option>
+                      <option *ngFor="let azione of element.azioniMancate" [value]="azione.idAzione">
+                        {{azione.descAzione}}</option>
+                    </select>
+                  </ng-container>
+                </div>
+                <div class="col-md-4" style="padding-top: 10px; padding-left: 0px; padding-right: 10px;">
+                  <button type="button" class="btn btn-primary bottonifunzione buttonSpace" data-toggle="tooltip"
+                    [disabled]="disabilitaAggiungiAzioni(element)" title="Aggiungi azioni"
+                    (click)="aggiungiAzione(element)">
+                    Aggiungi
+                  </button>
+                </div>
+                <div class="col-md-12 tableAssociati" style="padding-top: 10px; padding-left: 0px; ">
+                  <table mat-table  [dataSource]="element.dataAzioni"
+                    class="col-12 mb-3 table table-hover table-responsive-xl tabellagreg">
+                    <ng-container matColumnDef="azione">
+                      <th class="columns_header" mat-header-cell *matHeaderCellDef> Azione </th>
+                      <td class="smarttable" mat-cell *matCellDef="let azione"> {{azione.descAzione}}
+                      </td>
+                    </ng-container>
+                    <ng-container matColumnDef="cestino">
+                      <th class="columns_header pl-2" mat-header-cell *matHeaderCellDef> </th>
+                      <td class="smarttable pl-2" mat-cell *matCellDef="let azione">
+
+                        <button type="button" class="btn" data-toggle="tooltip" title="Elimina" (click)="eliminaAzione(element, azione)"
+                          style="margin-left: 10px;">
+                          <span class="fas fa-trash" style="color: #B8191A;"></span>
+                        </button>
+
+                      </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="azioneRow;" class="riga-totale-azzurra"></tr>
+                    <tr mat-row *matRowDef="let row; columns:  azioneRow; let azione; let i=index" class="riga-totale-azzurra"></tr>
+
+
+                  </table>
+                </div>
+              </div>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="vuoto1">
+            <td class="smarttable" mat-cell *matCellDef="let element">
+
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="salva">
+            <td class="smarttable" mat-cell *matCellDef="let element">
+              <ng-container *ngFor="let abilitazione of element.abilitazioni">
+                <div class="row spazio">
+                  <div class="col-md-12">
+                  </div>
+                </div>
+              </ng-container>
+              <div class="row">
+                <div class="col-md-12" style="padding-left: 0px;">
+                  <button type="button" class="btn btn-primary bottonifunzione buttonSpace" data-toggle="tooltip" title="Salva azioni"
+                    (click)="salvaAzioni(element)">
+                    Salva
+                  </button>
+                </div>
+              </div>
+            </td>
+          </ng-container>
+
+         
+
+          <ng-container matColumnDef="vuoto2">
+            <td class="smarttable" mat-cell *matCellDef="let element">
+
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          <tr mat-row *matRowDef="let row; columns: secondRow; let element" class="riga-totale-azzurra"
+            [hidden]="!element.profilo"></tr>
+          <!--  -->
+        </table>
+
+        <div class="col-md-12" *ngIf="dataListaRichieste?.data?.length == 0"
+          style="text-align: center;padding-top:30px;">
+          <label class="no-data-available">Nessuna scheda soddisfa i criteri di ricerca selezionati</label>
+        </div>
+
+        <mat-paginator class="paginator" [length]="dataListaRichieste?.data?.length" [pageSize]="10"
+          [pageSizeOptions]="[5, 10, 20]" [showFirstLastButtons]=true style="padding-top:30px;">
+        </mat-paginator>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-1"></div>
+</div>

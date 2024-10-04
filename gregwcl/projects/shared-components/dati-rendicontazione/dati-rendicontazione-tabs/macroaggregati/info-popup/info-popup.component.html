@@ -1,0 +1,28 @@
+<div class="modal-header" style="border-bottom: 0px; padding-left: 0px;">
+  <h4 id="titolo" style="color: black; font-family: Roboto;" class="modal-title">
+    {{data?.titolo}}
+  </h4>
+  <button style="outline: none;" type="button" class="close" aria-label="Close"
+      (click)="confermaInfo()">
+      <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<!-- <h1 mat-dialog-title class="titolo">{{data?.titolo}}</h1> -->
+
+<div mat-dialog-content style="border-bottom: 1px solid #dee2e6;
+border-top: 1px solid #dee2e6;">
+  <div class="row" style="padding-top:10px; padding-bottom:10px;">
+    <p class="messaggio">{{data.messaggio}}</p>
+  </div>
+</div>
+
+<div mat-dialog-actions >
+  <div class="col-md-8">
+  </div>
+  <div class="col-md-4">
+    <button class="btn btn-primary" mat-stroked-button (click)="confermaInfo()" cdkFocusInitial>
+      CONFERMA
+    </button>
+  </div>
+  <div class="col-md-4"></div>
+</div> 

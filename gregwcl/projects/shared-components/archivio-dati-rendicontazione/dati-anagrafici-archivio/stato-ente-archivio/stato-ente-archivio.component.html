@@ -1,0 +1,66 @@
+   <!-- STATO -->
+<div class="row" style="background: white; padding-top: 20px; padding-bottom: 20px; box-shadow: 1px 2px 8px #C4C4C4;" *ngIf="client.azioni.get('CronologiaRegionale')[1] || client.azioni.get('CronologiaEnte')[1]">
+    <div class="col-md-12">
+        <div class="cronologia" style="padding-bottom:10px;">Stato Ente &nbsp; &nbsp;<img [@rotatedState]='state' src="assets/img/user/frecciagiu.png" (click)="apricronologia()" style="cursor: pointer;"></div>     
+                   <!-- TABELLA -->
+        <!-- <div class="col-md-2"></div> -->
+        <table mat-table [dataSource]="listaStatoEnte"
+        class="col-12 mt-3 mb-3 table table-striped table-hover table-responsive-xl tabellagreg" *ngIf="espansa">
+        <ng-container matColumnDef="dal">
+            <th class="columns_header" mat-header-cell *matHeaderCellDef> Dal </th>
+            <td class="smarttable" mat-cell *matCellDef="let stato"> {{stato.dal | date:'dd/MM/yyyy'}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="al">
+            <th class="columns_header" mat-header-cell *matHeaderCellDef> Al </th>
+            <td class="smarttable" mat-cell *matCellDef="let stato"> {{stato.al | date:'dd/MM/yyyy'}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="operatore">
+            <th class="columns_header" mat-header-cell *matHeaderCellDef> Utente </th>
+            <td class="smarttable" class="smarttable" mat-cell *matCellDef="let stato"> {{stato.operatore}}
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="stato">
+            <th class="columns_header" mat-header-cell *matHeaderCellDef> Stato </th>
+            <td class="smarttable" class="smarttable" mat-cell *matCellDef="let stato">
+                {{stato.stato}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="motivazione">
+            <th class="columns_header" mat-header-cell *matHeaderCellDef> Motivazione </th>
+            <td class="smarttable" class="smarttable" mat-cell *matCellDef="let stato"> {{stato.motivazione}}
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="notaEnte" *ngIf="visibileSection">
+            <th class="columns_header" mat-header-cell *matHeaderCellDef> Nota per Ente </th>
+            <td class="smarttable" class="smarttable" mat-cell *matCellDef="let stato"> {{stato.notaEnte}}
+            </td>
+        </ng-container>
+        
+          <ng-container matColumnDef="nota">
+            <th class="columns_header" mat-header-cell *matHeaderCellDef> Nota </th>
+            <td class="smarttable" class="smarttable" mat-cell *matCellDef="let stato"> {{stato.notaEnte}}
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="notaInterna" *ngIf="visibileSection">
+            <th class="columns_header" mat-header-cell *matHeaderCellDef> Nota Interna </th>
+            <td class="smarttable" class="smarttable" mat-cell *matCellDef="let stato">
+                {{stato.notaInterna}} </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="columnsCronologia"></tr>
+        <tr mat-row *matRowDef="let row; columns: columnsCronologia;"></tr>
+    </table>
+
+        <div class="col-12 fontnormale">
+            <div class="col-12" *ngIf="listaStatoEnte.data?.length == 0" style="text-align: center;">
+                <label class="no-data-available">Non risultano cronologie collegate all'Ente</label>
+            </div>
+        </div>
+   </div>
+</div>
+ 

@@ -1,0 +1,62 @@
+:host {
+    position:fixed;
+    z-index: 999999;
+    bottom:0px;
+    right:25%;
+    left:50%;
+    margin: 0.5em;
+    margin-left:-150px;
+    bottom: 20px;
+}
+
+.custom-snackbar-container-info {
+    border-radius: 15px !important;
+    width: 75vw;
+    color: #000000DE;
+    background-color: #DFF0D9;
+    border: 1px solid #c3e6cb;
+}
+
+.custom-snackbar-container-error {
+    border-radius: 15px !important;
+    width: 75vw;
+    color: #000000DE;
+    background-color: #FEE7E8;
+    border: 1px solid #f5c6cb;
+}
+
+.custom-snackbar-container-warning {
+    border-radius: 15px !important;
+    width: 75vw;
+    /* color: #e7d50a; */
+    color: #000000DE;
+    background-color: #FDF9E5 ;
+    /* background-color: #F8E60D; */
+    border: 1px solid #e4e6c3;
+}
+
+.info-snackbar {
+    font-size: large;
+    font-weight: bold;
+}
+
+.textError {
+    color: #721c24;
+}
+
+.textInfo {
+    color: #155724;
+}
+
+.textWarning {
+    color: #e7d50a;
+}
+
+::ng-deep .toast-header {
+    background: none;
+    border-bottom: none;
+}
+
+::ng-deep .ngb-toasts{
+    z-index: 9999;
+}

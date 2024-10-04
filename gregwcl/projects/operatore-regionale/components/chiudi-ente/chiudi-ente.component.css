@@ -1,0 +1,29 @@
+.greg {
+	background: #F0F3F8 !important;
+	color: #000000 !important;
+	font-family: 'Open Sans', sans-serif;
+}
+
+.gregFilter {
+	padding-top: 10px;
+	padding-bottom: 10px;
+	margin-top: 20px;
+	margin-bottom: 20px;
+	background: white;
+	border-width: 1px;
+	border-style: solid;
+	border-color: rgb(213, 213, 213);
+	margin-top: 20px;
+}
+
+.statoCombo {
+	height: calc(2.25rem + 2px) !important;
+}
+
+.notavailable {
+    color: red;
+}
+
+.button1 {
+	float: right;
+}

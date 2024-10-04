@@ -1,0 +1,336 @@
+<div *ngIf="!isModelloEnabled" class="row" style="background: white; padding-top: 15px; padding-bottom: 15px; box-shadow: 1px 2px 8px #C4C4C4;">
+    <h3 class="p-3">{{ msgModelloNotEnabled }}</h3>
+</div>
+
+<div *ngIf="isModelloEnabled" class="row" style="background: white; padding-top: 15px; padding-bottom: 15px;">
+    <div class="col-md-10 fontbold" style="padding-bottom:10px;padding-top:10px;">
+        <div class="bold" style="padding-bottom:20px;">
+            {{datiEnte?.denominazione}} - Anno di esercizio: {{infoOperatore?.annoEsercizio}}
+        </div>
+        <div>{{titolo}}</div>
+    </div>
+    <div class="col-md-1 fontbold" style="padding-bottom:30px;padding-top:10px;" *ngIf="client.azioni.get('EsportaModelloB')[1]"> 
+        <div  style="text-align: right;padding-right: 30px;">
+            <button type="button" class="btn" data-toggle="tooltip" title="Esporta in Excel" (click)="esportaexcelIstat()">
+                <img style="cursor: pointer; width: 50px;height: 50px;" src="assets/img/ui-modelli/file-excel-solid.svg" class="greg-icon-help" data-bs-toggle="tooltip" data-bs-placement="right">
+            </button>
+        </div>
+    </div>
+    <div class="col-md-1 fontbold" style="padding-bottom:30px;padding-top:10px;" *ngIf="client.azioni.get('EsportaModelloB')[1]"> 
+        <div  style="text-align: right;padding-right: 30px;">
+            <button type="button" class="btn" data-toggle="tooltip" title="Esporta in Excel" (click)="esportaexcel()">
+                <i class="fa fa-file-excel" style="cursor: pointer;color:green;width: 40px;height: 40px;"></i>
+            </button>
+        </div>
+    </div>
+   
+    <div class="row col-md-12 fontbold" style="padding-bottom:10px;padding-top:10px;">
+        Totali
+    </div>
+
+    <div class="row greg-mod-b-section-totale">
+        <div class="row">
+            <div class="col-md-4">
+                {{descTitoliModB[0].testoMsgInformativo}} <br> {{descTitoliModB[1].testoMsgInformativo}}
+            </div>
+            <div class="col-md-2 right-delimiter-totali totali-header">
+            <b> {{totaleSpesaTutteMissioniS}} </b>
+            </div>
+            <div class="col-md-4">
+                {{descTitoliModB[2].testoMsgInformativo}}
+                <p style="font-size: 14px;">{{descTitoliModB[3].testoMsgInformativo}} <br>{{descTitoliModB[4].testoMsgInformativo}}</p>
+            </div>
+            <div class="col-md-2 totali-header" [ngClass]="{'redText' : diffTotSpesaM }">
+                <b> {{totaleSpesaCorrenteMis1204S}} </b>
+            </div>
+
+            <div class="col-md-4">
+                {{descTitoliModB[5].testoMsgInformativo}}
+            </div>
+            <div class="col-md-2 right-delimiter-totali totali-header">
+            <b> {{totaleSpesaCorrenteMis01041215S}} </b>
+            </div>
+            <div class="col-md-4">
+                {{descTitoliModB[6].testoMsgInformativo}}
+            </div>
+            <div class="col-md-2 totali-header" [ngClass]="{'redText' : diffTotSpesaC }">
+                <b> {{totaleSpesaCorrenteTutteMissioniS}} </b>
+            </div>
+
+            <div class="col-md-4"></div>
+            <div class="col-md-2 right-delimiter-totali"></div>
+            <div class="col-md-4" style="font-size: 14px;">
+                {{descTitoliModB[7].testoMsgInformativo}}
+            </div>
+            <div class="col-md-2 totali-header">
+                {{totaleCompilazioneS}}
+            </div>
+        </div>
+    </div>
+
+    <div class="row col-md-12 testo-modello-b" style="padding-top:25px;padding-left:20px;padding-bottom: 15px;">
+        Totali spese correnti Missione
+    </div>
+
+    <table id="tableTotaliModelloB" class="table table-responsive-xl greg-modellob-table" style="width: 100% !important;">
+        <thead class="greg-modellob-tbl-riga-header">
+            <tr>
+                <ng-container *ngFor="let element of missioniModBTotali; let i=index">
+                    <th class="col-auto fontnormale"><b>{{element.descMissione}}
+                    <ng-template [ngIf]="i==0 || i==2">
+                    <img style="height: 20px; width: 20px; margin-bottom: 3px;" src="assets/img/ui-modelli/Raggruppa.svg" class="greg-icon-help" data-bs-toggle="tooltip" data-bs-placement="right" title="{{imgTooltip}}"></ng-template></b></th>
+                </ng-container>
+            </tr>
+        </thead>
+        <tbody *ngIf="totaleSpeseCorrentiMissione?.length > 0">
+            <ng-container *ngFor="let element of totaleSpeseCorrentiMissione; let i=index">
+                    <td class="smarttable fontbold">{{element}}</td>
+            </ng-container>
+        </tbody>
+        <tbody *ngIf="totaleSpeseCorrentiMissione?.length == 0">
+            <tr>
+                <td colspan="12" class="no-data-available">Non sono presenti totali parziali.
+                </td>
+            </tr>
+        <tbody>
+    </table>
+    
+    <br>
+    <hr width="97%" align="center" style="border-top: 3px solid rgba(0,0,0,.1);"/>
+    <br>
+
+    <div style="overflow-y: scroll; height:1000px; width: 100% !important;">
+        <ng-container *ngFor="let missione of missioniModB; let i=index">
+            <div class="row" style="background: white; padding-top: 15px; padding-bottom: 15px;">
+                <table class="table table-responsive-xl greg-modellob-table" style="width: 100% !important;">
+                    <thead style="background: #EEEEEE 0% 0% no-repeat padding-box;">
+                        <tr>
+                            <th class="greg-modellob-tbl-riga-header" [attr.colspan]="getMissioneSpan(missione)">
+                                {{missione.descMissione}} 
+                                <br>
+                                {{missione.altraDescMissione}}
+                                <ng-template [ngIf]="missione.msgInformativo">
+                               <ng-template #popContent>
+						  	    {{missione.msgInformativo}}
+								</ng-template>
+						         <label style="white-space: nowrap; padding-left: 10px;" [placement]="['right', 'left', 'auto']" 
+						        [ngbPopover]="popContent"  triggers="hover">
+                                    <img style="height: 20px; width: 20px;" src="assets/img/ui-modelli/help.png" class="greg-icon-help">
+                                  </label>  
+                                </ng-template>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody style="background: white;">
+                        <ng-container *ngFor="let programma of missione.listaProgramma; let j=index">
+                            <ng-template [ngIf]="getLunTitolo(programma)>0">
+                                <tr>
+                                    <td [attr.colspan]="getColSpan(programma)" class="tbl-descrizione max-dim">
+                                        <div [ngStyle]="setMyStyles(programma.colore)">
+                                            {{programma.descProgramma}} - {{programma.informativa}} 
+                                            <ng-template [ngIf]="programma.msgInformativo">
+                                    	  <ng-template #popContent1>
+						  	    		{{programma.msgInformativo}}
+										</ng-template>
+						        		 <label style="white-space: nowrap; padding-left: 10px;" [placement]="['right', 'left', 'auto']" 
+						        		[ngbPopover]="popContent1"  triggers="hover">
+                                                <img style="height: 20px; width: 20px;" src="assets/img/ui-modelli/help.png" class="greg-icon-help">
+                                                </label>
+                                            </ng-template>  
+                                        </div>
+                                    </td>
+
+                                    <td class="smarttable tbl-descrizione max-dim-tit-1-2">
+                                        Conforme rendiconto della gestione
+                                    </td>
+                                </tr>
+                            
+                                <tr>
+                                    <ng-container *ngFor="let titolo of programma.listaTitolo; let k=index">                                
+                                        <td class="smarttable tbl-descrizione" [ngClass]="{ 'max-dim-tit-1-2' : k==0 || k==1, 'max-dim-tit-3': k==2 }">
+                                            {{titolo.descTitolo}} - {{titolo.altraDescTitolo}}
+                                            <ng-template [ngIf]="titolo.msgInformativo">
+                                              <ng-template #popContent2>
+						  	    		{{titolo.msgInformativo}}
+										</ng-template>
+						        		 <label style="white-space: nowrap; padding-left: 10px;" [placement]="['right', 'left', 'auto']" 
+						        		[ngbPopover]="popContent2"  triggers="hover">
+                                                <img style="height: 20px; width: 20px;" src="assets/img/ui-modelli/help.png" class="greg-icon-help">
+                                                </label>
+                                            </ng-template>
+                                        </td>
+                                    </ng-container>
+                                    <ng-template [ngIf]="getLunTitolo(programma)==1">
+                                        <td class="max-dim-tit-1-2">
+                                        </td>
+                                        <td class="max-dim-tit-3">
+                                        </td>
+                                    </ng-template>
+                                    <ng-template [ngIf]="getLunTitolo(programma)==2">
+                                        <td class="max-dim-tit-3">
+                                        </td>
+                                    </ng-template>
+                                    <td class="max-dim-tit-1-2">
+                                        <input type="radio" class="checkmark" id="sceltasi{{i}}+{{j}}" name="sceltasi{{i}}+{{j}}" value="si" (change)="onChangeRadio(false, i, j)" [checked]="!TData[i]?.listaProgramma[j].flagConf" [disabled]="client.readOnlyII || client.azioni.get('ModelloB')[0]">
+                                        <label class="tbl-descrizione" style="padding-left: 15px;" for="sceltasi{{i}}+{{j}}">S&igrave;</label>
+                                        &nbsp;
+                                        <input type="radio" class="checkmark" id="sceltano{{i}}+{{j}}" name="sceltano{{i}}+{{j}}" value="no" (change)="onChangeRadio(true, i, j)" [checked]="TData[i]?.listaProgramma[j].flagConf" [disabled]="client.readOnlyII || client.azioni.get('ModelloB')[0]">
+                                        <label class="tbl-descrizione" style="padding-left: 15px;" for="sceltano{{i}}+{{j}}">No</label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <ng-container *ngFor="let titolo of programma.listaTitolo; let k=index">                       
+                                        <td [ngClass]="{ 'max-dim-tit-1-2' : k==0 || k==1, 'max-dim-tit-3': k==2 }">
+                                            <input *ngIf="i == 1 && j ==0 && k == 0" type="text" class="form-control inputnumber" appTwoDigitDecimalNumber [(ngModel)]="TData[1]?.listaProgramma[0].listaTitolo[0].valore" [disabled]="(client.readOnlyII) || (i == 1 && j ==0 && k == 0) || client.azioni.get('ModelloB')[0]"
+                                            [class.campovuoto]="TData[1]?.listaProgramma[0].listaTitolo[0].valore === null || TData[1]?.listaProgramma[0].listaTitolo[0].valore === ''" [class.campovalorizzato]="TData[1]?.listaProgramma[0].listaTitolo[0].valore !== null && TData[1]?.listaProgramma[0].listaTitolo[0].valore !== ''" [ngClass]="{'redText' : diffSommaSottotitTitolo1Miss4}">
+
+                                            <input *ngIf="!(i == 1 && j ==0 && k == 0)"type="text" class="form-control inputnumber" appTwoDigitDecimalNumber [(ngModel)]="TData[i]?.listaProgramma[j].listaTitolo[k].valore" [disabled]="(client.readOnlyII) || (i==2 && k==0) || client.azioni.get('ModelloB')[0]"
+                                            (blur)="changeKey(i,j,k, $event.target.value)" (ngModelChange)="calcTableValue()" [ngClass]="{'redText' : parsingFloat(TData[i]?.listaProgramma[j].listaTitolo[k].valore) < 0}"
+                                            [class.campovuoto]="TData[i]?.listaProgramma[j].listaTitolo[k].valore === null || TData[i]?.listaProgramma[j].listaTitolo[k].valore === ''" [class.campovalorizzato]="TData[i]?.listaProgramma[j].listaTitolo[k].valore !== null && TData[i]?.listaProgramma[j].listaTitolo[k].valore !== ''"> 
+                                        </td>
+                                    </ng-container>
+                                    <ng-template [ngIf]="getLunTitolo(programma)==1">
+                                        <td class="max-dim-tit-1-2">
+                                        </td>
+                                        <td class="max-dim-tit-3">
+                                        </td>
+                                    </ng-template>
+                                    <ng-template [ngIf]="getLunTitolo(programma)==2">
+                                        <td class="max-dim-tit-3">
+                                        </td>
+                                    </ng-template>
+                                    <td class="max-dim-tit-1-2">
+                                        <textarea type="text" class="form-control inputF fake" [(ngModel)]="TData[i]?.listaProgramma[j].motivazione" [disabled]="(client.readOnlyII) || !flag(i, j) || client.azioni.get('ModelloB')[0]" (click)="openDialogMotivazione(i ,j)" [attr.readonly]="true" 
+                                        data-bs-toggle="tooltip" data-bs-placement="right" title="{{TData[i]?.listaProgramma[j].motivazione}}"></textarea>
+                                    </td>
+                                </tr>
+                                <ng-container *ngFor="let titolo of programma.listaTitolo; let k=index">
+                                    <ng-container *ngFor="let sottotitolo of titolo.listaSottotitolo; let l=index">
+                                        <tr>  
+                                            <td [attr.colspan]="getColSpan(programma)" class="tbl-descrizione">
+                                                {{sottotitolo.descSottotitolo}} 
+                                                <ng-template [ngIf]="sottotitolo.msgInformativo">
+                                                 <ng-template #popContent3>
+						  	    				{{sottotitolo.msgInformativo}}
+												</ng-template>
+						        		 		<label style="white-space: nowrap; padding-left: 10px;" [placement]="['right', 'left', 'auto']" 
+						        				[ngbPopover]="popContent3"  triggers="hover">
+                                                    <img style="height: 20px; width: 20px;" src="assets/img/ui-modelli/help.png" class="greg-icon-help">
+                                                    </label>
+                                                </ng-template>
+                                            </td>
+                                        </tr>
+                                        <tr>  
+                                            <td class="max-dim-tit-1-2">
+                                                <input type="text" class="form-control inputnumber" appTwoDigitDecimalNumber [(ngModel)]="TData[i]?.listaProgramma[j].listaTitolo[k].listaSottotitolo[l].valore" [disabled]="client.readOnlyII || client.azioni.get('ModelloB')[0]" 
+                                                (blur)="changeKey(i,j,k, $event.target.value, l)" (ngModelChange)="calcTableValue()" [ngClass]="{'redText' : (diffDiCuiProg2Miss1 && i==0 && j==1 && k==0) || (diffDiCuiProg7Miss12 && i==2 && j==6 && k==0) || (diffDiCuiProg4Miss12 && i==2 && j==3 && k==0)}"
+                                                [class.campovuoto]="TData[i]?.listaProgramma[j].listaTitolo[k].listaSottotitolo[l].valore === null || TData[i]?.listaProgramma[j].listaTitolo[k].listaSottotitolo[l].valore === ''" [class.campovalorizzato]="TData[i]?.listaProgramma[j].listaTitolo[k].listaSottotitolo[l].valore !== null && TData[i]?.listaProgramma[j].listaTitolo[k].listaSottotitolo[l].valore !== ''">
+                                            </td>
+                                        </tr>
+                                    </ng-container>
+                                </ng-container>
+                            </ng-template>    
+                        </ng-container>
+                        <ng-template [ngIf]="missione.codMissione=='ALT'">
+                            <tr style="background: #DBEEF7 0% 0% no-repeat padding-box;" class="codifica">
+                                <td [attr.colspan]="getColonnaTotaleAltreSpan(0)" class="max-dim-tit-1-2">
+                                    <div *ngIf="i !== 8">
+                                        {{descTotaliMissione[0].testoMsgInformativo | uppercase}}
+                                    </div>
+                                </td>
+                                <td [attr.colspan]="getColonnaTotaleAltreSpan(1)" class="max-dim-tit-1-2">
+                                    <div *ngIf="i !== 8">
+                                        {{descTotaliMissione[1].testoMsgInformativo | uppercase}}
+                                    </div>
+                                </td>
+                                <td [attr.colspan]="getColonnaTotaleAltreSpan(2)" class="max-dim-tit-3">
+                                    <div *ngIf="i !== 8">
+                                        {{descTotaliMissione[2].testoMsgInformativo | uppercase}}
+                                    </div>
+                                </td>
+                                <td [attr.colspan]="getColonnaTotaleAltreSpan(3)" class="max-dim-tit-1-2">
+                                    {{descTotaliMissione[3].testoMsgInformativo | uppercase}}
+                                </td>
+                            </tr>
+                            <tr style="background: #DBEEF7 0% 0% no-repeat padding-box;">
+                                <td [attr.colspan]="getColonnaTotaleAltreSpan(0)" class="max-dim-tit-1-2">
+                                    <input type="text" class="form-control inputnumber" appTwoDigitDecimalNumber [(ngModel)]="totaleSpeseCorrenti[i]" readonly
+                                    [class.campovuoto]="totaleSpeseCorrenti[i] === undefined || totaleSpeseCorrenti[i] === ''" [class.campovalorizzato]="totaleSpeseCorrenti[i] !== undefined && totaleSpeseCorrenti[i] !== ''"
+                                    *ngIf="i !== 8"> 
+                                </td>
+                                <td [attr.colspan]="getColonnaTotaleAltreSpan(1)" class="max-dim-tit-1-2">
+                                    <input type="text" class="form-control inputnumber" appTwoDigitDecimalNumber [(ngModel)]="totaleSpeseContoCapitale[i]" readonly
+                                    [class.campovuoto]="totaleSpeseContoCapitale[i] === undefined || totaleSpeseContoCapitale[i] === ''" [class.campovalorizzato]="totaleSpeseContoCapitale[i] !== undefined && totaleSpeseContoCapitale[i] !== ''"
+                                    *ngIf="i !== 8">
+                                </td>
+                                <td [attr.colspan]="getColonnaTotaleAltreSpan(2)" class="max-dim-tit-3">
+                                    <input type="text" class="form-control inputnumber" appTwoDigitDecimalNumber [(ngModel)]="totaleSpeseIncrementoAttFinanz[i]" readonly
+                                    [class.campovuoto]="totaleSpeseIncrementoAttFinanz[i] === undefined || totaleSpeseIncrementoAttFinanz[i] === ''" [class.campovalorizzato]="totaleSpeseIncrementoAttFinanz[i] !== undefined && totaleSpeseIncrementoAttFinanz[i] !== ''"
+                                    *ngIf="i !== 8">
+                                </td>
+                                <td [attr.colspan]="getColonnaTotaleAltreSpan(3)" class="max-dim-tit-1-2">
+                                    <input type="text" class="form-control inputnumber" appTwoDigitDecimalNumber [(ngModel)]="totaleMissione[i]" readonly
+                                    [class.campovuoto]="totaleMissione[i] === undefined || totaleMissione[i] === ''" [class.campovalorizzato]="totaleMissione[i] !== undefined && totaleMissione[i] !== ''">
+                                </td>
+                            </tr>
+                        </ng-template>
+                        <ng-template [ngIf]="missione.codMissione!='ALT'">
+                            <tr style="background: #DBEEF7 0% 0% no-repeat padding-box;" class="codifica">
+                                <td class="max-dim-tit-1-2">
+                                    <div *ngIf="i !== 5 && i !== 6 && i !== 7">
+                                        TOTALE SPESE CORRENTI
+                                    </div>
+                                </td>
+                                <td class="max-dim-tit-1-2">
+                                    <div *ngIf="i !== 5 && i !== 6 && i !== 7">
+                                        TOTALE SPESE IN CONTO CAPITALE
+                                    </div>
+                                </td>
+                                <td class="max-dim-tit-3">
+                                    <div *ngIf="i !== 4 && i !== 5 && i !== 6 && i !== 7">
+                                        TOTALE SPESE PER INCREMENTO DI ATTIVIT&Agrave; FINANZIARIE
+                                    </div>
+                                </td>
+                                <td class="max-dim-tit-1-2">
+                                    TOTALE MISSIONE
+                                </td>
+                            </tr>
+                            <tr style="background: #DBEEF7 0% 0% no-repeat padding-box;">
+                                <td class="max-dim-tit-1-2">
+                                    <input type="text" class="form-control inputnumber" appTwoDigitDecimalNumber [(ngModel)]="totaleSpeseCorrenti[i]" readonly [ngClass]="{'redText' : (diffTotSpesaCMissione1 && i==0) || (diffTotaleMiss12 && i==2)}"
+                                    [class.campovuoto]="totaleSpeseCorrenti[i] === undefined || totaleSpeseCorrenti[i] === ''" [class.campovalorizzato]="totaleSpeseCorrenti[i] !== undefined && totaleSpeseCorrenti[i] !== ''"
+                                    *ngIf="i !== 5 && i !== 6 && i !== 7">
+                                </td>
+                                <td class="max-dim-tit-1-2">
+                                    <input type="text" class="form-control inputnumber" appTwoDigitDecimalNumber [(ngModel)]="totaleSpeseContoCapitale[i]" readonly
+                                    [class.campovuoto]="totaleSpeseContoCapitale[i] === undefined || totaleSpeseContoCapitale[i] === ''" [class.campovalorizzato]="totaleSpeseContoCapitale[i] !== undefined && totaleSpeseContoCapitale[i] !== ''"
+                                    *ngIf="i !== 5 && i !== 6 && i !== 7"> 
+                                </td>
+                                <td class="max-dim-tit-3">
+                                    <input type="text" class="form-control inputnumber" appTwoDigitDecimalNumber [(ngModel)]="totaleSpeseIncrementoAttFinanz[i]" readonly
+                                    [class.campovuoto]="totaleSpeseIncrementoAttFinanz[i] === undefined || totaleSpeseIncrementoAttFinanz[i] === ''" [class.campovalorizzato]="totaleSpeseIncrementoAttFinanz[i] !== undefined && totaleSpeseIncrementoAttFinanz[i] !== ''"
+                                    *ngIf="i !== 4 && i !== 5 && i !== 6 && i !== 7"> 
+                                </td>
+                                <td class="max-dim-tit-1-2">
+                                    <input type="text" class="form-control inputnumber" appTwoDigitDecimalNumber [(ngModel)]="totaleMissione[i]" readonly
+                                    [class.campovuoto]="totaleMissione[i] === undefined || totaleMissione[i] === ''" [class.campovalorizzato]="totaleMissione[i] !== undefined && totaleMissione[i] !== ''"> 
+                                </td>
+                            </tr>
+                        </ng-template>
+                    </tbody>
+                </table>
+            </div>
+        </ng-container>
+    </div>
+</div>
+
+<div class="row" style="padding-top: 15px; padding-bottom: 20px;">
+</div>
+
+<!-- CRONOLOGIA -->
+<app-cronologia-modelli></app-cronologia-modelli>
+
+<br>
+
+<!-- BOTTONI -->
+<app-pulsanti-funzioni [mostrasalva]="mostrasalva" [idRendicontazioneEnte]="idRendicontazioneEnte" [modello]="'Mod. B'" (salvaEvent)="salvaModifiche($event)"></app-pulsanti-funzioni>

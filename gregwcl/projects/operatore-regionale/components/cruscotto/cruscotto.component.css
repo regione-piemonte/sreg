@@ -1,0 +1,492 @@
+/* Gestione MEDIA  */
+@media screen and (max-width: 1470px) {
+	.millequattro {
+		display: none;
+	}
+}
+
+@media screen and (max-width: 1340px) {
+	.milletre {
+		display: none;
+	}
+}
+
+@media screen and (max-width: 1250px) {
+	.milledue {
+		display: none;
+	}
+}
+
+@media screen and (max-width: 1000px) {
+	.mille {
+		display: none;
+	}
+}
+
+.greg {
+	background: #F0F3F8 !important;
+	color: #000000 !important;
+	font-family: 'Open Sans', sans-serif;
+}
+
+.gregTabs {
+	font-size: 16px;
+}
+
+#miatab {
+	font-size: 14px;
+	background: white;
+	text-align: center;
+	margin-bottom: 20px;
+}
+
+.theme-exprivia-healthcare .nav-tabs .nav-item.show .nav-link,
+.nav-tabs .nav-link.active {
+	/* color: #1154a2; */
+	border-bottom: 3px solid #1154a2 !important;
+	border-top: #d5d5d5;
+	border-left: none;
+	border-right: none;
+	background-color: transparent;
+}
+
+a {
+	color: #0E8EAB;
+}
+
+.verticalCentered {
+	display: -ms-flexbox;
+	display: -webkit-flex;
+	display: flex;
+	-ms-flex-align: center;
+	-webkit-align-items: center;
+	-webkit-box-align: center;
+	align-items: center;
+	margin-top: 25px;
+}
+
+::ng-deep .odd {
+	display: none
+}
+
+::ng-deep.dataTables_length {
+	display: none;
+}
+
+::ng-deep.dataTables_wrapper .dataTables_paginate .paginate_button.current {
+	background: #016CB4;
+	color: white !important;
+	border-radius: 5px;
+	border: none;
+}
+
+::ng-deep.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+	background: transparent !important;
+	color: black !important;
+	border: none;
+}
+
+::ng-deep.dataTables_wrapper .dataTables_info {
+	display: none;
+}
+
+::ng-deep.mat-table tbody {
+	box-shadow: 1px 5px 8px #C4C4C4;
+}
+
+::ng-deep.dataTables_processing {
+	display: none !important;
+}
+
+table.dataTable tbody th,
+table.dataTable tbody td {
+	/* padding: 1px 1px !important; */
+	vertical-align: middle !important;
+}
+
+.input-group {
+	flex-wrap: initial !important;
+}
+
+.block {
+	display: block;
+	width: 100%;
+	border: none;
+	cursor: pointer;
+	text-align: center;
+}
+
+.filterLabel {
+	letter-spacing: -0.07px;
+	color: #212529;
+	opacity: 1;
+	white-space: nowrap;
+	text-align: left;
+	font-family: 'Open Sans', sans-serif;
+	font-size: 16px/22px;
+	line-height: 19px;
+	font-weight: normal;
+	height: 19px;
+}
+
+.table_head {
+	background: #EEEEEE 0% 0% no-repeat padding-box;
+	opacity: 1;
+}
+
+
+
+.shade {
+	box-shadow: 1px 5px 8px #C4C4C4;
+}
+
+.btn {
+	box-shadow: none;
+}
+
+.spanDanger {
+	margin-top: 0px;
+	font-size: 10px;
+	color: #dc3545 !important;
+}
+
+td.mat-cell {
+	padding-left: 20px;
+	padding-right: 20px;
+	padding-bottom: 25px;
+}
+
+th.mat-header-cell {
+	padding-left: 10px;
+	width: 5%;
+	padding-right: 10px;
+}
+
+
+
+.testo-bold {
+	text-align: left;
+	font: normal normal bold 16px/22px 'Open Sans', sans-serif;
+	letter-spacing: 0px;
+	color: #000000;
+	opacity: 1;
+}
+
+.modal.fade .modal-dialog {
+	-webkit-transform: inherit;
+}
+
+.columns_header_grey {
+	color: black;
+	border: 0px !important;
+	text-align: left;
+	vertical-align: middle !important;
+	background: #EEEEEE 0% 0% no-repeat padding-box;
+	font-family: 'Open Sans', sans-serif;
+	font-size: 0.8vw;
+	font-weight: bold;
+	letter-spacing: 0px;
+	opacity: 1;
+}
+
+.columns_header_grey_FNPS {
+	color: black;
+	border: 0px !important;
+	text-align: center;
+	vertical-align: middle !important;
+	background: #EEEEEE 0% 0% no-repeat padding-box;
+	font-family: 'Open Sans', sans-serif;
+	font-size: 0.8vw;
+	font-weight: bold;
+	letter-spacing: 0px;
+	opacity: 1;
+}
+
+.columns_header_white {
+	color: black;
+	border: 0px !important;
+	text-align: left;
+	vertical-align: middle !important;
+	background: #ffffff 0% 0% no-repeat padding-box;
+	font-family: 'Open Sans', sans-serif;
+	font-size: 0.8vw;
+	font-weight: bold;
+	letter-spacing: 0px;
+	opacity: 1;
+	width: 0% !important;
+}
+
+.columns_header_primaTranche {
+	color: black;
+	border: 0px !important;
+	text-align: center;
+	vertical-align: middle !important;
+	background: #CAEEFD 0% 0% no-repeat padding-box;
+	font-family: 'Open Sans', sans-serif;
+	font-size: 0.8vw;
+	font-weight: bold;
+	letter-spacing: 0px;
+	opacity: 1;
+}
+
+.columns_header_secondaTranche {
+	color: black;
+	border: 0px !important;
+	text-align: center;
+	vertical-align: middle !important;
+	background: #ADB3DC 0% 0% no-repeat padding-box;
+	font-family: 'Open Sans', sans-serif;
+	font-size: 0.8vw;
+	font-weight: bold;
+	letter-spacing: 0px;
+	opacity: 1;
+}
+
+.smarttable_cruscotto {
+	color: black;
+	border: 0px !important;
+	text-align: left;
+	vertical-align: middle !important;
+	font-family: 'Open Sans', sans-serif;
+	font-size: 16px;
+	line-height: 22px;
+	width: fit-content;
+	letter-spacing: 0px;
+	opacity: 1;
+	border-bottom: 1px solid lightgray;
+	font-weight: normal;
+	padding-left: 10px !important;
+	padding-right: 10px !important;
+}
+
+
+.gregFilter {
+	padding-top: 10px;
+	padding-bottom: 10px;
+	margin-top: 5px;
+	background: white;
+	margin-top: 20px;
+	box-shadow: 1px 2px 8px #c4c4c4;
+	border-radius: 5px;
+}
+
+.paginator_cruscotto {
+	font-weight: bold;
+	color: black;
+	border: 0px !important;
+	text-align: left;
+	vertical-align: middle !important;
+	background: #FFFFFF 0% 0% no-repeat padding-box;
+}
+
+.results_legenda {
+	font-weight: bold;
+	font-size: 16px/22px;
+	height: 16px;
+}
+
+.riga-totale-azzurra {
+	background: #E5F7FF;
+}
+
+.riga-totale-viola {
+	background: #E0E3FF;
+}
+
+.riga-totale-white {
+	background: #FFFFFF;
+}
+
+.boxOrange {
+	width: 30px;
+	height: 30px;
+	background: #F29C38;
+	border-radius: 5px;
+}
+
+.boxYellow {
+	width: 30px;
+	height: 30px;
+	background: #F8E60E;
+	margin-top: 20px;
+	border-radius: 5px;
+}
+
+.boxGreen {
+	width: 30px;
+	height: 30px;
+	background: #009F3D;
+	margin-top: 20px;
+	border-radius: 5px;
+}
+
+.boxWhite {
+	width: 30px;
+	height: 30px;
+	background: #FFFFFF;
+	margin-top: 20px;
+	border-radius: 5px;
+	border: 1px solid lightgray;
+}
+
+.boxGrey {
+	width: 30px;
+	height: 30px;
+	background: #d7d7d7;
+	margin-top: 20px;
+	border-radius: 5px;
+}
+
+.legende {
+
+	margin-top: 25px;
+}
+
+.cross {
+	font-size: 14px;
+	color: #cecbcb;
+}
+
+.boxGrey:after {
+	position: absolute;
+	top: 2px;
+	bottom: 0;
+	left: 10px;
+	right: 0;
+	content: "\d7";
+	font-size: 68px;
+	color: #707070;
+	line-height: 70px;
+	text-align: right;
+}
+
+.totali {
+	font-size: 1vw;
+    vertical-align: top;
+    text-align: center;
+    padding-bottom: 15px;
+	font-weight: bold;
+}
+
+.totaliStati {
+	font-size: 1vw;
+	padding-left: 14px;
+	padding-right: 14px;
+	text-align: center;
+	font-weight: normal;
+}
+
+.fnpsImage {
+	height: 50px;
+	padding-bottom: 20px;
+	padding-left: 0px;
+}
+
+.fnpsImageModello {
+	height: 60px;
+}
+
+
+.boxOrangeModelli {
+	width: 50px;
+	height: 25px;
+	background: #F29C38;
+	margin-top: 25px;
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+}
+
+.boxYellowModelli {
+	width: 50px;
+	height: 25px;
+	background: #F8E60E;
+	margin-top: 25px;
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+}
+
+.boxGreenModelli {
+	width: 50px;
+	height: 25px;
+	background: #009F3D;
+	margin-top: 25px;
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+}
+
+.boxWhiteModelli {
+	width: 50px;
+	height: 25px;
+	background: #FFFFFF;
+	border-bottom-left-radius: 5px;
+	border-bottom-right-radius: 5px;
+	border: 1px solid lightgray;
+}
+
+.tdRid {
+	padding-left: 10px !important;
+	padding-right: 10px !important;
+}
+
+.boxGreyModelli {
+	width: 50px;
+	height: 50px;
+	background: #d7d7d7;
+	margin-top: 20px;
+	border-radius: 5px;
+}
+
+.crossModelli {
+	font-size: 14px;
+	color: #cecbcb;
+}
+
+.boxGreyModelli:after {
+	position: relative;
+	top: -8px;
+	bottom: 0px;
+	left: -11px;
+	right: 0px;
+	content: "\d7";
+	font-size: 122px;
+	color: #707070;
+	line-height: 70px;
+	text-align: right;
+}
+
+.boxWhiteModelliNonDisponibile {
+	width: 50px;
+	height: 50px;
+	background: #FFFFFF;
+	margin-top: 20px;
+	border-radius: 5px;
+	border: 1px solid lightgray;
+}
+
+.pointer {
+	cursor: pointer;
+}
+
+.divGrey {
+	width: 50px;
+	height: 50px;
+	margin-top: 20px;
+}
+
+.greyModelli {
+	width: 50px;
+	height: 70px;
+}
+
+.dimEs{
+	font-size: 0.8vw !important;
+	line-height: normal !important;;
+}
+
+.ricEs{
+	max-width: 300px !important;
+}
+
+.totaliWidth{
+	width: 10%;
+}

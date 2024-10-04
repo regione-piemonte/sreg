@@ -1,0 +1,40 @@
+<div class="row greg">
+	<div class="col-md-9"></div>
+	<div *ngIf="client.azioni.get('InserisciEnte')[1] && !client.goToCruscotto && !client.goToConfiguratore && !client.goToNuovaPrestazione && !client.goToArchivio && !client.goToFnps" class="col-md-1 align-self-end" style="margin-bottom: 15px;">
+		<span class="d-inline-block" data-bs-toggle="tooltip" title="Nuovo Ente" style="float: right;">
+			<button  id="btnApplica" type="submit" class="btn btn-primary bottonifunzione bottoninu" (click)="inserisciEnte()"> 
+				NUOVO ENTE
+			</button>
+		</span>
+	</div>
+	<div *ngIf="client.azioni.get('UnioneEnte')[1] && !client.goToCruscotto && !client.goToConfiguratore && !client.goToNuovaPrestazione && !client.goToArchivio && !client.goToFnps" class="col-md-1 align-self-end" style="margin-bottom: 15px;">
+		<span class="d-inline-block" data-bs-toggle="tooltip" title="Unione Enti" style="float: right;">
+			<button id="btnApplica" type="submit" class="btn btn-primary bottonifunzione bottoninu" (click)="unisciEnte()"> 
+				UNIONE ENTI
+			</button>
+		</span>
+	</div>
+	<div *ngIf="client.azioni.get('ConfiguratorePrestazioni')[1] && client.goToConfiguratore && !client.goToNuovaPrestazione && !client.goToArchivio" class="col-md-2 align-self-end" style="margin-bottom: 15px;">
+		<span class="d-inline-block" data-bs-toggle="tooltip" title="Unione Enti" style="float: right;">
+			<button id="btnApplica" type="submit" class="btn btn-primary bottonifunzione bottoninu" (click)="nuovaPrestazione1()"> 
+				NUOVA PRESTAZIONE 1
+			</button>
+		</span>
+	</div>
+	<div class="col-md-1"></div>
+	</div>
+<div class="row greg" style="padding-top: 5px; padding-bottom: 5px;">
+	<div class="col-md-1"></div>
+	<div class="col-md-10">
+
+		<ul ngbNav [(activeId)]="active" class="nav-tabs">
+			<li [ngbNavItem]="link.link" *ngFor="let link of links" [disabled]="!link.active">
+				<a ngbNavLink [routerLink]="link.link" routerLinkActive="active" skipLocationChange *ngIf="client.azioni.get(link.azione)[1]" (click)="goToCruscotto(link)">{{ link.title }}</a>
+			</li>
+		</ul>
+
+	</div>
+	
+	<div class="col-md-1"></div>
+	
+</div>

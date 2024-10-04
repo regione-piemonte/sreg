@@ -1,0 +1,566 @@
+<div class="row greg" style="padding-top: 5px; padding-bottom: 5px">
+  <div class="row col-md-12">
+    <div class="col-md-1"></div>
+
+    <div class="col-md-10 tab-row">
+      <ng-container *ngIf="isCompiledFnps && checkStatoRendicontazione() && validazioneAlZero">
+        <div class="row" style="
+            background: white;
+            padding-top: 15px;
+            padding-bottom: 15px;
+            box-shadow: 1px 2px 8px #c4c4c4;
+          ">
+          <div class="col-md-9 fontbold" style="padding-bottom: 10px; padding-top: 10px">
+            <div class="bold" style="padding-bottom: 20px">
+              {{ datiEnte?.denominazione }} - Anno di esercizio:
+              {{ infoOperatore?.annoEsercizio }}
+            </div>
+            <div>{{ titolo }} - {{ infoAllD01 }}</div>
+          </div>
+          <div class="col-md-3 fontbold" style="padding-bottom: 30px; padding-top: 10px"
+            *ngIf="client.azioni.get('EsportaModelloFNPS')[1]">
+            <div style="text-align: right; padding-right: 30px">
+              <button type="button" class="btn" data-toggle="tooltip" title="Esporta in Excel" (click)="esportaexcel()">
+                <i class="fa fa-file-excel" style="
+                    cursor: pointer;
+                    color: green;
+                    width: 40px;
+                    height: 40px;
+                  "></i>
+              </button>
+            </div>
+          </div>
+          <div class="col-md-12" style="padding-bottom: 10px; padding-top: 10px">
+            <div>
+              {{ infoAllD02 }}
+            </div>
+          </div>
+          <div class="col-md-12 pb-3 pt-2">
+            <div class="row col-md-12 px-0">
+              <div class="col-md-6 fontbold px-0 py-2 align-self-center riga-grigia">
+                {{ infoAllD03 }}
+              </div>
+              <div class="col-md-2 fontbold py-2 text-right align-self-center riga-grigia">
+                {{ totFnpsQuoteString }}
+              </div>
+              <div class="col-md-4 fontbold"></div>
+            </div>
+          </div>
+
+          <div class="col-md-12" style="background: white">
+            <table *ngIf="vociAllD" class="mb-3 table table-hover table-responsive-xl" style="width: 100% !important">
+              <thead>
+                <tr>
+                  <th style="border: 0px" colspan="2"></th>
+                  <ng-container *ngFor="let area of vociAllD.aree">
+                    <th [attr.colspan]="area.numeroUtenze" class="aree-td">
+                      <div class="testo-alld-bold-center">
+                        Area {{ area.area }}
+                      </div>
+                    </th>
+                  </ng-container>
+                </tr>
+                <tr>
+                  <th colspan="2" class="columns_header smarttable">
+                    <div class="testo-alld-bold">
+                      INTERVENTI E SERVIZI SOCIALI
+                    </div>
+                  </th>
+                  <ng-container *ngFor="
+                      let utenza of vociAllD.listaTargetUtenze;
+                      let i = index
+                    ">
+                    <th class="columns_header smarttable">
+                      <div class="testo-alld-bold" [ngClass]="{ 'macrog-title': i == 5 }">
+                        {{ utenza.descUtenza }}
+                        <ng-template #popContent>
+                          {{ infoAllD05 }}
+                        </ng-template>
+                        <label style="white-space: nowrap; padding-left: 10px" [placement]="['right', 'left', 'auto']"
+                          [ngbPopover]="popContent" triggers="hover">
+                          <img *ngIf="i == 5" style="height: 20px; width: 20px" src="assets/img/ui-modelli/help.png"
+                            class="greg-icon-help" />
+                        </label>
+                      </div>
+                    </th>
+                  </ng-container>
+                </tr>
+              </thead>
+              <tbody style="box-shadow: 1px 2px 8px #c4c4c4">
+                <ng-container *ngFor="
+                    let prestazione of vociAllD.listaPrestazione;
+                    let i = index
+                  ">
+                  <tr>
+                    <td class="smarttable">
+                      <div class="testo-alld-bold">
+                        {{ prestazione.codPrestazione }}
+                      </div>
+                    </td>
+                    <td [attr.colspan]="prestazione.utenze.length + 1" class="smarttable">
+                      <div class="testo-alld-bold">
+                        {{ prestazione.descPrestazione }}
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="width: 20px" class="smarttable"></td>
+                    <td class="smarttable riga-grigia">
+                      <div class="testo-alld">Riproporzione stimata FNPS</div>
+                    </td>
+                    <ng-container *ngFor="let utenza of prestazione.utenze; let j = index">
+                      <td class="smarttable riga-grigia casella-numeri">
+                        <div class="numeri-alld">
+                          {{ TData[i].utenze[j].valoreFNPS }}
+                        </div>
+                      </td>
+                    </ng-container>
+                    <ng-container *ngFor="
+                        let utenza of vociAllD.listaTargetUtenze;
+                        let i = index
+                      ">
+                      <ng-template [ngIf]="i >= prestazione.utenze.length">
+                        <td class="smarttable riga-grigia casella-numeri"></td>
+                      </ng-template>
+                    </ng-container>
+                  </tr>
+                  <tr>
+                    <td style="width: 20px" class="smarttable"></td>
+                    <td class="smarttable">
+                      <div class="testo-alld">Massimale disponibile da B1</div>
+                    </td>
+                    <ng-container *ngFor="let utenza of prestazione.utenze; let j = index">
+                      <td class="smarttable casella-numeri">
+                        <div class="numeri-alld">
+                          {{ TData[i].utenze[j].valoreB1 }}
+                        </div>
+                      </td>
+                    </ng-container>
+                    <ng-container *ngFor="
+                        let utenza of vociAllD.listaTargetUtenze;
+                        let i = index
+                      ">
+                      <ng-template [ngIf]="i >= prestazione.utenze.length">
+                        <td class="smarttable casella-numeri"></td>
+                      </ng-template>
+                    </ng-container>
+                  </tr>
+                  <tr>
+                    <td style="width: 20px" class="smarttable"></td>
+                    <td class="smarttable riga-azzurra">
+                      <div class="testo-alld">Spesa per Modulo FNPS</div>
+                    </td>
+                    <ng-container *ngFor="let utenza of prestazione.utenze; let j = index">
+                      <td class="smarttable riga-azzurra casella-numeri">
+                        <input type="text" class="form-control inputnumber w-100" [ngClass]="{
+                            redText: errorSpesaFnpsMaggSpesaB1(
+                              TData[i]?.utenze[j].valore,
+                              TData[i]?.utenze[j].valoreB1
+                            ),
+                            inputF: !errorSpesaFnpsMaggSpesaB1(
+                              TData[i]?.utenze[j].valore,
+                              TData[i]?.utenze[j].valoreB1
+                            )
+                          }" appTwoDigitDecimalNumber [(ngModel)]="TData[i]?.utenze[j].valore"
+                          (blur)="changeKey(i, $event.target.value, j)" (ngModelChange)="calcTableValue()"
+                          [class.campovuoto]="
+                            TData[i]?.utenze[j].valore === null ||
+                            TData[i]?.utenze[j].valore === ''
+                          " [class.campovalorizzato]="
+                            TData[i]?.utenze[j].valore !== null &&
+                            TData[i]?.utenze[j].valore !== ''
+                          " [disabled]="
+                            client.readOnlyIII ||
+                            client.azioni.get('ModelloFNPS')[0]
+                          " />
+                      </td>
+                    </ng-container>
+                    <ng-container *ngFor="
+                        let utenza of vociAllD.listaTargetUtenze;
+                        let i = index
+                      ">
+                      <ng-template [ngIf]="i >= prestazione.utenze.length">
+                        <td class="smarttable riga-azzurra"></td>
+                      </ng-template>
+                    </ng-container>
+                  </tr>
+                </ng-container>
+                <tr style="height: 20px"></tr>
+                <tr>
+                  <td style="width: 20px" class="smarttable riga-totale-grigia"></td>
+                  <td class="smarttable riga-totale-grigia">
+                    <div class="testo-alld-bold">
+                      {{ label[3]?.testoMsgInformativo }}
+                    </div>
+                    <div class="testo-alld-bold-piccolo">
+                      {{ label[5]?.testoMsgInformativo }}
+                    </div>
+                  </td>
+                  <ng-container *ngFor="
+                      let utenza of vociAllD.listaTargetUtenze;
+                      let i = index
+                    ">
+                    <td class="smarttable riga-totale-grigia casella-numeri">
+                      <div class="numeri-bold-alld">
+                        {{ totaleUtenzaFNPS[i] }}
+                      </div>
+                    </td>
+                  </ng-container>
+                </tr>
+                <tr>
+                  <td style="width: 20px" class="smarttable smarttable riga-totale-grigia"></td>
+                  <td class="smarttable smarttable riga-totale-grigia">
+                    <div class="testo-alld-bold">
+                      {{ label[4]?.testoMsgInformativo }}
+                    </div>
+                    <div class="testo-alld-bold-piccolo">
+                      {{ label[5]?.testoMsgInformativo }}
+                    </div>
+                  </td>
+                  <ng-container *ngFor="
+                      let utenza of vociAllD.listaTargetUtenze;
+                      let i = index
+                    ">
+                    <td class="smarttable casella-numeri smarttable riga-totale-grigia">
+                      <div class="numeri-bold-alld inputF">
+                        <ng-template [ngIf]="utenza.utilizzatoPerCalcolo">
+                          <u>
+                            {{ percentualeRiproporzioneString[i] }}%
+                          </u></ng-template>
+                        <ng-template [ngIf]="!utenza.utilizzatoPerCalcolo">
+                          {{ percentualeRiproporzioneString[i] }}%</ng-template>
+                      </div>
+                    </td>
+                  </ng-container>
+                </tr>
+                <tr>
+                  <td style="width: 20px" class="smarttable riga-totale-blu"></td>
+                  <td class="smarttable riga-totale-blu testo-totale-bianco-alld">
+                    {{ label[6]?.testoMsgInformativo }}
+                  </td>
+                  <ng-container *ngFor="
+                      let utenza of vociAllD.listaTargetUtenze;
+                      let i = index
+                    ">
+                    <td class="smarttable riga-totale-blu casella-numeri">
+                      <input type="text" class="form-control inputnumber" appTwoDigitDecimalNumber
+                        [(ngModel)]="totaleUtenza[i]" readonly [ngClass]="{
+                          redText: errorSpesaFamiglie(totaleUtenza[i], utenza),
+                          'inputF-alld': !errorSpesaFamiglie(
+                            totaleUtenza[i],
+                            utenza
+                          )
+                        }" [class.campovuoto]="
+                          totaleUtenza[i] === undefined ||
+                          totaleUtenza[i] === ''
+                        " [class.campovalorizzato]="
+                          totaleUtenza[i] !== undefined &&
+                          totaleUtenza[i] !== ''
+                        " />
+                    </td>
+                  </ng-container>
+                </tr>
+                <tr>
+                  <td style="width: 20px" class="smarttable riga-totale-blu"></td>
+                  <td class="smarttable riga-totale-blu testo-totale-bianco-alld">
+                    {{ label[7]?.testoMsgInformativo }}
+                  </td>
+                  <ng-container *ngFor="
+                      let utenza of vociAllD.listaTargetUtenze;
+                      let i = index
+                    ">
+                    <td class="smarttable riga-totale-blu casella-numeri">
+                      <div [ngClass]="{
+                          redTextOnWhite: errorSpesaFamiglie(
+                            totaleUtenza[i],
+                            utenza
+                          ),
+                          'numeri-bold-alld-white inputF-alld':
+                            !errorSpesaFamiglie(totaleUtenza[i], utenza)
+                        }">
+                        {{ percentualeFnpsString[i] }}%
+                      </div>
+                    </td>
+                  </ng-container>
+                </tr>
+                <tr>
+                  <td style="width: 20px" class="smarttable riga-totale-verde"></td>
+                  <td class="smarttable riga-totale-verde testo-alld-bold">
+                    {{ label[8]?.testoMsgInformativo }}
+                  </td>
+                  <ng-container *ngFor="let utenza of utenze; let i = index">
+                    <td class="smarttable riga-totale-verde casella-numeri">
+                      <div class="numeri-bold-alld inputF">
+                        <ng-template [ngIf]="utenza.valorePercentuale != null">{{ utenza.valorePercentuale
+                          }}%</ng-template>
+                      </div>
+                    </td>
+                  </ng-container>
+                </tr>
+                <tr style="
+                    border-left: 3px solid #006cb4 !important;
+                    border-right: 3px solid #006cb4 !important;
+                  ">
+                  <td style="width: 20px" class="smarttable" [attr.colspan]="2 + vociAllD.listaTargetUtenze.length">
+                    <div class="testo-alld-bold">
+                      {{ label[9]?.testoMsgInformativo }}
+                      <a [ngClass]="{
+                          redTextBold: totUtenzeDivTotFnps,
+                          'testo-alld-bold': !totUtenzeDivTotFnps
+                        }">{{ totaloneUtenze }}</a>
+                      <ng-template #popContent1>
+                        {{ infoAllD09 }}
+                      </ng-template>
+                      <label style="white-space: nowrap; padding-left: 10px" [placement]="['right', 'left', 'auto']"
+                        [ngbPopover]="popContent1" triggers="hover">
+                        <img style="height: 20px; width: 20px" src="assets/img/ui-modelli/help.png"
+                          class="greg-icon-help" />
+                      </label>
+                    </div>
+                  </td>
+                </tr>
+                <tr style="
+                    border-left: 3px solid #006cb4 !important;
+                    border-right: 3px solid #006cb4 !important;
+                  ">
+                  <td style="width: 20px" class="smarttable" [attr.colspan]="2 + vociAllD.listaTargetUtenze.length">
+                    <div class="testo-alld-bold">
+                      {{ label[10]?.testoMsgInformativo }}
+                      <a [ngClass]="{
+                          redTextBold: checkResiduoLeps,
+                          'testo-alld-bold': !checkResiduoLeps
+                        }">{{ totaloneDaRendicontare }}</a>
+                      <ng-template #popContent2>
+                        {{ label[14].testoMsgInformativo }}
+                      </ng-template>
+                      <label style="white-space: nowrap; padding-left: 10px" [placement]="['right', 'left', 'auto']"
+                        [ngbPopover]="popContent2" triggers="hover">
+                        <img style="height: 20px; width: 20px" src="assets/img/ui-modelli/help.png"
+                          class="greg-icon-help" />
+                      </label>
+                    </div>
+                  </td>
+                </tr>
+                <tr style="
+                    border-left: 3px solid #006cb4 !important;
+                    border-right: 3px solid #006cb4 !important;
+                    border-bottom: 3px solid #006cb4 !important;
+                  ">
+                  <td style="width: 20px" class="smarttable" [attr.colspan]="2 + vociAllD.listaTargetUtenze.length">
+                    <div class="testo-alld-bold" style="display: flex">
+                      {{ label[12]?.testoMsgInformativo }}&nbsp;
+                      <textarea type="text" class="form-control importosomma" [ngClass]="{
+                          'inputF fake': nonPareggioFNPS,
+                          inputF: !nonPareggioFNPS
+                        }" style="width: 35%; text-align: left !important"
+                        [(ngModel)]="rendicontazioneAllD.giustificazione" [class.campovalorizzato]="
+                          rendicontazioneAllD.giustificazione !== null &&
+                          rendicontazioneAllD.giustificazione !== '' &&
+                          rendicontazioneAllD.giustificazione !== undefined &&
+                          rendicontazioneAllD.giustificazione.trim().length >0
+                        " [class.campovuoto]="
+                          rendicontazioneAllD.giustificazione == null ||
+                          rendicontazioneAllD.giustificazione == '' ||
+                          rendicontazioneAllD.giustificazione == undefined || 
+                          rendicontazioneAllD.giustificazione.trim().length == 0
+                        " (click)="
+                          openDialogMotivazione(
+                            rendicontazioneAllD.giustificazione
+                          )
+                        " [attr.readonly]="true" data-bs-toggle="tooltip" data-bs-placement="right"
+                        title="{{ rendicontazioneAllD.giustificazione }}" [disabled]="
+                          client.readOnlyIII ||
+                          client.azioni.get('ModelloFNPS')[0]
+                        "></textarea>
+                    </div>
+                  </td>
+                </tr>
+                <tr style="height: 20px"></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="row col-md-12" *ngIf="checkLepsAzioni() || checkLepsQuote()">
+            <div class="col-md-12 fontbold px-0 py-2 align-self-center">
+              {{ label[16]?.testoMsgInformativo }}
+            </div>
+            <div class="col-md-12 pb-3 pt-2 pl-0">
+              <div class="row col-md-12 px-0" *ngIf="checkLepsAzioni()">
+                <div class="col-md-4 fontbold px-0 riga-grigia">
+                  {{ label[1]?.testoMsgInformativo }}
+                  <!-- <ng-template #popContent4>
+                    {{ label[17]?.testoMsgInformativo }}
+                  </ng-template>
+                  <label
+                    style="white-space: nowrap; padding-left: 0px"
+                    placement="right"
+                    [ngbPopover]="popContent4"
+                    triggers="hover"
+                  >
+                    <img
+                      style="
+                        height: 20px;
+                        width: 20px;
+                        margin-left: 0px !important;
+                      "
+                      src="assets/img/ui-modelli/help.png"
+                      class="greg-icon-help"
+                    />
+                  </label> -->
+                </div>
+                <div class="col-md-2 fontbold riga-grigia text-right">
+                  Assegnato
+                </div>
+                <div class="col-md-3 fontbold riga-azzurra">
+                  {{ label[2]?.testoMsgInformativo }}
+                  <ng-template #popContent3>
+                    {{ label[15].testoMsgInformativo }}
+                  </ng-template>
+                  <label style="white-space: nowrap; padding-left: 10px" [placement]="['right', 'left', 'auto']"
+                    [ngbPopover]="popContent3" triggers="hover">
+                    <img style="height: 20px; width: 20px" src="assets/img/ui-modelli/help.png"
+                      class="greg-icon-help" />
+                  </label>
+                </div>
+                <div class="col-md-3 fontbold"></div>
+                <ng-container *ngFor="
+                    let azione of rendicontazioneAllD?.azioniSistema;
+                    let i = index
+                  ">
+                  <ng-template [ngIf]="azione.leps">
+                    <div class="col-md-4 fontbold px-0 py-2 align-self-center riga-grigia pt-4">
+                      {{ azione.descFondo }}
+                      <ng-template [ngIf]="azione?.msgInformativo">
+                        <ng-template #popContent4>
+                          {{ azione.msgInformativo }}
+                        </ng-template>
+                        <label style="white-space: nowrap; padding-left: 0px" placement="right"
+                          [ngbPopover]="popContent4" triggers="hover">
+                          <img style="
+                              height: 20px;
+                              width: 20px;
+                              margin-left: 0px !important;
+                            " src="assets/img/ui-modelli/help.png" class="greg-icon-help" />
+                        </label> </ng-template>:
+                    </div>
+                    <div class="col-md-2 fontbold py-3 text-right align-self-center riga-grigia pt-4">
+                      {{ azione.valore }}
+                    </div>
+                    <div class="col-md-3 fontbold py-2 riga-azzurra">
+                      <input appTwoDigitDecimalNumber type="text" [(ngModel)]="azione.valoreSpesaFnps"
+                        class="form-control inputnumber w-100" (blur)="changeKeyAzione($event.target.value, i)"
+                        (ngModelChange)="calcTableValue()" [class.campovalorizzato]="
+                          azione.valoreSpesaFnps !== null &&
+                          azione.valoreSpesaFnps !== '' &&
+                          azione.valoreSpesaFnps !== undefined
+                        " [class.campovuoto]="
+                          azione.valoreSpesaFnps == null ||
+                          azione.valoreSpesaFnps == '' ||
+                          azione.valoreSpesaFnps == undefined
+                        " />
+                    </div>
+                    <div class="col-md-3 fontbold"></div>
+                  </ng-template>
+                </ng-container>
+              </div>
+              <div class="row col-md-12 p-3"></div>
+              <div class="row col-md-12 px-0" *ngIf="checkLepsQuote()">
+                <div class="col-md-4 fontbold px-0 riga-grigia">
+                  {{ label[13]?.testoMsgInformativo }}
+                </div>
+                <div class="col-md-2 fontbold riga-grigia text-right">
+                  Assegnato
+                </div>
+                <div class="col-md-3 fontbold riga-azzurra">
+                  {{ label[2]?.testoMsgInformativo }}
+                  <ng-template #popContent5>
+                    {{ label[15]?.testoMsgInformativo }}
+                  </ng-template>
+                  <label style="white-space: nowrap; padding-left: 10px" [placement]="['right', 'left', 'auto']"
+                    [ngbPopover]="popContent5" triggers="hover">
+                    <img style="height: 20px; width: 20px" src="assets/img/ui-modelli/help.png"
+                      class="greg-icon-help" />
+                  </label>
+                </div>
+                <ng-container *ngFor="let quota of rendicontazioneAllD.quote; let i = index">
+                  <ng-template [ngIf]="quota.leps">
+                    <div class="col-md-4 fontbold px-0 py-2 pt-4 align-self-center riga-grigia">
+                      {{ quota.descFondo }}
+                      <ng-template [ngIf]="quota?.msgInformativo">
+                        <ng-template #popContent6>
+                          {{ quota.msgInformativo }}
+                        </ng-template>
+                        <label style="white-space: nowrap; padding-left: 0px" placement="right"
+                          [ngbPopover]="popContent6" triggers="hover">
+                          <img style="
+                              height: 20px;
+                              width: 20px;
+                              margin-left: 0px !important;
+                            " src="assets/img/ui-modelli/help.png" class="greg-icon-help" />
+                        </label> </ng-template>:
+                    </div>
+                    <div class="col-md-2 fontbold py-3 pt-4 text-right align-self-center riga-grigia">
+                      {{ quota.valore }}
+                    </div>
+                    <div class="col-md-3 fontbold py-2 riga-azzurra">
+                      <input appTwoDigitDecimalNumber type="text" [(ngModel)]="quota.valoreSpesaFnps"
+                        class="form-control inputnumber w-100" (blur)="changeKeyAltre($event.target.value, i)"
+                        (ngModelChange)="calcTableValue()" [class.campovalorizzato]="
+                          quota.valoreSpesaFnps !== null &&
+                          quota.valoreSpesaFnps !== '' &&
+                          quota.valoreSpesaFnps !== undefined
+                        " [class.campovuoto]="
+                          quota.valoreSpesaFnps == null ||
+                          quota.valoreSpesaFnps == '' ||
+                          quota.valoreSpesaFnps == undefined
+                        " />
+                    </div>
+
+                    <div class="col-md-3 fontbold"></div>
+                  </ng-template>
+                </ng-container>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="!isCompiledFnps || !checkStatoRendicontazione() || !validazioneAlZero">
+        <div *ngIf="!isCompiledFnps" class="row" style="
+            background: white;
+            padding-top: 15px;
+            padding-bottom: 15px;
+            box-shadow: 1px 2px 8px #c4c4c4;
+          ">
+          <h3 class="p-3">{{ infoAllD06 }}</h3>
+        </div>
+        <div *ngIf="!checkStatoRendicontazione()" class="row" style="
+            background: white;
+            padding-top: 15px;
+            padding-bottom: 15px;
+            box-shadow: 1px 2px 8px #c4c4c4;
+          ">
+          <h3 class="p-3">{{ infoAllD07 }}</h3>
+        </div>
+        <div *ngIf="!validazioneAlZero" class="row" style="
+            background: white;
+            padding-top: 15px;
+            padding-bottom: 15px;
+            box-shadow: 1px 2px 8px #c4c4c4;
+          ">
+          <h3 class="p-3">{{ errorAllDValidationeAlZero }}</h3>
+        </div>
+      </ng-container>
+
+      <div class="row" style="padding-top: 15px; padding-bottom: 20px"></div>
+
+      <!-- CRONOLOGIA -->
+      <app-cronologia-modelli></app-cronologia-modelli>
+
+      <br />
+
+      <!-- BOTTONI -->
+      <app-pulsanti-funzioni [mostrasalva]="mostrasalva" [idRendicontazioneEnte]="idRendicontazioneEnte" [modello]="'Mod. FNPS'"
+        [cronologiaMod]="cronologiaMod != null ? cronologiaMod : null"
+        (salvaEvent)="salvaModifiche($event)"></app-pulsanti-funzioni>
+    </div>
+  </div>
+</div>

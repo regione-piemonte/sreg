@@ -1,0 +1,129 @@
+.operator {
+    text-align: center;
+    border-left: solid #EEEEEE !important;
+    border-right: solid #EEEEEE !important;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+::ng-deep .odd {
+	display: none
+}
+
+::ng-deep.dataTables_length{
+	display: none;
+}
+
+::ng-deep.dataTables_wrapper .dataTables_paginate .paginate_button.current {
+	background: #016CB4;
+	color: white !important;
+	border-radius: 5px;
+	border: none;
+}
+
+::ng-deep.dataTables_wrapper .dataTables_paginate .paginate_button:hover{
+	background: transparent !important;
+	color: black !important;
+	border: none;
+}
+
+::ng-deep.dataTables_wrapper .dataTables_info {
+	display: none;
+}
+
+::ng-deep.mat-table tbody {
+	box-shadow: 1px 5px 8px #C4C4C4;
+}
+
+::ng-deep.dataTables_processing {
+	display: none !important;
+}
+
+::ng-deep.mat-table tbody {
+    box-shadow: 1px 2px 8px #c4c4c4 !important;
+}
+
+table.dataTable tbody th,
+table.dataTable tbody td {
+  /* padding: 1px 1px !important; */
+  vertical-align: middle !important;
+}
+
+.table_head {
+	background: #EEEEEE 0% 0% no-repeat padding-box;
+	opacity: 1;
+}
+
+/* input{
+    border: 1px solid #DEE2E6;
+    border-radius: 3px;
+} */
+
+.finalRow {
+    background: #DBEEF7 0% 0% no-repeat padding-box;
+}
+
+.textFinalRow {
+	text-align: right;
+	padding-right: 1rem;
+	font-weight: bold;
+}
+
+.totalRow {
+	background: #006CB4;
+}
+
+.totalRowText {
+	padding-right: 1rem;
+	font-weight: bold;
+}
+
+.shadow {
+    box-shadow: 1px 2px 8px #c4c4c4 !important;
+}
+
+.redText {
+    color: #B8191A;
+}
+
+.noBack{
+	background: none;
+}
+
+.msgInf {
+	font-size: 14px;
+	margin-bottom: 1.5rem;
+}
+
+.mat-column-Titolo {
+	max-width: 625px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+.bbw-15 {
+	border-bottom: 15px solid white;
+}
+
+.label-importo {
+	font-size: 13px;
+	margin-top: 10px;
+}
+
+.label-importo2 {
+	font-size: 13px;
+}

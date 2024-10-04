@@ -1,0 +1,223 @@
+
+/* Gestione MEDIA  */
+@media screen and (max-width: 1470px){
+	.millequattro{
+		display: none;
+	}
+}
+@media screen and (max-width: 1340px){
+	.milletre{
+		display: none;
+	}
+}
+@media screen and (max-width: 1250px){
+	.milledue{
+		display: none;
+	}
+}
+@media screen and (max-width: 1000px){
+	.mille{
+		display: none;
+	}
+}
+
+.greg {
+	background: #F0F3F8 !important;
+	color: #000000 !important;
+	font-family: 'Open Sans', sans-serif;
+}
+
+.gregTabs {
+	font-size: 16px;
+}
+
+#miatab{
+	font-size: 14px;
+	background: white;
+	text-align: center;
+}
+
+.gregFilter {
+	padding-top: 10px;
+	padding-bottom: 10px;
+	/* margin-top: 10px;
+	margin-bottom: 10px; */
+	background: white;
+	border-width: 1px;
+	border-style: solid;
+	border-color: rgb(213, 213, 213);
+}
+
+
+.theme-exprivia-healthcare .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active
+	{
+	/* color: #1154a2; */
+	border-bottom: 3px solid #1154a2 !important;
+	border-top: #d5d5d5;
+	border-left: none;
+	border-right: none;
+	background-color: transparent;
+}
+
+a {
+	color: #0E8EAB;
+}
+
+.verticalCentered {
+	display: -ms-flexbox;
+	display: -webkit-flex;
+	display: flex;
+	-ms-flex-align: center;
+	-webkit-align-items: center;
+	-webkit-box-align: center;
+	align-items: center;
+}
+
+::ng-deep .odd {
+	display: none
+}
+
+
+table.dataTable tbody th,
+table.dataTable tbody td {
+  padding: 1px 1px !important;
+  vertical-align: middle !important;
+}
+
+.input-group {
+    flex-wrap: initial !important;
+}
+
+.button {
+	padding-top: 10px;
+	padding-bottom: 10px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+.button1 {
+	float: right;
+}
+
+.block {
+	display: block;
+	width: 100%;
+	border: none;
+	cursor: pointer;
+	text-align: center;
+}
+
+.divcenter {
+	height: 100%;
+	/* align-content: center;
+	vertical-align: middle; */
+	/* display: -ms-flexbox;
+	display: -webkit-flex;
+	display: flex;
+	-ms-flex-align: center;
+	-webkit-align-items: center;
+	-webkit-box-align: center;
+	align-items: center; */
+	/* margin-top: 20px; */
+}
+
+
+.greg-mod-a-section-totale{
+	background: #DBEEF7 0% 0% no-repeat padding-box;
+	margin: 0px 20px;
+	padding: 18px 0;
+	width: 100%;
+	opacity: 1;
+}
+
+.fontbold {
+	text-align: left;
+	font-family: 'Open Sans', sans-serif;
+	font-size: 16px;
+	line-height: 22px;
+	font-weight: bold;
+	letter-spacing: 0px;
+	color: #000000;
+	opacity: 1;
+}
+
+.greg-icon-help{
+	cursor: pointer;
+	width: 20px;
+	height: 20px;
+	margin-left: 10px;
+}
+
+.greg-modelloa-tbl-riga-header{
+	background: #EEEEEE 0% 0% no-repeat padding-box;
+	border: 1px solid #EAEAEA;
+	opacity: 1;
+}
+
+.greg-modelloa-table{
+	padding-top: 10px;
+	padding-bottom: 10px;
+	background: white;
+	margin: 20px;
+	box-shadow: 1px 2px 8px #c4c4c4;
+	border-radius: 5px;
+}
+
+.right-delimiter-totali {
+	border-right: 1px solid #808080;
+}
+
+.greg-modelloa-number-right{
+	text-align: right;
+}
+
+.tbl-descrizione {
+	font-size: 13px !important;
+	display: flex !important;
+}
+
+.tbl-valore {
+	display: flex !important;
+}
+
+.subtotale {
+	background-color: #90DBFF;
+	margin: 20px;
+}
+
+.totale-sr-cd {
+	background-color: #006CB4;
+	margin: 20px;
+}
+
+tr {
+	border: none !important;
+}
+
+td {
+	border: none !important;
+}
+
+.voci-dim{
+	width: 10%;
+}
+
+::ng-deep .popover {
+  width: 50% !important;
+}
+
+.form-control-disable{
+	display: block;
+    width: 100%;
+    height: calc(1.5em + 0.75rem + 2px);
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #808080;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}

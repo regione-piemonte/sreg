@@ -1,0 +1,59 @@
+<div class="row greg" style="padding-top: 25px; padding-bottom: 25px;">
+    <div class="col-md-1"></div>
+
+	<div class="col-md-5" style="margin-bottom: 10px;">
+
+		<span class="results" style="margin-bottom: 10px;">Numero Enti: {{ dataListaRichieste.data.length }}</span>
+
+	</div>
+    <div class="col-md-6"></div>
+	<div class="col-md-1"></div>
+	<div class="col-md-10">
+		<table mat-table matSort [dataSource]="dataListaRichieste" class="mb-3 table table-hover table-responsive-xl tabellagreg">
+			<ng-container matColumnDef="codiceRegionale">
+			  <th class=" columns_header" mat-header-cell *matHeaderCellDef mat-sort-header> Codice Regionale </th>
+			  <td class="smarttable" mat-cell *matCellDef="let element"> {{element.codiceRegionale}} </td>
+			</ng-container>
+		  
+			<ng-container matColumnDef="statoRendicontazione.descStatoRendicontazione">
+			  <th class=" columns_header" mat-header-cell *matHeaderCellDef mat-sort-header> Stato Rendicontazione </th>
+			  <td class="smarttable" mat-cell *matCellDef="let element"> {{element.statoRendicontazione && element.statoRendicontazione.descStatoRendicontazione}} </td>
+			</ng-container>
+		  
+			<ng-container matColumnDef="denominazione">
+			  <th class="column_header columns_header" mat-header-cell *matHeaderCellDef mat-sort-header> Denominazione Ente </th>
+			  <td class="smarttable text-wrap" style="max-width: 300px" mat-cell *matCellDef="let element"> {{element.denominazione}} </td>
+			</ng-container>
+		  
+			<ng-container matColumnDef="comuneSedeLegale">
+			  <th class=" columns_header" mat-header-cell *matHeaderCellDef> Comune Sede Legale </th>
+			  <td class="smarttable" mat-cell *matCellDef="let element"> {{element.comuneSedeLegale}} </td>
+			</ng-container>
+
+			<ng-container matColumnDef="tipoEnte">
+				<th class=" columns_header" mat-header-cell *matHeaderCellDef> Tipo Ente </th>
+				<td class="smarttable" class="smarttable" mat-cell *matCellDef="let element"> {{element.tipoEnte && element.tipoEnte.desTipoEnte}} </td>
+			</ng-container>
+
+			<ng-container matColumnDef="datiEnte">
+				<th class=" columns_header" mat-header-cell *matHeaderCellDef> Dati Ente </th>
+				<td class="smarttable" mat-cell *matCellDef="let element">
+					<button type = "button" (click)="routeTo(element, '../responsabile-ente')" class="btn" data-toggle="tooltip" title="Dati Ente">
+						<span class="fas fa-server" style="color: #006CB4;"></span>
+					</button>
+				</td>
+			</ng-container>
+			<tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+			<tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+		</table>
+
+		<mat-paginator class="paginator" 
+			[length]="dataListaRichieste.data.length" [pageSize]="10" 
+			[pageSizeOptions]="[5, 10, 20]" [showFirstLastButtons]=true>
+		</mat-paginator>
+	</div>
+
+	<div class="col-md-1"></div>
+
+</div>
+

@@ -1,0 +1,198 @@
+::ng-deep .odd {
+	display: none
+}
+
+::ng-deep.dataTables_length{
+	display: none;
+}
+
+::ng-deep.dataTables_wrapper .dataTables_paginate .paginate_button.current {
+	background: #016CB4;
+	color: white !important;
+	border-radius: 5px;
+	border: none;
+}
+
+::ng-deep.dataTables_wrapper .dataTables_paginate .paginate_button:hover{
+	background: transparent !important;
+	color: black !important;
+	border: none;
+}
+
+::ng-deep.dataTables_wrapper .dataTables_info {
+	display: none;
+}
+
+::ng-deep.mat-table {
+	box-shadow: 1px 2px 8px #C4C4C4;
+}
+
+
+::ng-deep.dataTables_processing {
+	display: none !important;
+}
+
+
+.totalRow {
+	background: #DBEEF7;
+	text-align: center;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+.bordato{
+	border-left: 3px solid #FFCF07;
+	opacity: 1;
+	height: 120px;
+	padding: 5px;
+}
+
+.titolo{
+	background: #EEEEEE 0% 0% no-repeat padding-box !important;
+	text-align: left;
+	font: normal normal bold 16px/22px 'Open Sans', sans-serif;
+	letter-spacing: 0px;
+	color: #000000;
+	opacity: 1;
+}
+
+.titoloPad{
+	padding-top: 14px;
+	padding-bottom: 14px;
+	padding-left: 28px!important;
+	padding-right: 30px !important;
+}
+
+.titoloBordo{
+	border-left: 2px solid #C4C4C4 !important;
+	opacity: 1;
+}
+
+.riga1{
+	padding-left: 13px !important; 
+}
+
+.firstPad{
+	padding-left: 28px !important;
+}
+.bold {
+    font-weight: bold;
+}
+
+.macrospese{
+	text-align: left;
+	vertical-align: middle;
+	font: normal normal normal 13px/16px 'Open Sans', sans-serif;
+	letter-spacing: 0px;
+	color: #000000;
+	opacity: 1;
+}
+
+.codifica{
+	text-align: left;
+	vertical-align: middle;
+	font: normal normal bold 16px/22px 'Open Sans', sans-serif;
+	letter-spacing: 0px;
+	color: #000000;
+	opacity: 1;
+	width: 8%;
+}
+
+.programmaW{
+	padding-left: 10px;
+    padding-top: 5px;
+	/* width: 100%; */
+	max-width: 300px;
+}
+
+img{
+	height: 20px; 
+	width: 20px;
+}
+
+.macroP{
+	width: 101%;
+}
+
+.macrospeseboldato{
+	text-align: center !important;
+	vertical-align: middle;
+	font: normal normal bold 16px/22px 'Open Sans', sans-serif;
+	letter-spacing: 0px;
+	color: #000000;
+	opacity: 1;
+
+}
+
+.shadow {
+    box-shadow: 1px 2px 8px #c4c4c4 !important;
+}
+
+/* input{
+	background: #FFFFFF 0% 0% no-repeat padding-box;
+	border: 1px solid #DEE2E6;
+	border-radius: 3px;
+	opacity: 1;
+	height: 31px;	
+	width: 85px;
+} */
+
+th, td {
+	padding: 10px;
+}
+
+/* .missionePad{
+	padding-right: 58px;
+} */
+
+.immagineBordata{
+	margin-top: 0px;
+	margin-left: 10px;
+}
+
+.inputF{
+	text-align: right;
+	font: normal normal normal 13px/19px 'Open Sans', sans-serif;
+	letter-spacing: -0.06px;
+	color: #212529;
+	opacity: 1;
+}
+
+.macroAlign{
+	vertical-align: top;
+	width: 8%;
+}
+
+.macrog-title{
+	display: inline-flex;
+}
+.macrog-title-pad{
+	display: inline-flex;
+	margin-right: -5px;
+}
+
+.macrospese-title{
+	text-align: center !important;
+}
+
+
+.greg-icon-help{
+	cursor: pointer;
+	width: 20px;
+	height: 20px;
+	margin-left: 10px;
+}
+
+::ng-deep .popover {
+ width: 40% !important;
+}
