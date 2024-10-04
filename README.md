@@ -30,7 +30,7 @@ Elenco componenti:
 Si rimanda ai readme delle singole componenti
 
 * [GREGWCL](gregwcl/README.md)
-* [[GREGSRV](gregsrv/README.md)
+* [GREGSRV](gregsrv/README.md)
 
 ## Prerequisiti di sistema
 
