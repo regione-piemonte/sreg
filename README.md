@@ -45,7 +45,7 @@ PostgreSQL v9.6
 
 Dipendenze elencate nella cartella docs/wsdl
 
-## Versioning (Obbligatorio)
+## Versioning
 
 Per il versionamento del software si usa la tecnica Semantic Versioning (http://semver.org).
 
@@ -62,5 +62,4 @@ Per il versionamento del software si usa la tecnica Semantic Versioning (http://
 ## License
 
 SPDX-License-Identifier: inserire il codice SPDX delle licenza
-Vedere il file LICENSE per i dettagli.
-
+Vedere il file LICENSE per i dettagli in SPDX-License-Identifier: EUPL-1.2-or-later.
