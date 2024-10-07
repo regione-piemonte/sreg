@@ -1,3 +1,8 @@
+/*
+ * Copyright Regione Piemonte - 2024
+ * SPDX-License-Identifier: EUPL-1.2
+ */
+
 import { NumberSymbol } from "@angular/common";
 import { Nomenclatore } from "./Nomenclatore";
 import { Prest2PrestIstat } from "./Prest2PrestIstat";

@@ -1,3 +1,8 @@
+/*
+ * Copyright Regione Piemonte - 2024
+ * SPDX-License-Identifier: EUPL-1.2
+ */
+
 import { EventEmitter, Injectable } from "@angular/core";
 import { Observable, of, throwError } from "rxjs";
 import { catchError } from 'rxjs/operators';

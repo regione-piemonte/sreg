@@ -1,3 +1,8 @@
+/*
+ * Copyright Regione Piemonte - 2024
+ * SPDX-License-Identifier: EUPL-1.2
+ */
+
 import {RendicontazioneModAPart3} from '@greg-app/app/dto/RendicontazioneModAPart3';
 import {VociModelloA} from '@greg-app/app/dto/VociModeloA';
 import {VociRendModAPart3} from '@greg-app/app/dto/VociRendModAPart3';

@@ -1,3 +1,8 @@
+/*
+ * Copyright Regione Piemonte - 2024
+ * SPDX-License-Identifier: EUPL-1.2
+ */
+
 export const enum DATIENTE_INFO {    
     INFO_PARAM_TITLE = 'Informazioni Parametri',
     INFO_DOC_TITLE = 'Informazioni Documentazione',
@@ -41,7 +46,7 @@ export const enum MENU {
 }
 
 export const enum PATTERN {
-    CHARS = '^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.\'-]*$',
+    CHARS = '^[a-zA-ZÃ Ã¡Ã¢Ã¤Ã£Ã¥ÄÄÄÄÃ¨Ã©ÃªÃ«ÄÄ¯Ã¬Ã­Ã®Ã¯ÅÅÃ²Ã³Ã´Ã¶ÃµÃ¸Ã¹ÃºÃ»Ã¼Å³Å«Ã¿Ã½Å¼ÅºÃ±Ã§ÄÅ¡Å¾ÃÃÃÃÃÃÄÄÄÄÄÃÃÃÃÃÃÃÃÄ®ÅÅÃÃÃÃÃÃÃÃÃÃÅ²ÅªÅ¸ÃÅ»Å¹ÃÃÃÅÃÄÅ Å½âÃ° ,.\'-]*$',
     others = '^[\/\\\*\^]$',
     CODFISC = '[a-zA-Z]{6}[0-9]{2}[a-zA-Z][0-9]{2}[a-zA-Z][0-9]{3}[a-zA-Z]'
 }

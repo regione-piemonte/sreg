@@ -1,3 +1,8 @@
+/*
+ * Copyright Regione Piemonte - 2024
+ * SPDX-License-Identifier: EUPL-1.2
+ */
+
 /*!
  * jQuery JavaScript Library v3.3.1
  * https://jquery.com/

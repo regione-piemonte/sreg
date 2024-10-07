@@ -1,3 +1,8 @@
+/*
+ * Copyright Regione Piemonte - 2024
+ * SPDX-License-Identifier: EUPL-1.2
+ */
+
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {

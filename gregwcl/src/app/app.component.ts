@@ -1,3 +1,8 @@
+/*
+ * Copyright Regione Piemonte - 2024
+ * SPDX-License-Identifier: EUPL-1.2
+ */
+
 import { Component } from '@angular/core';
 import { GregBOClient } from './GregBOClient';
 import { PROJECT_CONSTANTS } from '../constants/greg-constants';

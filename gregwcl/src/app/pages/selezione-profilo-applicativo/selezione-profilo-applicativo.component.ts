@@ -1,3 +1,8 @@
+/*
+ * Copyright Regione Piemonte - 2024
+ * SPDX-License-Identifier: EUPL-1.2
+ */
+
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Navigation, Router } from '@angular/router';
 import { ListaGreg } from '@greg-app/app/dto/ListaGreg';

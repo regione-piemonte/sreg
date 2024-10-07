@@ -1,3 +1,8 @@
+/*
+ * Copyright Regione Piemonte - 2024
+ * SPDX-License-Identifier: EUPL-1.2
+ */
+
 export class VociModelloB1 {
     public macroaggregati: ModelRendicontazioneTotaliMacroaggregati;
     public elencoPrestazioni : ModelPrestazioniB1[];

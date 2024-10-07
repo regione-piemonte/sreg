@@ -1,3 +1,8 @@
+/*
+ * Copyright Regione Piemonte - 2024
+ * SPDX-License-Identifier: EUPL-1.2
+ */
+
 import { CausaleGreg } from "./CausaleGreg";
 import { CronologiaGreg } from "./CronologiaGreg";
 import { TrasferimentoGreg } from "./TrasferimentoGreg";

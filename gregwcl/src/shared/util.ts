@@ -1,3 +1,8 @@
+/*
+ * Copyright Regione Piemonte - 2024
+ * SPDX-License-Identifier: EUPL-1.2
+ */
+
 import { isDevMode } from '@angular/core';
 import { HttpHeaders, HttpParams } from "@angular/common/http";
 import * as uuid from 'uuid';

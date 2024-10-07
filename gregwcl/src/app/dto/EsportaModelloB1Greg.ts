@@ -1,3 +1,8 @@
+/*
+ * Copyright Regione Piemonte - 2024
+ * SPDX-License-Identifier: EUPL-1.2
+ */
+
 import { ModelloB1ElencoLbl } from "./ModelloB1ElencoLbl";
 import { ModelPrestazioniB1 } from "./VociModelloB1";
 

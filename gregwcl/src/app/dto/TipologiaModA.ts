@@ -1,3 +1,8 @@
+/*
+ * Copyright Regione Piemonte - 2024
+ * SPDX-License-Identifier: EUPL-1.2
+ */
+
 import {VoceModA} from '@greg-app/app/dto/VoceModA';
 
 export class TipologiaModA {

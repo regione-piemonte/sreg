@@ -1,3 +1,8 @@
+/*
+ * Copyright Regione Piemonte - 2024
+ * SPDX-License-Identifier: EUPL-1.2
+ */
+
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { NuovaPrestazioneComponent } from '@greg-operatore/components/configuratore-prestazioni/nuova-prestazione/nuova-prestazione.component';

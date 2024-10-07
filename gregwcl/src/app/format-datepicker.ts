@@ -1,3 +1,8 @@
+/*
+ * Copyright Regione Piemonte - 2024
+ * SPDX-License-Identifier: EUPL-1.2
+ */
+
 import { formatDate } from "@angular/common";
 import { Injectable } from "@angular/core";
 import { FormControl } from "@angular/forms";
